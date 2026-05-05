@@ -8,6 +8,7 @@ const createQuotationRoutes = ({ quotationController, authMiddleware }) => {
   router.use(authMiddleware);
 
   router.get('/', quotationController.list.bind(quotationController));
+  router.get('/search', quotationController.list.bind(quotationController));
   router.post('/', validate(createQuotationSchema), quotationController.create.bind(quotationController));
   router.get('/:id', quotationController.detail.bind(quotationController));
   router.put('/:id', quotationController.update.bind(quotationController));

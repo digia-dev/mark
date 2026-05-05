@@ -1350,14 +1350,14 @@
       * trouble ticket baru → notif ke teknisi
       * SLA hampir habis → notif ke assigned
 
-[ ] buat use-cases:
+[x] buat use-cases:
     src/use-cases/notification/get-notification-list-use-case.js
     src/use-cases/notification/mark-as-read-use-case.js
     src/use-cases/notification/mark-all-as-read-use-case.js
     src/use-cases/notification/delete-notification-use-case.js
     src/use-cases/notification/get-notification-stats-use-case.js
 
-[ ] buat routes: src/interfaces/routes/notification-routes.js
+[x] buat routes: src/interfaces/routes/notification-routes.js
     GET    /api/notifications
     PATCH  /api/notifications/:id/read
     PATCH  /api/notifications/read-all
@@ -1377,14 +1377,14 @@
 ### TASK-034 — backend: activity logs endpoint `/wf-05`
 
 ```
-[ ] buat use-cases:
+[x] buat use-cases:
     src/use-cases/activity-log/get-activity-log-list-use-case.js
       → filter: user_id, module, action, date_range, search
       → pagination
     src/use-cases/activity-log/get-activity-log-stats-use-case.js
       → aktivitas per modul (donut), per aksi (bar)
 
-[ ] buat routes: src/interfaces/routes/activity-log-routes.js
+[x] buat routes: src/interfaces/routes/activity-log-routes.js
     GET /api/activity-logs
     GET /api/activity-logs/stats
 ```
@@ -1399,10 +1399,10 @@
     - polling setiap 30 detik untuk notif baru
     - atau gunakan long polling / SSE jika tersedia
 
-[ ] buat file: src/features/notification/components/NotificationBell.jsx
+[x] buat file: src/features/notification/components/NotificationBell.jsx
     - badge merah dengan count unread di topbar
 
-[ ] buat file: src/features/notification/components/NotificationList.jsx
+[x] buat file: src/features/notification/components/NotificationList.jsx
     - tab: semua, belum dibaca, penting, sistem, lainnya
     - item: ikon berwarna, judul, deskripsi, waktu relatif, badge tipe
     - titik biru untuk yang belum dibaca
@@ -1448,10 +1448,10 @@
 
 [ ] buat route: GET /api/search?q={query}
 
-[ ] buat use-case: src/use-cases/setting/get-company-settings-use-case.js
-[ ] buat use-case: src/use-cases/setting/update-company-settings-use-case.js
-[ ] buat use-case: src/use-cases/setting/get-user-preferences-use-case.js
-[ ] buat use-case: src/use-cases/setting/update-user-preferences-use-case.js
+[x] buat use-case: src/use-cases/setting/get-company-settings-use-case.js
+[x] buat use-case: src/use-cases/setting/update-company-settings-use-case.js
+[x] buat use-case: src/use-cases/setting/get-user-preferences-use-case.js
+[x] buat use-case: src/use-cases/setting/update-user-preferences-use-case.js
 
 [ ] buat use-case: src/use-cases/target/create-sales-target-use-case.js
 [ ] buat use-case: src/use-cases/target/get-sales-target-use-case.js
@@ -1463,7 +1463,7 @@
 ### TASK-037 — frontend: settings & global search `/wf-03`
 
 ```
-[ ] buat file: src/features/settings/services/settings-service.js
+[x] buat file: src/features/settings/services/settings-service.js
 [ ] buat file: src/pages/SettingsPage.jsx
     - sub-menu: profil perusahaan, manajemen user, branch, produk, preferensi
     - form pengaturan umum perusahaan
@@ -1481,57 +1481,57 @@
 ### TASK-038 — shared ui components finalisasi `/wf-03`
 
 ```
-[ ] buat file: src/shared/components/StatCard.jsx
+[x] buat file: src/shared/components/StatCard.jsx
     - sesuai spec design.md bagian 3.1
     - ikon dalam lingkaran pastel
     - nilai utama besar, persentase ▲/▼, keterangan periode
 
-[ ] buat file: src/shared/components/StatusBadge.jsx
+[x] buat file: src/shared/components/StatusBadge.jsx
     - sesuai tabel badge design.md bagian 3.2
     - terima: status string → return badge dengan warna yang tepat
 
-[ ] buat file: src/shared/components/DataTable.jsx
+[x] buat file: src/shared/components/DataTable.jsx
     - reusable tabel dengan: checkbox, pagination, filter, export, column toggle
     - tiga-dot menu per baris
 
-[ ] buat file: src/shared/components/ConfirmDeleteModal.jsx
+[x] buat file: src/shared/components/ConfirmDeleteModal.jsx
     - ikon tempat sampah merah
     - checkbox konfirmasi "saya yakin"
     - tombol batal + hapus (danger)
 
-[ ] buat file: src/shared/components/SuccessPopup.jsx
+[x] buat file: src/shared/components/SuccessPopup.jsx
     - centang hijau animasi
     - ringkasan data tersimpan
     - tombol "Lihat Data"
 
-[ ] buat file: src/shared/components/FilterPopup.jsx
+[x] buat file: src/shared/components/FilterPopup.jsx
     - popup filter kombinasi (status, sales, area, tanggal, nilai)
     - tombol reset + terapkan filter
     - chip filter aktif
 
-[ ] buat file: src/shared/components/ExportModal.jsx
+[x] buat file: src/shared/components/ExportModal.jsx
     - pilih format: excel, csv, pdf
     - pilih kolom (opsional)
     - tombol download
 
-[ ] buat file: src/shared/components/ImportModal.jsx
+[x] buat file: src/shared/components/ImportModal.jsx
     - drag & drop file .xlsx/.csv
     - download template
     - tombol upload
 
-[ ] buat file: src/shared/components/SidePanel.jsx
+[x] buat file: src/shared/components/SidePanel.jsx
     - slide-in dari kanan 420-480px
     - header dengan nomor + badge status + aksi + close
     - slot untuk konten tab
 
-[ ] buat file: src/shared/components/PageHeader.jsx
+[x] buat file: src/shared/components/PageHeader.jsx
     - judul halaman + subtitle
     - slot kanan untuk tombol aksi
 
-[ ] buat file: src/shared/components/EmptyState.jsx
+[x] buat file: src/shared/components/EmptyState.jsx
     - ilustrasi + pesan + optional tombol CTA
 
-[ ] buat file: src/shared/components/SkeletonLoader.jsx
+[x] buat file: src/shared/components/SkeletonLoader.jsx
     - skeleton untuk stat card, tabel, dan card
 ```
 
@@ -1540,7 +1540,7 @@
 ### TASK-039 — finalisasi routing & permission frontend `/wf-01`
 
 ```
-[ ] update App.jsx → setup semua routes:
+[x] update App.jsx → setup semua routes:
     /login
     /dashboard
     /crm/customers
@@ -1561,12 +1561,12 @@
     /activity-logs
     /settings
 
-[ ] buat file: src/shared/components/RoleGuard.jsx
+[x] buat file: src/shared/components/RoleGuard.jsx
     - cek role user dari auth store
     - render children jika punya akses
     - redirect atau tampilkan "access denied" jika tidak punya akses
 
-[ ] pasang RoleGuard di route yang memerlukan:
+[x] pasang RoleGuard di route yang memerlukan:
     - /settings → super-admin, admin
     - /activity-logs → super-admin, admin
     - /reports → super-admin, admin, sales (own data)

@@ -1,21 +1,39 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Bell, Check, Clock, UserPlus, Briefcase, FileText, Settings, AlertCircle, ShoppingCart } from 'lucide-react';
 import { useNotifications, useMarkAsRead } from '../hooks/use-notifications';
 
 const iconConfig = {
-  'lead': { icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-50' },
-  'deal': { icon: Briefcase, color: 'text-orange-600', bg: 'bg-orange-50' },
-  'quotation': { icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
-  'installation': { icon: Settings, color: 'text-green-600', bg: 'bg-green-50' },
-  'trouble-ticket': { icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
-  'invoice': { icon: ShoppingCart, color: 'text-emerald-600', bg: 'bg-emerald-50' }
+  'lead': { icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-50', path: '/crm/leads' },
+  'deal': { icon: Briefcase, color: 'text-orange-600', bg: 'bg-orange-50', path: '/pipeline' },
+  'customer': { icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-50', path: '/crm/customers' },
+  'quotation': { icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50', path: '/quotation' },
+  'installation': { icon: Settings, color: 'text-green-600', bg: 'bg-green-50', path: '/timeline' },
+  'trouble-ticket': { icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50', path: '/trouble-ticket' },
+  'invoice': { icon: ShoppingCart, color: 'text-emerald-600', bg: 'bg-emerald-50', path: '/invoice' }
 };
 
-const NotificationPanel = () => {
+const NotificationPanel = ({ onClose }) => {
   const { data: notifications = [], isLoading } = useNotifications();
   const { mutate: markAsRead } = useMarkAsRead();
+  const navigate = useNavigate();
 
   const unreadCount = notifications.filter(n => !n.is_read).length;
+
+  const handleNotifClick = (notif) => {
+    if (!notif.is_read) {
+      markAsRead(notif.id);
+    }
+    
+    const config = iconConfig[notif.type];
+    if (config && notif.entity_id) {
+      navigate(`${config.path}/${notif.entity_id}`);
+    } else if (config) {
+      navigate(config.path);
+    }
+    
+    if (onClose) onClose();
+  };
 
   if (isLoading) {
     return <div className="p-4 text-center text-gray-400 text-sm">Loading notifications...</div>;
@@ -50,8 +68,9 @@ const NotificationPanel = () => {
               <div 
                 key={notif.id} 
                 className={`p-4 hover:bg-gray-50 transition-all cursor-pointer group flex gap-3 ${!notif.is_read ? 'bg-blue-50/30' : ''}`}
-                onClick={() => !notif.is_read && markAsRead(notif.id)}
+                onClick={() => handleNotifClick(notif)}
               >
+
                 <div className={`w-10 h-10 shrink-0 rounded-2xl ${config.bg} ${config.color} flex items-center justify-center shadow-sm`}>
                   <config.icon size={18} />
                 </div>

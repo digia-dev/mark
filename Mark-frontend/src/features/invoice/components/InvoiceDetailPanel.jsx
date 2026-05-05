@@ -95,7 +95,7 @@ const InvoiceDetailPanel = ({ invoice, onClose, onRecordPayment }) => {
               <p className="text-[10px] font-black text-green-600 uppercase tracking-widest mb-1">Sudah Dibayar</p>
               <p className="text-lg font-black text-green-700">{formatCurrency(invoice.paid_amount)}</p>
             </div>
-            <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm md:col-span-2 bg-blue-50/50 border-blue-100">
+            <div className="p-4 rounded-2xl border shadow-sm md:col-span-2 bg-blue-50/50 border-blue-100">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">Sisa Tagihan</p>

@@ -5,50 +5,51 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
   const stats = [
     { 
       label: 'Total Customers', 
-      value: data?.totalCustomers || 0, 
-      trend: '+12.5%', 
-      isUp: true, 
+      value: data?.totalCustomers?.value || 0, 
+      trend: data?.totalCustomers?.trend || '0%', 
+      isUp: data?.totalCustomers?.isUp, 
       icon: Users, 
       color: 'text-blue-600', 
       bg: 'bg-blue-50' 
     },
     { 
       label: 'Revenue (Monthly)', 
-      value: `Rp ${((data?.revenue || 0) / 1000000).toFixed(1)}jt`, 
-      trend: '+18.7%', 
-      isUp: true, 
+      value: `Rp ${((data?.revenue?.value || 0) / 1000000).toFixed(1)}jt`, 
+      trend: data?.revenue?.trend || '0%', 
+      isUp: data?.revenue?.isUp, 
       icon: DollarSign, 
       color: 'text-orange-600', 
       bg: 'bg-orange-50' 
     },
     { 
       label: 'Deals Closing', 
-      value: data?.deals || 0, 
-      trend: '+23.1%', 
-      isUp: true, 
+      value: data?.deals?.value || 0, 
+      trend: data?.deals?.trend || '0%', 
+      isUp: data?.deals?.isUp, 
       icon: Briefcase, 
       color: 'text-green-600', 
       bg: 'bg-green-50' 
     },
     { 
       label: 'Active Installs', 
-      value: data?.activeInstallations || 0, 
-      trend: '-5.2%', 
-      isUp: false, 
+      value: data?.activeInstallations?.value || 0, 
+      trend: data?.activeInstallations?.trend || '0%', 
+      isUp: data?.activeInstallations?.isUp, 
       icon: Activity, 
       color: 'text-purple-600', 
       bg: 'bg-purple-50' 
     },
     { 
       label: 'Trouble Tickets', 
-      value: data?.activeTickets || 0, 
-      trend: '+2.1%', 
-      isUp: false, 
+      value: data?.activeTickets?.value || 0, 
+      trend: data?.activeTickets?.trend || '0%', 
+      isUp: data?.activeTickets?.isUp, 
       icon: AlertTriangle, 
       color: 'text-red-600', 
       bg: 'bg-red-50' 
     },
   ];
+
 
   if (isLoading) {
     return (

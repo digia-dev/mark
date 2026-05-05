@@ -3,8 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import LandingPage from './pages/LandingPage';
 import MainLayout from './shared/components/layout/MainLayout';
 import ProtectedRoute from './shared/components/ProtectedRoute';
+import RoleGuard from './shared/components/RoleGuard';
 import ProductPage from './pages/ProductPage';
 import CustomerPage from './pages/CustomerPage';
 import LeadPage from './pages/LeadPage';
@@ -36,20 +38,19 @@ function App() {
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
       {/* Protected Routes inside MainLayout */}
       <Route 
-        path="/" 
         element={
           <ProtectedRoute>
             <MainLayout />
           </ProtectedRoute>
         }
       >
-        <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
         
         {/* CRM Module */}
@@ -59,13 +60,34 @@ function App() {
         <Route path="quotation" element={<QuotationPage />} />
         <Route path="presentation" element={<PresentationPage />} />
         <Route path="timeline" element={<TimelinePage />} />
-        <Route path="tickets" element={<TroubleTicketPage />} />
-        <Route path="invoices" element={<InvoicePage />} />
+        <Route path="trouble-ticket" element={<TroubleTicketPage />} />
+        <Route path="invoice" element={<InvoicePage />} />
         <Route path="products" element={<ProductPage />} />
-        <Route path="reports/*" element={<ReportPage />} />
+        <Route 
+          path="reports/*" 
+          element={
+            <RoleGuard allowedRoles={['super-admin', 'admin', 'sales']}>
+              <ReportPage />
+            </RoleGuard>
+          } 
+        />
         <Route path="notifications" element={<NotificationPage />} />
-        <Route path="activities" element={<ActivityLogPage />} />
-        <Route path="settings/*" element={<SettingsPage />} />
+        <Route 
+          path="activity-logs" 
+          element={
+            <RoleGuard allowedRoles={['super-admin', 'admin']}>
+              <ActivityLogPage />
+            </RoleGuard>
+          } 
+        />
+        <Route 
+          path="settings/*" 
+          element={
+            <RoleGuard allowedRoles={['super-admin', 'admin']}>
+              <SettingsPage />
+            </RoleGuard>
+          } 
+        />
         
         <Route path="*" element={<NotFound />} />
       </Route>

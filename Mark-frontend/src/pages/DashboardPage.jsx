@@ -41,6 +41,17 @@ const DashboardPage = () => {
         </div>
         
         <div className="flex items-center gap-3 bg-white p-2 rounded-2xl border border-gray-100 shadow-sm">
+          <select 
+            value={salesId}
+            onChange={(e) => setSalesId(e.target.value)}
+            className="bg-gray-50 border-none rounded-xl px-4 py-2 text-[10px] font-black text-gray-900 uppercase tracking-widest outline-none focus:ring-0 cursor-pointer hover:bg-gray-100 transition-all"
+          >
+            <option value="all">Semua Sales</option>
+            {dashboardData.salesList?.map(sales => (
+              <option key={sales.id} value={sales.id}>{sales.name}</option>
+            ))}
+          </select>
+          <div className="h-4 w-px bg-gray-100 mx-1" />
           <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl text-[10px] font-black text-gray-600 uppercase tracking-widest border border-gray-100">
             <Calendar size={14} className="text-gray-400" />
             {dateRange.start} - {dateRange.end}
@@ -57,6 +68,7 @@ const DashboardPage = () => {
             <Filter size={18} />
           </button>
         </div>
+
       </div>
 
       {/* 1. Stat Cards Row */}

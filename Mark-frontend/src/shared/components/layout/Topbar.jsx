@@ -1,16 +1,34 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Search, Plus, Bell, MessageSquare, ChevronDown, 
   Menu, LogOut, User, Settings as SettingsIcon 
 } from 'lucide-react';
 import useAuthStore from '../../../features/auth/store/auth-store';
 import { useLogout } from '../../../features/auth/hooks/use-auth';
+import { useNotifications } from '../../../features/notification/hooks/use-notifications';
 import NotificationPanel from '../../../features/notification/components/NotificationPanel';
 
 const Topbar = ({ toggleSidebar, onOpenSearch }) => {
   const { user } = useAuthStore();
   const { mutate: logout } = useLogout();
+  const { data: notifications = [] } = useNotifications();
   const [isNotifOpen, setIsNotifOpen] = React.useState(false);
+  const navigate = useNavigate();
+
+  const unreadCount = notifications.filter(n => !n.is_read).length;
+
+  const quickAddItems = [
+    { label: 'Customer Baru', path: '/crm/customers/new' },
+    { label: 'Lead Baru', path: '/crm/leads/new' },
+    { label: 'Deal Baru', path: '/pipeline/new' },
+    { label: 'Quotation', path: '/quotation/new' },
+    { label: 'Presentation', path: '/presentation/new' },
+    { label: 'Trouble Ticket', path: '/trouble-ticket/new' },
+    { label: 'Invoice', path: '/invoice/new' },
+    { label: 'Produk/Service', path: '/products/new' },
+    { label: 'Instalasi', path: '/timeline/new' },
+  ];
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-20 relative">
@@ -46,11 +64,15 @@ const Topbar = ({ toggleSidebar, onOpenSearch }) => {
             <ChevronDown size={14} className="ml-1 text-gray-400" />
           </button>
           
-          {/* Dropdown Menu (Hidden by default) */}
-          <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-lg shadow-xl py-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 transform origin-top-right scale-95 group-hover:scale-100">
-            {['Customer Baru', 'Lead Baru', 'Deal Baru', 'Quotation', 'Presentation', 'Trouble Ticket', 'Invoice', 'Produk/Service', 'Instalasi'].map((item) => (
-              <button key={item} className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors">
-                {item}
+          {/* Dropdown Menu */}
+          <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-lg shadow-xl py-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 transform origin-top-right scale-95 group-hover:scale-100 z-[60]">
+            {quickAddItems.map((item) => (
+              <button 
+                key={item.label} 
+                onClick={() => navigate(item.path)}
+                className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+              >
+                {item.label}
               </button>
             ))}
           </div>
@@ -63,13 +85,17 @@ const Topbar = ({ toggleSidebar, onOpenSearch }) => {
             onClick={() => setIsNotifOpen(!isNotifOpen)}
           >
             <Bell size={20} />
-            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-white"></span>
+            {unreadCount > 0 && (
+              <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-white animate-pulse">
+                {unreadCount}
+              </span>
+            )}
           </button>
           
           {/* Notification Popover */}
           {isNotifOpen && (
             <div className="absolute top-full mt-4 right-10 z-50">
-               <NotificationPanel />
+               <NotificationPanel onClose={() => setIsNotifOpen(false)} />
             </div>
           )}
 
@@ -93,11 +119,17 @@ const Topbar = ({ toggleSidebar, onOpenSearch }) => {
           </button>
 
           {/* User Dropdown */}
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl py-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 transform origin-top-right scale-95 group-hover:scale-100">
-            <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2">
+          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-xl py-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200 transform origin-top-right scale-95 group-hover:scale-100 z-[60]">
+            <button 
+              onClick={() => navigate('/profile')}
+              className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2"
+            >
               <User size={16} /> Profil Saya
             </button>
-            <button className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2">
+            <button 
+              onClick={() => navigate('/settings')}
+              className="w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 flex items-center gap-2"
+            >
               <SettingsIcon size={16} /> Pengaturan Akun
             </button>
             <hr className="my-1 border-gray-100" />
@@ -113,5 +145,6 @@ const Topbar = ({ toggleSidebar, onOpenSearch }) => {
     </header>
   );
 };
+
 
 export default Topbar;

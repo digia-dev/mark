@@ -1,16 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Mail, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
-import { useLogin } from '../features/auth/hooks/use-auth';
-
-const loginSchema = z.object({
-  email: z.string().email('Email tidak valid'),
-  password: z.string().min(8, 'Password minimal 8 karakter'),
-  rememberMe: z.boolean().optional()
-});
 
 // Komponen SVG untuk Ilustrasi Dashboard di sebelah kiri
 const DashboardIllustration = () => (
@@ -149,23 +138,8 @@ const DashboardIllustration = () => (
   </svg>
 );
 
-export default function LoginPage() {
+export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-  const loginMutation = useLogin();
-
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { rememberMe: false }
-  });
-
-  const onSubmit = (data) => {
-    loginMutation.mutate(data, {
-      onSuccess: () => {
-        navigate('/dashboard');
-      }
-    });
-  };
 
   return (
     <div className="min-h-screen bg-[#F4F7FB] flex items-center justify-center p-4 lg:p-8 font-sans text-slate-800">
@@ -219,7 +193,7 @@ export default function LoginPage() {
             </p>
 
             {/* Form */}
-            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               
               {/* Input Email/Username */}
               <div className="space-y-2">
@@ -231,13 +205,11 @@ export default function LoginPage() {
                     <Mail className="h-5 w-5 text-slate-400" />
                   </div>
                   <input
-                    {...register('email')}
                     type="text"
-                    className={`w-full pl-11 pr-4 py-3.5 bg-white border ${errors.email ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-slate-200 focus:ring-blue-500/20 focus:border-blue-500'} rounded-xl text-sm focus:outline-none focus:ring-2 transition-all text-slate-800 placeholder-slate-400`}
+                    className="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-800 placeholder-slate-400"
                     placeholder="Masukkan email atau username"
                   />
                 </div>
-                {errors.email && <p className="text-xs font-medium text-red-500 mt-1">{errors.email.message}</p>}
               </div>
 
               {/* Input Password */}
@@ -250,9 +222,8 @@ export default function LoginPage() {
                     <Lock className="h-5 w-5 text-slate-400" />
                   </div>
                   <input
-                    {...register('password')}
                     type={showPassword ? "text" : "password"}
-                    className={`w-full pl-11 pr-12 py-3.5 bg-white border ${errors.password ? 'border-red-300 focus:ring-red-500/20 focus:border-red-500' : 'border-slate-200 focus:ring-blue-500/20 focus:border-blue-500'} rounded-xl text-sm focus:outline-none focus:ring-2 transition-all text-slate-800 placeholder-slate-400`}
+                    className="w-full pl-11 pr-12 py-3.5 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-800 placeholder-slate-400"
                     placeholder="Masukkan password"
                   />
                   <button
@@ -267,7 +238,6 @@ export default function LoginPage() {
                     )}
                   </button>
                 </div>
-                {errors.password && <p className="text-xs font-medium text-red-500 mt-1">{errors.password.message}</p>}
               </div>
 
               {/* Options */}
@@ -275,7 +245,6 @@ export default function LoginPage() {
                 <label className="flex items-center gap-2 cursor-pointer group">
                   <div className="relative flex items-center justify-center">
                     <input
-                      {...register('rememberMe')}
                       type="checkbox"
                       className="peer appearance-none w-5 h-5 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500/20 checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
                     />
@@ -285,25 +254,18 @@ export default function LoginPage() {
                   </div>
                   <span className="text-sm text-slate-600 group-hover:text-slate-800 transition-colors">Ingat saya</span>
                 </label>
-                <Link to="/forgot-password" className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-all">
+                <a href="#" className="text-sm font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-all">
                   Lupa password?
-                </Link>
+                </a>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={loginMutation.isLoading}
-                className="w-full bg-[#0B1B3D] hover:bg-[#152a55] text-white font-medium py-3.5 rounded-xl transition-colors flex items-center justify-center gap-2 mt-4 disabled:opacity-70"
+                className="w-full bg-[#0B1B3D] hover:bg-[#152a55] text-white font-medium py-3.5 rounded-xl transition-colors flex items-center justify-center gap-2 mt-4"
               >
-                {loginMutation.isLoading ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <>
-                    <LogIn className="h-5 w-5" />
-                    Masuk
-                  </>
-                )}
+                <LogIn className="h-5 w-5" />
+                Masuk
               </button>
             </form>
 
@@ -341,7 +303,7 @@ export default function LoginPage() {
 
             {/* Footer Form */}
             <p className="text-center text-sm text-slate-500 mt-8">
-              Belum punya akun? <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-all">Daftar sekarang</Link>
+              Belum punya akun? <a href="#" className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-all">Daftar sekarang</a>
             </p>
             
           </div>

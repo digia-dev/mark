@@ -7,6 +7,7 @@ module.exports = ({ installationController, authMiddleware }) => {
   router.get('/', (req, res) => installationController.list(req, res));
   router.get('/stats', (req, res) => installationController.getStats(req, res));
   router.get('/gantt', (req, res) => installationController.getGantt(req, res));
+  router.get('/search', (req, res) => installationController.list(req, res));
   router.post('/', (req, res) => installationController.create(req, res));
   
   router.get('/:id', (req, res) => installationController.detail(req, res));
