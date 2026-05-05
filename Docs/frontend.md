@@ -3,6 +3,9 @@
 > panduan lengkap pengembangan frontend Mark. dokumen ini menjadi sumber
 > kebenaran tunggal untuk semua keputusan teknis di sisi client. wajib dibaca
 > sebelum menulis satu baris kode frontend.
+---
+
+# selalu cek folder /Prototype dan DESIGN.md dahulu untuk referensi
 
 ---
 

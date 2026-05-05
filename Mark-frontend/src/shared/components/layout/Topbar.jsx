@@ -5,13 +5,15 @@ import {
 } from 'lucide-react';
 import useAuthStore from '../../../features/auth/store/auth-store';
 import { useLogout } from '../../../features/auth/hooks/use-auth';
+import NotificationPanel from '../../../features/notification/components/NotificationPanel';
 
 const Topbar = ({ toggleSidebar, onOpenSearch }) => {
   const { user } = useAuthStore();
   const { mutate: logout } = useLogout();
+  const [isNotifOpen, setIsNotifOpen] = React.useState(false);
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-20">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-20 relative">
       <div className="flex items-center gap-4 w-full max-w-xl">
         <button 
           onClick={toggleSidebar}
@@ -55,11 +57,22 @@ const Topbar = ({ toggleSidebar, onOpenSearch }) => {
         </div>
 
         {/* Notifications & Messages */}
-        <div className="flex items-center gap-1 border-r border-gray-200 pr-4">
-          <button className="relative p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">
+        <div className="flex items-center gap-1 border-r border-gray-200 pr-4 relative">
+          <button 
+            className="relative p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all"
+            onClick={() => setIsNotifOpen(!isNotifOpen)}
+          >
             <Bell size={20} />
-            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-white">12</span>
+            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-white"></span>
           </button>
+          
+          {/* Notification Popover */}
+          {isNotifOpen && (
+            <div className="absolute top-full mt-4 right-10 z-50">
+               <NotificationPanel />
+            </div>
+          )}
+
           <button className="relative p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-all">
             <MessageSquare size={20} />
             <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-white">5</span>

@@ -77,6 +77,12 @@ class PrismaLeadRepository {
 
     return await this.prisma.lead.count({ where });
   }
+
+  async delete(id) {
+    return await this.prisma.lead.delete({
+      where: { id }
+    });
+  }
 }
 
 module.exports = PrismaLeadRepository;

@@ -6,12 +6,30 @@ class CustomerController {
     createCustomerUseCase, 
     getCustomerListUseCase, 
     getCustomerDetailUseCase, 
-    updateCustomerUseCase 
+    updateCustomerUseCase,
+    addInteractionUseCase,
+    getCustomerStatsUseCase,
+    importCustomersUseCase,
+    exportCustomersUseCase,
+    deleteCustomerUseCase,
+    getCustomerInteractionsUseCase,
+    getCustomerServicesUseCase,
+    getCustomerInvoicesUseCase,
+    getCustomerTicketsUseCase
   }) {
     this.createCustomerUseCase = createCustomerUseCase;
     this.getCustomerListUseCase = getCustomerListUseCase;
     this.getCustomerDetailUseCase = getCustomerDetailUseCase;
     this.updateCustomerUseCase = updateCustomerUseCase;
+    this.addInteractionUseCase = addInteractionUseCase;
+    this.getCustomerStatsUseCase = getCustomerStatsUseCase;
+    this.importCustomersUseCase = importCustomersUseCase;
+    this.exportCustomersUseCase = exportCustomersUseCase;
+    this.deleteCustomerUseCase = deleteCustomerUseCase;
+    this.getCustomerInteractionsUseCase = getCustomerInteractionsUseCase;
+    this.getCustomerServicesUseCase = getCustomerServicesUseCase;
+    this.getCustomerInvoicesUseCase = getCustomerInvoicesUseCase;
+    this.getCustomerTicketsUseCase = getCustomerTicketsUseCase;
   }
 
   async create(req, res, next) {
@@ -67,6 +85,94 @@ class CustomerController {
       const customer = await this.updateCustomerUseCase.execute(parseInt(id), validatedData);
       
       return res.status(200).json(successResponse(customer));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params;
+      await this.deleteCustomerUseCase.execute(parseInt(id));
+      return res.status(200).json(successResponse({ message: 'Customer deleted successfully' }));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getInteractions(req, res, next) {
+    try {
+      const { id } = req.params;
+      const result = await this.getCustomerInteractionsUseCase.execute(id);
+      return res.status(200).json(successResponse(result));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getServices(req, res, next) {
+    try {
+      const { id } = req.params;
+      const result = await this.getCustomerServicesUseCase.execute(id);
+      return res.status(200).json(successResponse(result));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getInvoices(req, res, next) {
+    try {
+      const { id } = req.params;
+      const result = await this.getCustomerInvoicesUseCase.execute(id);
+      return res.status(200).json(successResponse(result));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getTickets(req, res, next) {
+    try {
+      const { id } = req.params;
+      const result = await this.getCustomerTicketsUseCase.execute(id);
+      return res.status(200).json(successResponse(result));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addInteraction(req, res, next) {
+    try {
+      const { id } = req.params;
+      const interaction = await this.addInteractionUseCase.execute(id, req.body, req.user.id);
+      return res.status(201).json(successResponse(interaction));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getStats(req, res, next) {
+    try {
+      const stats = await this.getCustomerStatsUseCase.execute();
+      return res.status(200).json(successResponse(stats));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async importCustomers(req, res, next) {
+    try {
+      // Assuming array of customer objects in req.body.customers
+      const result = await this.importCustomersUseCase.execute(req.body.customers, req.user.id);
+      return res.status(200).json(successResponse(result));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async exportCustomers(req, res, next) {
+    try {
+      const result = await this.exportCustomersUseCase.execute(req.query);
+      return res.status(200).json(successResponse(result));
     } catch (error) {
       next(error);
     }

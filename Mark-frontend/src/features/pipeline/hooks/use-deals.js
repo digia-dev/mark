@@ -8,6 +8,13 @@ export const useDealsKanban = (params) => {
   });
 };
 
+export const useDealsList = (params) => {
+  return useQuery({
+    queryKey: ['deals', 'list', params],
+    queryFn: () => dealService.getList(params)
+  });
+};
+
 export const useMoveDealStage = () => {
   const queryClient = useQueryClient();
   return useMutation({

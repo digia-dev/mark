@@ -39,6 +39,7 @@ model User {
   assigned_deals      Deal[]           @relation("DealSales")
   assigned_tickets    TroubleTicket[]  @relation("TicketAssignedTo")
   technician_installs Installation[]   @relation("InstallationTechnician")
+  presentations       ProductPresentation[]
 
   @@map("users")
   @@index([email])
@@ -115,6 +116,7 @@ model Customer {
   trouble_tickets  TroubleTicket[]
   invoices         Invoice[]
   customer_services CustomerService[]
+  presentations    ProductPresentation[]
 
   @@map("customers")
   @@index([email])
@@ -645,6 +647,33 @@ model Payment {
   @@map("payments")
   @@index([invoice_id])
   @@index([paid_at])
+}
+
+model ProductPresentation {
+  id               Int      @id @default(autoincrement())
+  pres_number      String   @unique @map("pres_number") @db.VarChar(30)
+  // format: PRES-2025-0520-001
+  customer_id      Int      @map("customer_id")
+  sales_id         Int      @map("sales_id")
+  title            String   @db.VarChar(255)
+  presentation_date DateTime @map("presentation_date")
+  location         String?  @db.VarChar(255)
+  // on-site | online
+  status           String   @default("scheduled") @db.VarChar(30)
+  // scheduled | completed | cancelled
+  notes            String?  @db.Text
+  feedback         String?  @db.Text
+  created_at       DateTime @default(now()) @map("created_at")
+  updated_at       DateTime @updatedAt @map("updated_at")
+
+  customer Customer @relation(fields: [customer_id], references: [id])
+  user     User     @relation(fields: [sales_id], references: [id])
+
+  @@map("product_presentations")
+  @@index([customer_id])
+  @@index([sales_id])
+  @@index([status])
+  @@index([presentation_date])
 }
 
 // ============================================================

@@ -53,7 +53,7 @@ login, auth, token           → auth
 
 ## 2. dokumen yang dibaca sesuai konteks
 
-baca hanya yang relevan di folder Mark/docs/, langsung ke seksi yang dibutuhkan:
+baca hanya yang relevan di folder Mark/docs/ dan Mark/.agents, langsung ke seksi yang dibutuhkan:
 
 | konteks | dokumen | seksi penting |
 |---|---|---|
@@ -62,7 +62,7 @@ baca hanya yang relevan di folder Mark/docs/, langsung ke seksi yang dibutuhkan:
 | workflow | workflow.md | §2 (git), §3 (alur fitur) |
 | response api | rules.md | §5 |
 | pertanyaan umum | agent.md saja | — |
-
+| workflow | analisa yang dibutuhkan saja | — |
 ---
 
 ## 3. profil kebiasaan user

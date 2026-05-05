@@ -42,7 +42,19 @@ class PrismaCustomerRepository {
     return await this.prisma.customer.findUnique({
       where: { id },
       include: {
-        sales: { select: { id: true, name: true } },
+        sales: { select: { id: true, name: true, avatar: true } },
+        interactions: {
+          orderBy: { created_at: 'desc' },
+          take: 10,
+          include: { creator: { select: { name: true, avatar: true } } }
+        },
+        customer_services: {
+          include: { product: { select: { name: true, price: true } } }
+        },
+        invoices: {
+          orderBy: { invoice_date: 'desc' },
+          take: 5
+        },
         _count: {
           select: { 
             deals: true, 

@@ -9,6 +9,15 @@ import ProductPage from './pages/ProductPage';
 import CustomerPage from './pages/CustomerPage';
 import LeadPage from './pages/LeadPage';
 import PipelinePage from './pages/PipelinePage';
+import QuotationPage from './pages/QuotationPage';
+import TimelinePage from './pages/TimelinePage';
+import TicketPage from './pages/TicketPage';
+import InvoicePage from './pages/InvoicePage';
+import PresentationPage from './pages/PresentationPage';
+import ReportPage from './pages/ReportPage';
+import NotificationPage from './pages/NotificationPage';
+import ActivityLogPage from './pages/ActivityLogPage';
+import SettingsPage from './pages/SettingsPage';
 
 const Unauthorized = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -47,16 +56,16 @@ function App() {
         <Route path="crm/customers" element={<CustomerPage />} />
         <Route path="crm/leads" element={<LeadPage />} />
         <Route path="pipeline" element={<PipelinePage />} />
-        <Route path="quotation" element={<div className="p-4"><h1>Quotation Module</h1><p>Coming Soon</p></div>} />
-        <Route path="presentation" element={<div className="p-4"><h1>Presentation Module</h1><p>Coming Soon</p></div>} />
-        <Route path="timeline" element={<div className="p-4"><h1>Timeline Module</h1><p>Coming Soon</p></div>} />
-        <Route path="tickets" element={<div className="p-4"><h1>Trouble Ticket Module</h1><p>Coming Soon</p></div>} />
-        <Route path="invoices" element={<div className="p-4"><h1>Invoices Module</h1><p>Coming Soon</p></div>} />
+        <Route path="quotation" element={<QuotationPage />} />
+        <Route path="presentation" element={<PresentationPage />} />
+        <Route path="timeline" element={<TimelinePage />} />
+        <Route path="tickets" element={<TicketPage />} />
+        <Route path="invoices" element={<InvoicePage />} />
         <Route path="products" element={<ProductPage />} />
-        <Route path="reports/*" element={<div className="p-4"><h1>Reports Module</h1><p>Coming Soon</p></div>} />
-        <Route path="notifications" element={<div className="p-4"><h1>Notifications</h1><p>Coming Soon</p></div>} />
-        <Route path="activities" element={<div className="p-4"><h1>Activity Logs</h1><p>Coming Soon</p></div>} />
-        <Route path="settings/*" element={<div className="p-4"><h1>Settings</h1><p>Coming Soon</p></div>} />
+        <Route path="reports/*" element={<ReportPage />} />
+        <Route path="notifications" element={<NotificationPage />} />
+        <Route path="activities" element={<ActivityLogPage />} />
+        <Route path="settings/*" element={<SettingsPage />} />
         
         <Route path="*" element={<NotFound />} />
       </Route>

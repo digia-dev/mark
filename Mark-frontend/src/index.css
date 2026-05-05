@@ -1,1 +1,92 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary-blue: #1E3A8A;
+  --color-accent-orange: #F97316;
+  --color-success-green: #16A34A;
+  --color-warning-yellow: #D97706;
+  --color-danger-red: #DC2626;
+  --color-info-blue: #2563EB;
+  --color-neutral-purple: #7C3AED;
+
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "Fira Code", monospace;
+}
+
+@layer base {
+  :root {
+    --bg-page: theme('color.gray.50');
+    --bg-card: theme('color.white');
+    --text-primary: theme('color.gray.900');
+    --text-secondary: theme('color.gray.600');
+    --border-color: theme('color.gray.200');
+  }
+
+  .dark {
+    --bg-page: theme('color.gray.900');
+    --bg-card: theme('color.gray.800');
+    --text-primary: theme('color.gray.100');
+    --text-secondary: theme('color.gray.400');
+    --border-color: theme('color.gray.700');
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+  }
+
+  /* Custom scrollbar for webkit */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: theme('color.gray.300');
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme('color.gray.400');
+  }
+}
+
+@layer components {
+  .btn-primary {
+    background-color: var(--color-primary-blue);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem; /* xl */
+    font-weight: 700;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+
+  .btn-secondary {
+    background-color: white;
+    border: 1px solid theme('color.gray.200');
+    color: theme('color.gray.700');
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem; /* xl */
+    font-weight: 700;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn-secondary:hover {
+    background-color: theme('color.gray.50');
+  }
+
+  .card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+}

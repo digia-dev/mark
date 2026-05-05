@@ -4,6 +4,8 @@ import { useLeads, useCreateLead, useUpdateLead, useConvertLead } from '../featu
 
 // Components
 import LeadTable from '../features/crm/components/LeadTable';
+import LeadForm from '../features/crm/components/LeadForm';
+import ConvertLeadModal from '../features/crm/components/ConvertLeadModal';
 
 const LeadPage = () => {
   const [params, setParams] = useState({
@@ -14,17 +16,41 @@ const LeadPage = () => {
     source: ''
   });
 
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isConvertOpen, setIsConvertOpen] = useState(false);
+  const [selectedLead, setSelectedLead] = useState(null);
+
   const { data, isLoading } = useLeads(params);
+  const createMutation = useCreateLead();
+  const updateMutation = useUpdateLead();
   const convertMutation = useConvertLead();
 
-  const handleConvert = async (lead) => {
-    if (window.confirm(`Konversi ${lead.name} menjadi customer?`)) {
-      try {
-        await convertMutation.mutateAsync({ id: lead.id, data: { type: 'personal' } });
-        alert('Berhasil konversi lead menjadi customer');
-      } catch (error) {
-        console.error('Failed to convert lead:', error);
-      }
+  const handleCreate = async (formData) => {
+    try {
+      await createMutation.mutateAsync(formData);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Failed to create lead:', error);
+    }
+  };
+
+  const handleUpdate = async (formData) => {
+    try {
+      await updateMutation.mutateAsync({ id: selectedLead.id, data: formData });
+      setIsFormOpen(false);
+      setSelectedLead(null);
+    } catch (error) {
+      console.error('Failed to update lead:', error);
+    }
+  };
+
+  const handleConvert = async (formData) => {
+    try {
+      await convertMutation.mutateAsync({ id: selectedLead.id, data: formData });
+      setIsConvertOpen(false);
+      setSelectedLead(null);
+    } catch (error) {
+      console.error('Failed to convert lead:', error);
     }
   };
 
@@ -38,13 +64,16 @@ const LeadPage = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+          <button 
+            onClick={() => { setSelectedLead(null); setIsFormOpen(true); }}
+            className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
+          >
             <Plus size={18} />
             Tambah Lead Baru
           </button>
         </div>
       </div>
-
+      
       {/* Filters & Search Bar */}
       <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="relative w-full md:w-96">
@@ -81,8 +110,25 @@ const LeadPage = () => {
         meta={data?.meta || {}}
         isLoading={isLoading}
         onPageChange={(page) => setParams({ ...params, page })}
+        onConvert={(lead) => { setSelectedLead(lead); setIsConvertOpen(true); }}
+        onEdit={(lead) => { setSelectedLead(lead); setIsFormOpen(true); }}
+      />
+
+      {/* Modals */}
+      <LeadForm 
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={selectedLead ? handleUpdate : handleCreate}
+        initialData={selectedLead}
+        isLoading={createMutation.isLoading || updateMutation.isLoading}
+      />
+
+      <ConvertLeadModal 
+        isOpen={isConvertOpen}
+        onClose={() => setIsConvertOpen(false)}
+        lead={selectedLead}
         onConvert={handleConvert}
-        onEdit={(lead) => console.log('Edit lead:', lead)}
+        isLoading={convertMutation.isLoading}
       />
     </div>
   );

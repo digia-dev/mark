@@ -6,6 +6,7 @@ import { useCustomers, useCreateCustomer, useUpdateCustomer } from '../features/
 import CustomerTable from '../features/crm/components/CustomerTable';
 import CustomerForm from '../features/crm/components/CustomerForm';
 import CustomerStats from '../features/crm/components/CustomerStats';
+import CustomerDetailPanel from '../features/crm/components/CustomerDetailPanel';
 
 const CustomerPage = () => {
   const [params, setParams] = useState({
@@ -17,7 +18,9 @@ const CustomerPage = () => {
   });
 
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [activeCustomerId, setActiveCustomerId] = useState(null);
 
   const { data, isLoading } = useCustomers(params);
   const createMutation = useCreateCustomer();
@@ -132,7 +135,17 @@ const CustomerPage = () => {
         isLoading={isLoading}
         onPageChange={(page) => setParams({ ...params, page })}
         onEdit={openEditModal}
-        onViewDetail={(customer) => console.log('View detail:', customer)}
+        onViewDetail={(customer) => {
+          setActiveCustomerId(customer.id);
+          setIsDetailOpen(true);
+        }}
+      />
+
+      {/* Detail Panel */}
+      <CustomerDetailPanel 
+        isOpen={isDetailOpen}
+        onClose={() => setIsDetailOpen(false)}
+        customerId={activeCustomerId}
       />
 
       {/* Modal Form */}

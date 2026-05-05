@@ -13,6 +13,11 @@ const PrismaProductRepository = require('./infrastructure/repositories/prisma-pr
 const PrismaCustomerRepository = require('./infrastructure/repositories/prisma-customer-repository');
 const PrismaLeadRepository = require('./infrastructure/repositories/prisma-lead-repository');
 const PrismaDealRepository = require('./infrastructure/repositories/prisma-deal-repository');
+const PrismaQuotationRepository = require('./infrastructure/repositories/prisma-quotation-repository');
+const PrismaInstallationRepository = require('./infrastructure/repositories/prisma-installation-repository');
+const PrismaTroubleTicketRepository = require('./infrastructure/repositories/prisma-trouble-ticket-repository');
+const PrismaInvoiceRepository = require('./infrastructure/repositories/prisma-invoice-repository');
+const PrismaPresentationRepository = require('./infrastructure/repositories/prisma-presentation-repository');
 
 // 2. Use Cases (Auth)
 const LoginUseCase = require('./use-cases/auth/login-use-case');
@@ -55,12 +60,48 @@ const UpdateCustomerUseCase = require('./use-cases/crm/update-customer-use-case'
 // 2. Use Cases (CRM - Leads)
 const CreateLeadUseCase = require('./use-cases/crm/create-lead-use-case');
 const GetLeadListUseCase = require('./use-cases/crm/get-lead-list-use-case');
+const GetLeadDetailUseCase = require('./use-cases/crm/get-lead-detail-use-case');
+const UpdateLeadUseCase = require('./use-cases/crm/update-lead-use-case');
+const UpdateLeadStatusUseCase = require('./use-cases/crm/update-lead-status-use-case');
+const DeleteLeadUseCase = require('./use-cases/crm/delete-lead-use-case');
+const AssignLeadUseCase = require('./use-cases/crm/assign-lead-use-case');
 const ConvertLeadToCustomerUseCase = require('./use-cases/crm/convert-lead-to-customer-use-case');
+const ImportLeadsUseCase = require('./use-cases/crm/import-leads-use-case');
+const ExportLeadsUseCase = require('./use-cases/crm/export-leads-use-case');
 
 // 2. Use Cases (Pipeline)
 const GetDealKanbanUseCase = require('./use-cases/pipeline/get-deal-kanban-use-case');
-const MoveDealStageUseCase = require('./use-cases/pipeline/move-deal-stage-use-case');
+const GetDealListUseCase = require('./use-cases/pipeline/get-deal-list-use-case');
+const GetDealDetailUseCase = require('./use-cases/pipeline/get-deal-detail-use-case');
 const CreateDealUseCase = require('./use-cases/pipeline/create-deal-use-case');
+const UpdateDealUseCase = require('./use-cases/pipeline/update-deal-use-case');
+const DeleteDealUseCase = require('./use-cases/pipeline/delete-deal-use-case');
+const MoveDealStageUseCase = require('./use-cases/pipeline/move-deal-stage-use-case');
+const UpdateDealProbabilityUseCase = require('./use-cases/pipeline/update-deal-probability-use-case');
+const DuplicateDealUseCase = require('./use-cases/pipeline/duplicate-deal-use-case');
+const MarkDealWonUseCase = require('./use-cases/pipeline/mark-deal-won-use-case');
+const MarkDealLostUseCase = require('./use-cases/pipeline/mark-deal-lost-use-case');
+const GetPipelineSummaryUseCase = require('./use-cases/pipeline/get-pipeline-summary-use-case');
+const CreateQuotationUseCase = require('./use-cases/quotation/create-quotation-use-case');
+const GetQuotationListUseCase = require('./use-cases/quotation/get-quotation-list-use-case');
+const GetQuotationDetailUseCase = require('./use-cases/quotation/get-quotation-detail-use-case');
+const UpdateQuotationStatusUseCase = require('./use-cases/quotation/update-quotation-status-use-case');
+const UpdateQuotationUseCase = require('./use-cases/quotation/update-quotation-use-case');
+const DeleteQuotationUseCase = require('./use-cases/quotation/delete-quotation-use-case');
+const SendQuotationUseCase = require('./use-cases/quotation/send-quotation-use-case');
+const DuplicateQuotationUseCase = require('./use-cases/quotation/duplicate-quotation-use-case');
+const GeneratePdfUseCase = require('./use-cases/quotation/generate-pdf-use-case');
+const ConvertToInvoiceUseCase = require('./use-cases/quotation/convert-to-invoice-use-case');
+const ScheduleInstallationUseCase = require('./use-cases/timeline/schedule-installation-use-case');
+const GetInstallationListUseCase = require('./use-cases/timeline/get-installation-list-use-case');
+const UpdateInstallationStatusUseCase = require('./use-cases/timeline/update-installation-status-use-case');
+const CreateTicketUseCase = require('./use-cases/trouble-ticket/create-ticket-use-case');
+const GetTicketListUseCase = require('./use-cases/trouble-ticket/get-ticket-list-use-case');
+const UpdateTicketStatusUseCase = require('./use-cases/trouble-ticket/update-ticket-status-use-case');
+const CreateInvoiceUseCase = require('./use-cases/invoice/create-invoice-use-case');
+const GetInvoiceListUseCase = require('./use-cases/invoice/get-invoice-list-use-case');
+const CreatePresentationUseCase = require('./use-cases/presentation/create-presentation-use-case');
+const GetPresentationListUseCase = require('./use-cases/presentation/get-presentation-list-use-case');
 
 // 2. Use Cases (Search)
 const GlobalSearchUseCase = require('./use-cases/search/global-search-use-case');
@@ -79,6 +120,11 @@ const ReportController = require('./interfaces/controllers/report-controller');
 const CustomerController = require('./interfaces/controllers/customer-controller');
 const LeadController = require('./interfaces/controllers/lead-controller');
 const DealController = require('./interfaces/controllers/deal-controller');
+const QuotationController = require('./interfaces/controllers/quotation-controller');
+const InstallationController = require('./interfaces/controllers/installation-controller');
+const TroubleTicketController = require('./interfaces/controllers/trouble-ticket-controller');
+const InvoiceController = require('./interfaces/controllers/invoice-controller');
+const PresentationController = require('./interfaces/controllers/presentation-controller');
 
 // 5. Routes
 const createAuthRoutes = require('./interfaces/routes/auth-routes');
@@ -90,6 +136,17 @@ const createReportRoutes = require('./interfaces/routes/report-routes');
 const createCustomerRoutes = require('./interfaces/routes/customer-routes');
 const createLeadRoutes = require('./interfaces/routes/lead-routes');
 const createDealRoutes = require('./interfaces/routes/deal-routes');
+const createQuotationRoutes = require('./interfaces/routes/quotation-routes');
+const createInstallationRoutes = require('./interfaces/routes/installation-routes');
+const createTroubleTicketRoutes = require('./interfaces/routes/trouble-ticket-routes');
+const createInvoiceRoutes = require('./interfaces/routes/invoice-routes');
+const createPresentationRoutes = require('./interfaces/routes/presentation-routes');
+
+// Services
+const LoggerService = require('./infrastructure/services/logger-service');
+const NotificationService = require('./infrastructure/services/notification-service');
+const PdfService = require('./infrastructure/services/pdf-service');
+const MailService = require('./infrastructure/services/mail-service');
 
 // --- Repositories & Services (Shared) ---
 const userRepository = new PrismaUserRepository(prisma);
@@ -100,6 +157,16 @@ const productRepository = new PrismaProductRepository(prisma);
 const customerRepository = new PrismaCustomerRepository(prisma);
 const leadRepository = new PrismaLeadRepository(prisma);
 const dealRepository = new PrismaDealRepository(prisma);
+const quotationRepository = new PrismaQuotationRepository(prisma);
+const installationRepository = new PrismaInstallationRepository(prisma);
+const troubleTicketRepository = new PrismaTroubleTicketRepository(prisma);
+const invoiceRepository = new PrismaInvoiceRepository(prisma);
+const presentationRepository = new PrismaPresentationRepository(prisma);
+
+const loggerService = new LoggerService(prisma);
+const notificationService = new NotificationService(prisma);
+const pdfService = new PdfService();
+const mailService = new MailService();
 
 const jwtService = new JwtService();
 const bcryptService = new BcryptService();
@@ -173,59 +240,202 @@ const getDashboardStatsUseCase = new GetDashboardStatsUseCase(prisma);
 const reportController = new ReportController({ getDashboardStatsUseCase });
 
 // --- Customer Module ---
+const AddInteractionUseCase = require('./use-cases/crm/add-interaction-use-case');
+const GetCustomerStatsUseCase = require('./use-cases/crm/get-customer-stats-use-case');
+const ImportCustomersUseCase = require('./use-cases/crm/import-customers-use-case');
+const ExportCustomersUseCase = require('./use-cases/crm/export-customers-use-case');
+const DeleteCustomerUseCase = require('./use-cases/crm/delete-customer-use-case');
+const GetCustomerInteractionsUseCase = require('./use-cases/crm/get-customer-interactions-use-case');
+const GetCustomerServicesUseCase = require('./use-cases/crm/get-customer-services-use-case');
+const GetCustomerInvoicesUseCase = require('./use-cases/crm/get-customer-invoices-use-case');
+const GetCustomerTicketsUseCase = require('./use-cases/crm/get-customer-tickets-use-case');
+
 const createCustomerUseCase = new CreateCustomerUseCase({ customerRepository });
 const getCustomerListUseCase = new GetCustomerListUseCase({ customerRepository });
 const getCustomerDetailUseCase = new GetCustomerDetailUseCase({ customerRepository });
 const updateCustomerUseCase = new UpdateCustomerUseCase({ customerRepository });
+const addInteractionUseCase = new AddInteractionUseCase(prisma);
+const getCustomerStatsUseCase = new GetCustomerStatsUseCase(prisma);
+const importCustomersUseCase = new ImportCustomersUseCase(prisma);
+const exportCustomersUseCase = new ExportCustomersUseCase(prisma);
+const deleteCustomerUseCase = new DeleteCustomerUseCase(prisma);
+const getCustomerInteractionsUseCase = new GetCustomerInteractionsUseCase(prisma);
+const getCustomerServicesUseCase = new GetCustomerServicesUseCase(prisma);
+const getCustomerInvoicesUseCase = new GetCustomerInvoicesUseCase(prisma);
+const getCustomerTicketsUseCase = new GetCustomerTicketsUseCase(prisma);
 
 const customerController = new CustomerController({
   createCustomerUseCase,
   getCustomerListUseCase,
   getCustomerDetailUseCase,
-  updateCustomerUseCase
+  updateCustomerUseCase,
+  addInteractionUseCase,
+  getCustomerStatsUseCase,
+  importCustomersUseCase,
+  exportCustomersUseCase,
+  deleteCustomerUseCase,
+  getCustomerInteractionsUseCase,
+  getCustomerServicesUseCase,
+  getCustomerInvoicesUseCase,
+  getCustomerTicketsUseCase
 });
 
 // --- Lead Module ---
-const createLeadUseCase = new CreateLeadUseCase({ leadRepository });
+const createLeadUseCase = new CreateLeadUseCase({ leadRepository, loggerService });
 const getLeadListUseCase = new GetLeadListUseCase({ leadRepository });
+const getLeadDetailUseCase = new GetLeadDetailUseCase({ leadRepository });
+const updateLeadUseCase = new UpdateLeadUseCase({ leadRepository });
+const updateLeadStatusUseCase = new UpdateLeadStatusUseCase({ leadRepository, loggerService, notificationService });
+const deleteLeadUseCase = new DeleteLeadUseCase({ leadRepository });
+const assignLeadUseCase = new AssignLeadUseCase({ leadRepository });
 const convertLeadToCustomerUseCase = new ConvertLeadToCustomerUseCase({ 
   leadRepository, 
   customerRepository, 
   createCustomerUseCase 
 });
+const importLeadsUseCase = new ImportLeadsUseCase({ leadRepository });
+const exportLeadsUseCase = new ExportLeadsUseCase(prisma);
+
 const leadController = new LeadController({
   createLeadUseCase,
   getLeadListUseCase,
-  updateLeadUseCase: { execute: (id, data) => leadRepository.update(id, data) }, // Simplified for now
-  convertLeadToCustomerUseCase
+  getLeadDetailUseCase,
+  updateLeadUseCase,
+  updateLeadStatusUseCase,
+  deleteLeadUseCase,
+  assignLeadUseCase,
+  convertLeadToCustomerUseCase,
+  importLeadsUseCase,
+  exportLeadsUseCase
 });
 
 // --- Pipeline Module ---
 const getDealKanbanUseCase = new GetDealKanbanUseCase({ dealRepository });
-const moveDealStageUseCase = new MoveDealStageUseCase({ dealRepository });
+const getDealListUseCase = new GetDealListUseCase({ dealRepository });
+const getDealDetailUseCase = new GetDealDetailUseCase({ dealRepository });
 const createDealUseCase = new CreateDealUseCase({ dealRepository });
+const updateDealUseCase = new UpdateDealUseCase({ dealRepository });
+const deleteDealUseCase = new DeleteDealUseCase({ dealRepository });
+const moveDealStageUseCase = new MoveDealStageUseCase({ dealRepository });
+const updateDealProbabilityUseCase = new UpdateDealProbabilityUseCase({ dealRepository });
+const duplicateDealUseCase = new DuplicateDealUseCase({ dealRepository });
+const markDealWonUseCase = new MarkDealWonUseCase({ dealRepository });
+const markDealLostUseCase = new MarkDealLostUseCase({ dealRepository });
+const getPipelineSummaryUseCase = new GetPipelineSummaryUseCase(prisma);
 
 const dealController = new DealController({
   getDealKanbanUseCase,
+  getDealListUseCase,
+  getDealDetailUseCase,
   createDealUseCase,
-  updateDealUseCase: { execute: (id, data) => dealRepository.update(id, data) },
-  moveDealStageUseCase
+  updateDealUseCase,
+  deleteDealUseCase,
+  moveDealStageUseCase,
+  updateDealProbabilityUseCase,
+  duplicateDealUseCase,
+  markDealWonUseCase,
+  markDealLostUseCase,
+  getPipelineSummaryUseCase
+});
+
+// --- Quotation Module ---
+const createQuotationUseCase = new CreateQuotationUseCase({ quotationRepository });
+const getQuotationListUseCase = new GetQuotationListUseCase({ quotationRepository });
+const getQuotationDetailUseCase = new GetQuotationDetailUseCase({ quotationRepository });
+const updateQuotationUseCase = new UpdateQuotationUseCase({ quotationRepository });
+const deleteQuotationUseCase = new DeleteQuotationUseCase({ quotationRepository });
+const sendQuotationUseCase = new SendQuotationUseCase({ quotationRepository, pdfService, mailService });
+const updateQuotationStatusUseCase = new UpdateQuotationStatusUseCase({ quotationRepository });
+const duplicateQuotationUseCase = new DuplicateQuotationUseCase({ quotationRepository });
+const generatePdfUseCase = new GeneratePdfUseCase({ quotationRepository, pdfService });
+const convertToInvoiceUseCase = new ConvertToInvoiceUseCase({ 
+  quotationRepository, 
+  createInvoiceUseCase: new CreateInvoiceUseCase({ invoiceRepository }) // Pass the use-case
+});
+
+const quotationController = new QuotationController({
+  createQuotationUseCase,
+  getQuotationListUseCase,
+  getQuotationDetailUseCase,
+  updateQuotationUseCase,
+  deleteQuotationUseCase,
+  sendQuotationUseCase,
+  updateQuotationStatusUseCase,
+  duplicateQuotationUseCase,
+  generatePdfUseCase,
+  convertToInvoiceUseCase
+});
+
+// --- Timeline (Installation) Module ---
+const scheduleInstallationUseCase = new ScheduleInstallationUseCase({ installationRepository });
+const getInstallationListUseCase = new GetInstallationListUseCase({ installationRepository });
+const updateInstallationStatusUseCase = new UpdateInstallationStatusUseCase({ installationRepository });
+
+const installationController = new InstallationController({
+  scheduleInstallationUseCase,
+  getInstallationListUseCase,
+  updateInstallationStatusUseCase
+});
+
+// --- Trouble Ticket Module ---
+const createTicketUseCase = new CreateTicketUseCase({ troubleTicketRepository });
+const getTicketListUseCase = new GetTicketListUseCase({ troubleTicketRepository });
+const updateTicketStatusUseCase = new UpdateTicketStatusUseCase({ troubleTicketRepository });
+
+const troubleTicketController = new TroubleTicketController({
+  createTicketUseCase,
+  getTicketListUseCase,
+  updateTicketStatusUseCase
+});
+
+// --- Invoice & Payment Module ---
+const createInvoiceUseCase = new CreateInvoiceUseCase({ invoiceRepository });
+const getInvoiceListUseCase = new GetInvoiceListUseCase({ invoiceRepository });
+
+const invoiceController = new InvoiceController({
+  createInvoiceUseCase,
+  getInvoiceListUseCase
+});
+
+// --- Presentation Module ---
+const createPresentationUseCase = new CreatePresentationUseCase({ presentationRepository });
+const getPresentationListUseCase = new GetPresentationListUseCase({ presentationRepository });
+
+const presentationController = new PresentationController({
+  createPresentationUseCase,
+  getPresentationListUseCase
 });
 
 // --- Search Module ---
 const globalSearchUseCase = new GlobalSearchUseCase(prisma);
 const searchController = new SearchController(globalSearchUseCase);
 
+// --- Target Module ---
+const CreateSalesTargetUseCase = require('./use-cases/target/create-sales-target-use-case');
+const GetSalesTargetUseCase = require('./use-cases/target/get-sales-target-use-case');
+const TargetController = require('./interfaces/controllers/target-controller');
+const createTargetRoutes = require('./interfaces/routes/target-routes');
+
+const createSalesTargetUseCase = new CreateSalesTargetUseCase(prisma);
+const getSalesTargetUseCase = new GetSalesTargetUseCase(prisma);
+const targetController = new TargetController({ createSalesTargetUseCase, getSalesTargetUseCase });
+
 // --- Mount Routes ---
 router.use('/auth', createAuthRoutes({ authController, authMiddleware }));
 router.use('/users', createUserRoutes({ userController, authMiddleware, activityLogRepository }));
 router.use('/search', createSearchRoutes(searchController));
+router.use('/targets', createTargetRoutes({ targetController, authMiddleware }));
 router.use('/branches', createBranchRoutes({ branchController, authMiddleware, activityLogger }));
 router.use('/products', createProductRoutes({ productController, authMiddleware, activityLogger }));
 router.use('/reports', createReportRoutes({ reportController, authMiddleware }));
 router.use('/customers', createCustomerRoutes({ customerController, authMiddleware, activityLogger }));
 router.use('/leads', createLeadRoutes({ leadController, authMiddleware }));
 router.use('/deals', createDealRoutes({ dealController, authMiddleware }));
+router.use('/quotations', createQuotationRoutes({ quotationController, authMiddleware }));
+router.use('/installations', createInstallationRoutes({ installationController, authMiddleware }));
+router.use('/trouble-tickets', createTroubleTicketRoutes({ troubleTicketController, authMiddleware }));
+router.use('/invoices', createInvoiceRoutes({ invoiceController, authMiddleware }));
+router.use('/presentations', createPresentationRoutes({ presentationController, authMiddleware }));
 
 // Health check endpoint
 router.get('/health', (req, res) => {

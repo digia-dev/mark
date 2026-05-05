@@ -32,7 +32,7 @@ class GetDashboardStatsUseCase {
       this.prisma.deal.count({ where: whereDate }),
       this.prisma.invoice.aggregate({
         where: { ...whereDate, status: 'paid' },
-        _sum: { total_amount: true }
+        _sum: { total: true }
       }),
       this.prisma.troubleTicket.count({
         where: { status: { not: 'closed' } }
@@ -65,7 +65,7 @@ class GetDashboardStatsUseCase {
       { name: 'Feb', revenue: 300, target: 500 },
       { name: 'Mar', revenue: 600, target: 500 },
       { name: 'Apr', revenue: 800, target: 1000 },
-      { name: 'Mei', revenue: totalRevenue._sum.total_amount || 850, target: 1000 },
+      { name: 'Mei', revenue: totalRevenue._sum.total || 850, target: 1000 },
     ];
 
     const pipelineFunnel = [
@@ -79,7 +79,7 @@ class GetDashboardStatsUseCase {
     return {
       statCards: {
         totalCustomers,
-        revenue: totalRevenue._sum.total_amount || 0,
+        revenue: totalRevenue._sum.total || 0,
         deals: totalDeals,
         activeInstallations: installations,
         activeTickets
@@ -96,8 +96,8 @@ class GetDashboardStatsUseCase {
       recentLeads,
       targetBulanIni: {
         target: 1000000000,
-        achieved: totalRevenue._sum.total_amount || 0,
-        percentage: Math.min(100, Math.round(((totalRevenue._sum.total_amount || 0) / 1000000000) * 100))
+        achieved: totalRevenue._sum.total || 0,
+        percentage: Math.min(100, Math.round(((totalRevenue._sum.total || 0) / 1000000000) * 100))
       }
     };
   }

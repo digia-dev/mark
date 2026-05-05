@@ -6,6 +6,11 @@ const dealService = {
     return response.data;
   },
 
+  getList: async (params) => {
+    const response = await axios.get('/deals', { params });
+    return response.data;
+  },
+
   createDeal: async (data) => {
     const response = await axios.post('/deals', data);
     return response.data;

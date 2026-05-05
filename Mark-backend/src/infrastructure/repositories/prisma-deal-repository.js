@@ -62,6 +62,34 @@ class PrismaDealRepository {
     });
   }
 
+  async findAll(filters = {}) {
+    const where = {};
+    if (filters.stage) where.stage = filters.stage;
+    if (filters.salesId) where.sales_id = parseInt(filters.salesId);
+    if (filters.customerId) where.customer_id = filters.customerId;
+    if (filters.search) {
+      where.OR = [
+        { name: { contains: filters.search } },
+        { customer: { name: { contains: filters.search } } }
+      ];
+    }
+
+    return await this.prisma.deal.findMany({
+      where,
+      orderBy: { created_at: 'desc' },
+      include: {
+        customer: { select: { name: true } },
+        sales: { select: { name: true } }
+      }
+    });
+  }
+
+  async delete(id) {
+    return await this.prisma.deal.delete({
+      where: { id }
+    });
+  }
+
   async addActivity(dealId, activity) {
     return await this.prisma.dealActivity.create({
       data: {

@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Download, LayoutGrid, List, ChevronDown, Calendar, Settings, Info } from 'lucide-react';
-import { useDealsKanban, useMoveDealStage } from '../features/pipeline/hooks/use-deals';
+import { useDealsKanban, useMoveDealStage, useCreateDeal } from '../features/pipeline/hooks/use-deals';
+import { useCustomers } from '../features/crm/hooks/use-customers';
+import { useLeads } from '../features/crm/hooks/use-leads';
 
 // Components
 import KanbanBoard from '../features/pipeline/components/KanbanBoard';
 import PipelineStatCards from '../features/pipeline/components/PipelineStatCards';
-import PipelineSummarySidebar from '../features/pipeline/components/PipelineSummarySidebar';
+import PipelineSidebar from '../features/pipeline/components/PipelineSidebar';
+import DealForm from '../features/pipeline/components/DealForm';
+import DealTable from '../features/pipeline/components/DealTable';
 
 const PipelinePage = () => {
+  const [view, setView] = useState('board'); // 'board' or 'table'
   const [params, setParams] = useState({
     salesId: '',
     area: '',
@@ -16,7 +21,15 @@ const PipelinePage = () => {
     dateRange: '01 Mei 2025 - 31 Mei 2025'
   });
 
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedDeal, setSelectedDeal] = useState(null);
+
   const { data: pipelineData, isLoading } = useDealsKanban(params);
+  const { data: dealsListData } = useDealsList(params);
+  const { data: customersData } = useCustomers({ limit: 100 });
+  const { data: leadsData } = useLeads({ limit: 100 });
+  
+  const createMutation = useCreateDeal();
   const moveStageMutation = useMoveDealStage();
 
   const handleDragEnd = (result) => {
@@ -28,6 +41,15 @@ const PipelinePage = () => {
       id: draggableId,
       data: { targetStage: destination.droppableId }
     });
+  };
+
+  const handleCreateDeal = async (formData) => {
+    try {
+      await createMutation.mutateAsync(formData);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Failed to create deal:', error);
+    }
   };
 
   return (
@@ -62,7 +84,10 @@ const PipelinePage = () => {
               </button>
            </div>
 
-          <button className="bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 flex items-center gap-2">
+          <button 
+            onClick={() => { setSelectedDeal(null); setIsFormOpen(true); }}
+            className="bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 flex items-center gap-2"
+          >
             <Plus size={18} />
             Tambah Deal
             <ChevronDown size={14} className="opacity-60" />
@@ -73,7 +98,7 @@ const PipelinePage = () => {
       {/* Page Content with Sub-Sidebar */}
       <div className="flex gap-6 flex-1 min-h-0">
         {/* Left Sidebar inside page */}
-        <PipelineSummarySidebar 
+        <PipelineSidebar 
           totalDeals={pipelineData?.totalDeals || 184}
           totalValue={pipelineData?.totalValue || 2450000000}
           summary={pipelineData?.summary}
@@ -87,27 +112,35 @@ const PipelinePage = () => {
           {/* Kanban Controls (Board/Table Toggle) */}
           <div className="flex justify-end items-center mb-4 gap-4">
              <div className="flex bg-white p-1 rounded-xl border border-gray-200 shadow-sm">
-                <button className="flex items-center gap-2 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-xs font-black">
+                <button 
+                  onClick={() => setView('board')}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${view === 'board' ? 'bg-orange-50 text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
+                >
                   <LayoutGrid size={14} />
                   Board
                 </button>
-                <button className="flex items-center gap-2 px-3 py-1.5 text-gray-400 hover:text-gray-600 rounded-lg text-xs font-bold">
+                <button 
+                  onClick={() => setView('table')}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-black transition-all ${view === 'table' ? 'bg-orange-50 text-orange-600' : 'text-gray-400 hover:text-gray-600'}`}
+                >
                   <List size={14} />
                   Table
                 </button>
              </div>
           </div>
 
-          {/* The Board */}
-          <div className="flex-1 min-h-0">
+          {/* Content Area */}
+          <div className="flex-1 min-h-0 overflow-auto">
             {isLoading ? (
               <div className="flex gap-4 h-full animate-pulse">
                 {[1, 2, 3, 4, 5].map(i => (
                   <div key={i} className="flex-1 bg-gray-50 rounded-2xl border border-gray-100" />
                 ))}
               </div>
-            ) : (
+            ) : view === 'board' ? (
               <KanbanBoard data={pipelineData?.grouped || {}} onDragEnd={handleDragEnd} />
+            ) : (
+              <DealTable data={dealsListData?.data || []} />
             )}
           </div>
 
@@ -118,6 +151,17 @@ const PipelinePage = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <DealForm 
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        onSubmit={handleCreateDeal}
+        initialData={selectedDeal}
+        isLoading={createMutation.isLoading}
+        customers={customersData?.data || []}
+        leads={leadsData?.data || []}
+      />
     </div>
   );
 };

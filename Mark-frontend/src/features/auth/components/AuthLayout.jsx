@@ -26,7 +26,7 @@ const AuthLayout = ({ children, illustration }) => {
         
         {illustration && (
           <div className="hidden lg:flex flex-1 bg-gray-50/50 p-12 items-center justify-center relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-br from-blue-50/50 to-transparent" />
             <div className="relative z-10 w-full max-w-lg">
               {/* Illustration Mockup Simulation */}
               <div className="bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 rotate-2">

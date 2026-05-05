@@ -1,0 +1,20 @@
+import axiosInstance from '../../../shared/services/axios-instance';
+
+const notificationService = {
+  getNotifications: async () => {
+    const response = await axiosInstance.get('/notifications');
+    return response.data;
+  },
+
+  markAsRead: async (id) => {
+    const response = await axiosInstance.patch(`/notifications/${id}/read`);
+    return response.data;
+  },
+
+  markAllAsRead: async () => {
+    const response = await axiosInstance.patch('/notifications/read-all');
+    return response.data;
+  }
+};
+
+export default notificationService;

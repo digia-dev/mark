@@ -553,11 +553,11 @@
     src/use-cases/customer/get-customer-detail-use-case.js
       → include: interactions, services, invoices count, tickets count
     src/use-cases/customer/delete-customer-use-case.js
-    [ ] src/use-cases/customer/add-interaction-use-case.js
-    [ ] src/use-cases/customer/get-customer-stats-use-case.js
+    [x] src/use-cases/customer/add-interaction-use-case.js
+    [x] src/use-cases/customer/get-customer-stats-use-case.js
       → total customers, new this month, active, inactive
-    [ ] src/use-cases/customer/import-customers-use-case.js
-    [ ] src/use-cases/customer/export-customers-use-case.js
+    [x] src/use-cases/customer/import-customers-use-case.js
+    [x] src/use-cases/customer/export-customers-use-case.js
 
 [x] buat prisma repo: src/infrastructure/repositories/prisma-customer-repository.js
 [x] buat dto: src/interfaces/dtos/customer-dto.js
@@ -568,13 +568,13 @@
     GET    /api/customers/:id
     PUT    /api/customers/:id
     DELETE /api/customers/:id          → super-admin, admin
-    [ ] GET    /api/customers/:id/interactions
-    [ ] POST   /api/customers/:id/interactions
-    [ ] GET    /api/customers/:id/services
-    [ ] GET    /api/customers/:id/invoices
-    [ ] GET    /api/customers/:id/tickets
-    [ ] POST   /api/customers/import
-    [ ] GET    /api/customers/export
+    [x] GET    /api/customers/:id/interactions
+    [x] POST   /api/customers/:id/interactions
+    [x] GET    /api/customers/:id/services
+    [x] GET    /api/customers/:id/invoices
+    [x] GET    /api/customers/:id/tickets
+    [x] POST   /api/customers/import
+    [x] GET    /api/customers/export
 [x] update main.js
 ```
 
@@ -593,18 +593,18 @@
 
 [x] buat use-cases:
     src/use-cases/lead/create-lead-use-case.js
-    [ ] src/use-cases/lead/update-lead-use-case.js
+    [x] src/use-cases/lead/update-lead-use-case.js
     src/use-cases/lead/get-lead-list-use-case.js
       → filter: status, assigned_to, area, source, search, follow_up_date
-    [ ] src/use-cases/lead/get-lead-detail-use-case.js
-    [ ] src/use-cases/lead/delete-lead-use-case.js
-    [ ] src/use-cases/lead/update-lead-status-use-case.js
+    [x] src/use-cases/lead/get-lead-detail-use-case.js
+    [x] src/use-cases/lead/delete-lead-use-case.js
+    [x] src/use-cases/lead/update-lead-status-use-case.js
       → validasi status transition sesuai rules.md
-    [ ] src/use-cases/lead/assign-lead-use-case.js
+    [x] src/use-cases/lead/assign-lead-use-case.js
     src/use-cases/lead/convert-lead-to-customer-use-case.js
       → buat customer baru dari data lead
       → update lead.status = 'converted' + lead.customer_id
-    [ ] src/use-cases/lead/import-leads-use-case.js
+    [x] src/use-cases/lead/import-leads-use-case.js
 
 [x] buat prisma repo: src/infrastructure/repositories/prisma-lead-repository.js
 [x] buat dto: src/interfaces/dtos/lead-dto.js
@@ -612,14 +612,14 @@
 [x] buat routes: src/interfaces/routes/lead-routes.js
     GET    /api/leads
     POST   /api/leads
-    [ ] GET    /api/leads/:id
+    [x] GET    /api/leads/:id
     PUT    /api/leads/:id
-    [ ] DELETE /api/leads/:id
-    [ ] PATCH  /api/leads/:id/status
-    [ ] PATCH  /api/leads/:id/assign
+    [x] DELETE /api/leads/:id
+    [x] PATCH  /api/leads/:id/status
+    [x] PATCH  /api/leads/:id/assign
     POST   /api/leads/:id/convert
-    [ ] POST   /api/leads/import
-    [ ] GET    /api/leads/export
+    [x] POST   /api/leads/import
+    [x] GET    /api/leads/export
 [x] update main.js
 ```
 
@@ -639,7 +639,7 @@
     - checkbox bulk select, three-dot menu
     - tab: semua, customers, leads
 
-[ ] buat file: src/features/crm/components/CustomerDetailPanel.jsx
+[x] buat file: src/features/crm/components/CustomerDetailPanel.jsx
     - side panel 420-480px dari kanan
     - tab: informasi, kontak, layanan aktif, riwayat, aktivitas, dokumen, catatan
     - ringkasan: total layanan, total invoice, total tagihan, outstanding
@@ -651,19 +651,19 @@
     - validasi zod
 
 [x] buat file: src/features/crm/components/LeadTable.jsx
-[ ] buat file: src/features/crm/components/LeadForm.jsx
+[x] buat file: src/features/crm/components/LeadForm.jsx
     - modal form create/edit lead
     - field: nama, perusahaan, phone, email, alamat, area, sumber, sales, status,
       follow_up_date, notes
 
-[ ] buat file: src/features/crm/components/InteractionForm.jsx
+[x] buat file: src/features/crm/components/InteractionForm.jsx
     - modal tambah interaksi (call, meeting, email, whatsapp, visit)
     - field: tipe, catatan, next_action, next_action_date
 
 [x] buat file: src/features/crm/components/CrmStatCards.jsx
     - stat card: total customers, new this month, active, inactive, leads baru
 
-[ ] buat file: src/features/crm/components/ConvertLeadModal.jsx
+[x] buat file: src/features/crm/components/ConvertLeadModal.jsx
     - konfirmasi konversi lead → customer
     - preview data yang akan dibuat
 
@@ -693,21 +693,21 @@
 
 [x] buat use-cases:
     [x] src/use-cases/deal/create-deal-use-case.js
-    [ ] src/use-cases/deal/update-deal-use-case.js
-    [ ] src/use-cases/deal/get-deal-list-use-case.js
+    [x] src/use-cases/deal/update-deal-use-case.js
+    [x] src/use-cases/deal/get-deal-list-use-case.js
       → filter: stage, sales_id, customer_id, search, date_range
     [x] src/use-cases/deal/get-deal-kanban-use-case.js
       → return deals dikelompokkan per stage + summary per stage
-    [ ] src/use-cases/deal/get-deal-detail-use-case.js
-    [ ] src/use-cases/deal/delete-deal-use-case.js
+    [x] src/use-cases/deal/get-deal-detail-use-case.js
+    [x] src/use-cases/deal/delete-deal-use-case.js
     [x] src/use-cases/deal/move-deal-stage-use-case.js
       → validasi transisi stage
       → catat di deal_activities
-    [ ] src/use-cases/deal/update-deal-probability-use-case.js
-    [ ] src/use-cases/deal/duplicate-deal-use-case.js
-    [ ] src/use-cases/deal/mark-deal-won-use-case.js
-    [ ] src/use-cases/deal/mark-deal-lost-use-case.js
-    [ ] src/use-cases/deal/get-pipeline-summary-use-case.js
+    [x] src/use-cases/deal/update-deal-probability-use-case.js
+    [x] src/use-cases/deal/duplicate-deal-use-case.js
+    [x] src/use-cases/deal/mark-deal-won-use-case.js
+    [x] src/use-cases/deal/mark-deal-lost-use-case.js
+    [x] src/use-cases/deal/get-pipeline-summary-use-case.js
       → total deals, total value, per stage breakdown, win rate, avg cycle
 
 [x] buat prisma repo: src/infrastructure/repositories/prisma-deal-repository.js
@@ -716,16 +716,16 @@
 [x] buat routes: src/interfaces/routes/deal-routes.js
     GET    /api/deals
     GET    /api/deals/kanban          → grouped by stage
-    [ ] GET    /api/deals/summary         → pipeline summary stats
+    [x] GET    /api/deals/summary         → pipeline summary stats
     POST   /api/deals
-    [ ] GET    /api/deals/:id
-    [ ] PUT    /api/deals/:id
-    [ ] DELETE /api/deals/:id
+    [x] GET    /api/deals/:id
+    [x] PUT    /api/deals/:id
+    [x] DELETE /api/deals/:id
     PATCH  /api/deals/:id/move-stage
-    [ ] PATCH  /api/deals/:id/probability
-    [ ] POST   /api/deals/:id/duplicate
-    [ ] PATCH  /api/deals/:id/won
-    [ ] PATCH  /api/deals/:id/lost
+    [x] PATCH  /api/deals/:id/probability
+    [x] POST   /api/deals/:id/duplicate
+    [x] PATCH  /api/deals/:id/won
+    [x] PATCH  /api/deals/:id/lost
 [x] update main.js
 ```
 
@@ -752,26 +752,26 @@
     - avatar sales
     - label area
 
-[ ] buat file: src/features/pipeline/components/PipelineSidebar.jsx
+[x] buat file: src/features/pipeline/components/PipelineSidebar.jsx
     - sidebar kiri: pipeline summary
     - total deals, total value
     - breakdown per stage dengan progress bar berwarna
     - tombol "Lihat Detail Laporan"
 
-[ ] buat file: src/features/pipeline/components/DealTable.jsx
+[x] buat file: src/features/pipeline/components/DealTable.jsx
     - tabel view alternatif dari kanban
     - kolom: no, nama deal, customer, stage badge, nilai, probabilitas,
       expected closing, sales, area, status, aksi
 
-[ ] buat file: src/features/pipeline/components/DealForm.jsx
+[x] buat file: src/features/pipeline/components/DealForm.jsx
     - modal create/edit deal
     - field: nama, customer (search dropdown), lead, nilai, stage,
       probabilitas, expected_closing_date, sales, area, notes
 
-[ ] buat file: src/features/pipeline/components/PipelineStatCards.jsx
+[x] buat file: src/features/pipeline/components/PipelineStatCards.jsx
     - stat card: total deals, total value, deals won, win rate, avg sales cycle
 
-[ ] buat file: src/features/pipeline/components/PipelineFunnelChart.jsx
+[x] buat file: src/features/pipeline/components/PipelineFunnelChart.jsx
     - funnel chart menggunakan recharts
     - 5 stage dengan nilai per stage
 
@@ -789,7 +789,7 @@
 ### TASK-021 — backend: quotation module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/quotation.js
+[x] buat domain entity: src/domain/entities/quotation.js
     method:
     - isExpired() → new Date() > validUntil
     - canBeSent() → status === 'draft'
@@ -797,40 +797,40 @@
     - calculateTotal(items) → subtotal + tax (11%) - discount = total
     - generateQuotNumber(sequence) → format Q-yyyy-nnnn
 
-[ ] buat interface repo: src/domain/repositories/quotation-repository.js
+[x] buat interface repo: src/domain/repositories/quotation-repository.js
 
-[ ] buat use-cases:
-    src/use-cases/quotation/create-quotation-use-case.js
+[x] buat use-cases:
+    [x] src/use-cases/quotation/create-quotation-use-case.js
       → auto-generate quot_number
       → hitung subtotal, tax, total dari items
-    src/use-cases/quotation/update-quotation-use-case.js
+    [x] src/use-cases/quotation/update-quotation-use-case.js
       → hanya bisa update jika status 'draft'
-    src/use-cases/quotation/get-quotation-list-use-case.js
-    src/use-cases/quotation/get-quotation-detail-use-case.js
+    [x] src/use-cases/quotation/get-quotation-list-use-case.js
+    [x] src/use-cases/quotation/get-quotation-detail-use-case.js
       → include: items, customer, riwayat status
-    src/use-cases/quotation/delete-quotation-use-case.js
-    src/use-cases/quotation/send-quotation-use-case.js
+    [x] src/use-cases/quotation/delete-quotation-use-case.js
+    [x] src/use-cases/quotation/send-quotation-use-case.js
       → ubah status draft → sent
       → kirim email ke customer (nodemailer)
-    src/use-cases/quotation/update-quotation-status-use-case.js
+    [x] src/use-cases/quotation/update-quotation-status-use-case.js
       → validasi transisi: sent → approved/rejected/expired
-    src/use-cases/quotation/duplicate-quotation-use-case.js
-    src/use-cases/quotation/generate-pdf-use-case.js
-    src/use-cases/quotation/convert-to-invoice-use-case.js
+    [x] src/use-cases/quotation/duplicate-quotation-use-case.js
+    [x] src/use-cases/quotation/generate-pdf-use-case.js
+    [x] src/use-cases/quotation/convert-to-invoice-use-case.js
       → buat invoice baru dari quotation yang approved
 
-[ ] buat file: src/infrastructure/services/pdf-service.js
+[x] buat file: src/infrastructure/services/pdf-service.js
     - generateQuotationPdf(quotationData) → return buffer
     - template html → puppeteer → pdf
 
-[ ] buat file: src/infrastructure/services/mail-service.js
+[x] buat file: src/infrastructure/services/mail-service.js
     - sendQuotationEmail(to, quotationData, pdfBuffer)
     - setup nodemailer transporter dari .env
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-quotation-repository.js
-[ ] buat dto: src/interfaces/dtos/quotation-dto.js
-[ ] buat controller: src/interfaces/controllers/quotation-controller.js
-[ ] buat routes: src/interfaces/routes/quotation-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-quotation-repository.js
+[x] buat dto: src/interfaces/dtos/quotation-dto.js
+[x] buat controller: src/interfaces/controllers/quotation-controller.js
+[x] buat routes: src/interfaces/routes/quotation-routes.js
     GET    /api/quotations
     POST   /api/quotations
     GET    /api/quotations/:id
@@ -840,9 +840,9 @@
     PATCH  /api/quotations/:id/status
     POST   /api/quotations/:id/duplicate
     GET    /api/quotations/:id/pdf
-    POST   /api/quotations/:id/send-email
-    POST   /api/quotations/:id/convert-to-invoice
-[ ] update main.js
+    POST   /api/quotations/:id/send
+    POST   /api/quotations/:id/convert
+[x] update main.js
 ```
 
 ---
