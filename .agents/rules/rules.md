@@ -1,5 +1,6 @@
 ---
-trigger: manual
+trigger: model_decision
+description: if agent.md not aplicable
 ---
 
 # rules.md — Mark development rules

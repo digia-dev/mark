@@ -114,8 +114,8 @@
 ### TASK-003 — setup database & prisma `/wf-04`
 
 ```
-[ ] jalankan: npx prisma init
-[ ] edit prisma/schema.prisma → salin schema lengkap dari database.md:
+[x] jalankan: npx prisma init
+[x] edit prisma/schema.prisma → salin schema lengkap dari database.md:
     - model User
     - model RefreshToken
     - model Branch
@@ -140,16 +140,16 @@
     - model Notification
     - model ActivityLog
     - model SalesTarget
-[ ] buat database mysql:
+[x] buat database mysql:
     mysql -u root -p -e "create database Mark_ISP character set utf8mb4 collate utf8mb4_unicode_ci;"
-[ ] jalankan: npx prisma generate
-[ ] jalankan: npx prisma migrate dev --name init
-[ ] buat file: prisma/seed.js (salin dari database.md bagian seed data)
-[ ] tambahkan ke package.json:
+[x] jalankan: npx prisma generate
+[x] jalankan: npx prisma migrate dev --name init
+[x] buat file: prisma/seed.js (salin dari database.md bagian seed data)
+[x] tambahkan ke package.json:
     "prisma": { "seed": "node prisma/seed.js" }
-[ ] jalankan: npx prisma db seed
-[ ] verifikasi dengan: npx prisma studio
-[ ] buat file: src/infrastructure/database/prisma-client.js
+[x] jalankan: npx prisma db seed
+[x] verifikasi dengan: npx prisma studio
+[x] buat file: src/infrastructure/database/prisma-client.js
     → export singleton prisma instance
 ```
 
@@ -158,8 +158,8 @@
 ### TASK-004 — setup express server `/wf-01`
 
 ```
-[ ] buat file: src/server.js → entry point express
-[ ] buat file: src/app.js → setup express app:
+[x] buat file: src/server.js → entry point express
+[x] buat file: src/app.js → setup express app:
     - helmet()
     - cors() dengan allowed origins dari .env
     - express.json()
@@ -167,14 +167,14 @@
     - rate limiter global (100 req/15 menit)
     - mount semua routes dari main.js
     - global error handler middleware
-[ ] buat file: src/interfaces/middlewares/error-handler.js
+[x] buat file: src/interfaces/middlewares/error-handler.js
     → tangkap semua error, format sesuai standar response api
-[ ] buat file: src/interfaces/middlewares/not-found.js
+[x] buat file: src/interfaces/middlewares/not-found.js
     → 404 handler
-[ ] buat file: src/shared/response.js
+[x] buat file: src/shared/response.js
     → helper: successResponse(data, meta) dan errorResponse(code, message, details)
-[ ] buat file: src/main.js → composition root (masih kosong, diisi per modul)
-[ ] test: jalankan npm run dev → server harus running di port 3000
+[x] buat file: src/main.js → composition root (masih kosong, diisi per modul)
+[x] test: jalankan npm run dev → server harus running di port 3000
 ```
 
 ---
@@ -182,12 +182,12 @@
 ### TASK-005 — domain layer: user entity `/wf-01`
 
 ```
-[ ] buat file: src/domain/entities/user.js
+[x] buat file: src/domain/entities/user.js
     method yang diperlukan:
     - isActive() → return this.is_active
     - hasRole(role) → return this.role === role
     - canAccess(permission) → cek matrix permission
-[ ] buat file: src/domain/repositories/user-repository.js
+[x] buat file: src/domain/repositories/user-repository.js
     method interface:
     - findById(id)
     - findByEmail(email)
@@ -202,7 +202,7 @@
 ### TASK-006 — use-cases: autentikasi `/wf-01`
 
 ```
-[ ] buat file: src/use-cases/auth/login-use-case.js
+[x] buat file: src/use-cases/auth/login-use-case.js
     - terima: { email, password }
     - validasi user ada dan is_active
     - verify bcrypt password
@@ -210,16 +210,16 @@
     - simpan refresh token ke database
     - return: { user, accessToken, refreshToken }
 
-[ ] buat file: src/use-cases/auth/logout-use-case.js
+[x] buat file: src/use-cases/auth/logout-use-case.js
     - hapus refresh token dari database
 
-[ ] buat file: src/use-cases/auth/refresh-token-use-case.js
+[x] buat file: src/use-cases/auth/refresh-token-use-case.js
     - verify refresh token
     - cek token masih ada di database (tidak di-blacklist)
     - issue access token baru
     - return: { accessToken }
 
-[ ] buat file: src/use-cases/auth/get-profile-use-case.js
+[x] buat file: src/use-cases/auth/get-profile-use-case.js
     - return: data user dari req.user (sudah di-inject middleware)
 ```
 
@@ -228,17 +228,17 @@
 ### TASK-007 — infrastructure: auth repository & service `/wf-01`
 
 ```
-[ ] buat file: src/infrastructure/repositories/prisma-user-repository.js
+[x] buat file: src/infrastructure/repositories/prisma-user-repository.js
     - implementasi semua method dari user-repository.js
     - findByEmail harus include password_hash
 
-[ ] buat file: src/infrastructure/services/jwt-service.js
+[x] buat file: src/infrastructure/services/jwt-service.js
     - generateAccessToken(payload)
     - generateRefreshToken(payload)
     - verifyAccessToken(token)
     - verifyRefreshToken(token)
 
-[ ] buat file: src/infrastructure/services/bcrypt-service.js
+[x] buat file: src/infrastructure/services/bcrypt-service.js
     - hash(password) → salt rounds 12
     - compare(password, hash)
 ```
@@ -248,37 +248,37 @@
 ### TASK-008 — interfaces: auth controller, dto, route `/wf-05`
 
 ```
-[ ] buat file: src/interfaces/dtos/auth-dto.js
+[x] buat file: src/interfaces/dtos/auth-dto.js
     schema zod:
     - loginSchema: { email: string().email(), password: string().min(8) }
 
-[ ] buat file: src/interfaces/controllers/auth-controller.js
+[x] buat file: src/interfaces/controllers/auth-controller.js
     methods: login(), logout(), refreshToken(), getProfile()
 
-[ ] buat file: src/interfaces/middlewares/auth-middleware.js
+[x] buat file: src/interfaces/middlewares/auth-middleware.js
     - ambil bearer token dari Authorization header
     - verify dengan jwt-service
     - inject req.user = payload
     - next() atau 401
 
-[ ] buat file: src/interfaces/middlewares/role-middleware.js
+[x] buat file: src/interfaces/middlewares/role-middleware.js
     - factory: roleMiddleware(allowedRoles)
     - cek req.user.role ada di allowedRoles
     - 403 jika tidak ada akses
 
-[ ] buat file: src/interfaces/middlewares/validate-request.js
+[x] buat file: src/interfaces/middlewares/validate-request.js
     - factory: validate(schema)
     - parse req.body dengan zod schema
     - 400 VALIDATION_ERROR jika gagal
 
-[ ] buat file: src/interfaces/routes/auth-routes.js
+[x] buat file: src/interfaces/routes/auth-routes.js
     POST /api/auth/login   → no auth → login
     POST /api/auth/logout  → auth → logout
     POST /api/auth/refresh → no auth → refreshToken
     GET  /api/auth/me      → auth → getProfile
 
-[ ] update src/main.js → wire auth dependencies
-[ ] test semua endpoint auth di postman
+[x] update src/main.js → wire auth dependencies
+[x] test semua endpoint auth di postman
 ```
 
 ---
@@ -286,22 +286,22 @@
 ### TASK-009 — use-cases & endpoint: manajemen user `/wf-01` `/wf-05`
 
 ```
-[ ] buat file: src/use-cases/user/create-user-use-case.js
+[x] buat file: src/use-cases/user/create-user-use-case.js
     - validasi email unik
     - hash password dengan bcrypt
     - generate user baru
 
-[ ] buat file: src/use-cases/user/update-user-use-case.js
-[ ] buat file: src/use-cases/user/get-user-list-use-case.js
+[x] buat file: src/use-cases/user/update-user-use-case.js
+[x] buat file: src/use-cases/user/get-user-list-use-case.js
     - support filter: role, branch, is_active, search name/email
     - pagination
-[ ] buat file: src/use-cases/user/get-user-detail-use-case.js
-[ ] buat file: src/use-cases/user/delete-user-use-case.js
-[ ] buat file: src/use-cases/user/change-password-use-case.js
+[x] buat file: src/use-cases/user/get-user-detail-use-case.js
+[x] buat file: src/use-cases/user/delete-user-use-case.js
+[x] buat file: src/use-cases/user/change-password-use-case.js
 
-[ ] buat file: src/interfaces/dtos/user-dto.js
-[ ] buat file: src/interfaces/controllers/user-controller.js
-[ ] buat file: src/interfaces/routes/user-routes.js
+[x] buat file: src/interfaces/dtos/user-dto.js
+[x] buat file: src/interfaces/controllers/user-controller.js
+[x] buat file: src/interfaces/routes/user-routes.js
     GET    /api/users          → super-admin, admin
     POST   /api/users          → super-admin, admin
     GET    /api/users/:id      → super-admin, admin
@@ -309,8 +309,8 @@
     DELETE /api/users/:id      → super-admin
     PATCH  /api/users/:id/password → super-admin, admin, self
 
-[ ] buat file: src/infrastructure/repositories/prisma-user-repository.js (update)
-[ ] update src/main.js
+[x] buat file: src/infrastructure/repositories/prisma-user-repository.js (update)
+[x] update src/main.js
 ```
 
 ---
@@ -318,15 +318,15 @@
 ### TASK-010 — activity logger middleware `/wf-01`
 
 ```
-[ ] buat file: src/interfaces/middlewares/activity-logger.js
+[x] buat file: src/interfaces/middlewares/activity-logger.js
     - async middleware, tidak memblokir response
     - tangkap: user_id, module, action (create/update/delete), description,
       entity_id, entity_type, ip_address, user_agent
     - tulis ke tabel activity_logs via prisma (fire and forget)
 
-[ ] buat file: src/infrastructure/repositories/prisma-activity-log-repository.js
+[x] buat file: src/infrastructure/repositories/prisma-activity-log-repository.js
 
-[ ] pasang activity-logger SETELAH controller method di semua route yang write
+[x] pasang activity-logger SETELAH controller method di semua route yang write
 ```
 
 ---
@@ -334,42 +334,42 @@
 ### TASK-011 — frontend: auth feature `/wf-01` `/wf-03`
 
 ```
-[ ] buat file: src/features/auth/services/auth-service.js
+[x] buat file: src/features/auth/services/auth-service.js
     - login(email, password) → POST /api/auth/login
     - logout() → POST /api/auth/logout
     - refreshToken() → POST /api/auth/refresh
     - getProfile() → GET /api/auth/me
 
-[ ] buat file: src/features/auth/store/auth-store.js (zustand)
+[x] buat file: src/features/auth/store/auth-store.js (zustand)
     state: { user, accessToken, isAuthenticated }
     actions: setAuth(), clearAuth(), setUser()
 
-[ ] buat file: src/features/auth/hooks/use-auth.js
+[x] buat file: src/features/auth/hooks/use-auth.js
     - useLogin() → mutation tanstack query
     - useLogout()
     - useProfile()
 
-[ ] buat file: src/features/auth/components/LoginForm.jsx
+[x] buat file: src/features/auth/components/LoginForm.jsx
     - form: email + password
     - react-hook-form + zod validation
     - loading state saat submit
     - error message dari api
 
-[ ] buat file: src/pages/LoginPage.jsx
+[x] buat file: src/pages/LoginPage.jsx
     - layout full screen
     - logo Mark di tengah atas
     - LoginForm component
 
-[ ] buat file: src/shared/components/ProtectedRoute.jsx
+[x] buat file: src/shared/components/ProtectedRoute.jsx
     - cek isAuthenticated dari auth store
     - redirect ke /login jika belum auth
 
-[ ] setup axios interceptor di src/lib/axios.js:
+[x] setup axios interceptor di src/lib/axios.js:
     - inject Authorization: Bearer {token} ke setiap request
     - interceptor response: jika 401 → coba refresh token → retry request
     - jika refresh gagal → logout + redirect /login
 
-[ ] setup react-router di App.jsx:
+[x] setup react-router di App.jsx:
     / → redirect ke /dashboard
     /login → LoginPage (public)
     /* → ProtectedRoute → MainLayout
@@ -380,11 +380,11 @@
 ### TASK-012 — frontend: layout utama `/wf-03`
 
 ```
-[ ] buat file: src/shared/components/layout/MainLayout.jsx
+[x] buat file: src/shared/components/layout/MainLayout.jsx
     - topbar + sidebar + content area
     - responsive: sidebar collapse di tablet
 
-[ ] buat file: src/shared/components/layout/Topbar.jsx
+[x] buat file: src/shared/components/layout/Topbar.jsx
     - hamburger toggle sidebar
     - global search bar (ctrl+k) → placeholder sesuai design.md
     - tombol "Tambah Cepat" (orange accent) dengan dropdown 9 opsi
@@ -393,24 +393,24 @@
     - avatar + nama + role user
     - dropdown logout
 
-[ ] buat file: src/shared/components/layout/Sidebar.jsx
+[x] buat file: src/shared/components/layout/Sidebar.jsx
     - logo Mark
     - menu navigasi 13 item sesuai design.md (urutan sidebar)
     - sub-menu collapsible (CRM, Reports, Settings)
     - active state: bg blue-700 text white
     - widget target bulan ini di bagian bawah (ring chart + nilai)
 
-[ ] buat file: src/shared/components/layout/SidebarMenu.jsx
+[x] buat file: src/shared/components/layout/SidebarMenu.jsx
     - item menu tunggal dengan ikon lucide + label
     - support sub-menu
 
-[ ] buat file: src/shared/components/layout/TargetWidget.jsx
+[x] buat file: src/shared/components/layout/TargetWidget.jsx
     - ring/donut chart progress menggunakan recharts
     - tampilkan persentase di tengah
     - nilai realisasi + target
     - link "Lihat Detail Target →"
 
-[ ] buat file: src/shared/components/GlobalSearch.jsx
+[x] buat file: src/shared/components/GlobalSearch.jsx
     - modal overlay (ctrl+k trigger)
     - search input dengan debounce 300ms
     - hasil dikelompokkan: customer, lead, quotation, deal
@@ -427,22 +427,22 @@
 ### TASK-013 — backend: branch & area management `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/branch.js
-[ ] buat interface repo: src/domain/repositories/branch-repository.js
-[ ] buat use-cases:
+[x] buat domain entity: src/domain/entities/branch.js
+[x] buat interface repo: src/domain/repositories/branch-repository.js
+[x] buat use-cases:
     src/use-cases/branch/create-branch-use-case.js
     src/use-cases/branch/update-branch-use-case.js
     src/use-cases/branch/get-branch-list-use-case.js
     src/use-cases/branch/delete-branch-use-case.js
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-branch-repository.js
-[ ] buat dto: src/interfaces/dtos/branch-dto.js
-[ ] buat controller: src/interfaces/controllers/branch-controller.js
-[ ] buat routes: src/interfaces/routes/branch-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-branch-repository.js
+[x] buat dto: src/interfaces/dtos/branch-dto.js
+[x] buat controller: src/interfaces/controllers/branch-controller.js
+[x] buat routes: src/interfaces/routes/branch-routes.js
     GET    /api/branches        → semua role
     POST   /api/branches        → super-admin, admin
     PUT    /api/branches/:id    → super-admin, admin
     DELETE /api/branches/:id    → super-admin
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -450,16 +450,16 @@
 ### TASK-014 — backend: products & services `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/product.js
+[x] buat domain entity: src/domain/entities/product.js
     method:
     - isActive() → return this.status !== 'inactive'
     - getCurrentPrice() → return is_promo ? promo_price : price
     - isPromoExpired() → cek promo_end_date
 
-[ ] buat interface repo: src/domain/repositories/product-repository.js
+[x] buat interface repo: src/domain/repositories/product-repository.js
     methods: findById, findAll(filters), create, update, delete, updateStatus
 
-[ ] buat use-cases:
+[x] buat use-cases:
     src/use-cases/product/create-product-use-case.js
     src/use-cases/product/update-product-use-case.js
     src/use-cases/product/get-product-list-use-case.js
@@ -469,17 +469,17 @@
     src/use-cases/product/delete-product-use-case.js
     src/use-cases/product/toggle-product-status-use-case.js
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-product-repository.js
-[ ] buat dto: src/interfaces/dtos/product-dto.js
-[ ] buat controller: src/interfaces/controllers/product-controller.js
-[ ] buat routes: src/interfaces/routes/product-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-product-repository.js
+[x] buat dto: src/interfaces/dtos/product-dto.js
+[x] buat controller: src/interfaces/controllers/product-controller.js
+[x] buat routes: src/interfaces/routes/product-routes.js
     GET    /api/products             → semua role (read)
     POST   /api/products             → super-admin, admin
     GET    /api/products/:id         → semua role
     PUT    /api/products/:id         → super-admin, admin
     DELETE /api/products/:id         → super-admin, admin
     PATCH  /api/products/:id/status  → super-admin, admin
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -487,8 +487,8 @@
 ### TASK-015 — frontend: halaman products & services `/wf-03`
 
 ```
-[ ] buat file: src/features/product/services/product-service.js
-[ ] buat file: src/features/product/hooks/use-products.js
+[x] buat file: src/features/product/services/product-service.js
+[x] buat file: src/features/product/hooks/use-products.js
     - useProductList(filters) → react-query dengan pagination
     - useProductDetail(id)
     - useCreateProduct()
@@ -496,7 +496,7 @@
     - useDeleteProduct()
     - useToggleProductStatus()
 
-[ ] buat file: src/features/product/components/ProductCard.jsx
+[x] buat file: src/features/product/components/ProductCard.jsx
     - badge best seller / promo / new di pojok kiri atas
     - ikon teknologi (router/antena svg atau lucide)
     - nama, speed down↓ up↑, harga/bulan
@@ -504,25 +504,24 @@
     - status badge
     - tombol: detail, buat quotation
 
-[ ] buat file: src/features/product/components/ProductTable.jsx
+[x] buat file: src/features/product/components/ProductTable.jsx
     - tabel dengan kolom: nama, kategori, teknologi, harga, status, aksi
     - checkbox bulk select
     - pagination
     - filter bar
 
-[ ] buat file: src/features/product/components/ProductForm.jsx
+[x] buat file: src/features/product/components/ProductForm.jsx
     - modal form create/edit
     - field: nama, kategori, deskripsi, speed_down, speed_up,
       harga, teknologi, area_coverage, is_best_seller, is_promo,
       promo_price, promo_end_date, status
     - react-hook-form + zod
 
-[ ] buat file: src/features/product/components/ProductStatCards.jsx
+[x] buat file: src/features/product/components/ProductStatCards.jsx
     - stat card: total produk, aktif, nonaktif, promo
 
-[ ] buat file: src/pages/ProductPage.jsx
+[x] buat file: src/pages/ProductPage.jsx
     - stat cards → filter bar → toggle grid/table → ProductCard atau ProductTable
-```
 
 ---
 
@@ -533,17 +532,17 @@
 ### TASK-016 — backend: customer module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/customer.js
+[x] buat domain entity: src/domain/entities/customer.js
     method:
     - isActive()
     - getDisplayName() → return company || name
     - generateCustomerCode(sequence) → format CUS-yyyy-xxxxxx
 
-[ ] buat interface repo: src/domain/repositories/customer-repository.js
+[x] buat interface repo: src/domain/repositories/customer-repository.js
     methods: findById, findByCode, findAll(filters), create, update, delete,
     getInteractions(customerId), getServices(customerId), getInvoices(customerId)
 
-[ ] buat use-cases:
+[x] buat use-cases:
     src/use-cases/customer/create-customer-use-case.js
       → auto-generate customer_code
       → validasi phone/email unik
@@ -554,29 +553,29 @@
     src/use-cases/customer/get-customer-detail-use-case.js
       → include: interactions, services, invoices count, tickets count
     src/use-cases/customer/delete-customer-use-case.js
-    src/use-cases/customer/add-interaction-use-case.js
-    src/use-cases/customer/get-customer-stats-use-case.js
+    [ ] src/use-cases/customer/add-interaction-use-case.js
+    [ ] src/use-cases/customer/get-customer-stats-use-case.js
       → total customers, new this month, active, inactive
-    src/use-cases/customer/import-customers-use-case.js
-    src/use-cases/customer/export-customers-use-case.js
+    [ ] src/use-cases/customer/import-customers-use-case.js
+    [ ] src/use-cases/customer/export-customers-use-case.js
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-customer-repository.js
-[ ] buat dto: src/interfaces/dtos/customer-dto.js
-[ ] buat controller: src/interfaces/controllers/customer-controller.js
-[ ] buat routes: src/interfaces/routes/customer-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-customer-repository.js
+[x] buat dto: src/interfaces/dtos/customer-dto.js
+[x] buat controller: src/interfaces/controllers/customer-controller.js
+[x] buat routes: src/interfaces/routes/customer-routes.js
     GET    /api/customers
     POST   /api/customers
     GET    /api/customers/:id
     PUT    /api/customers/:id
     DELETE /api/customers/:id          → super-admin, admin
-    GET    /api/customers/:id/interactions
-    POST   /api/customers/:id/interactions
-    GET    /api/customers/:id/services
-    GET    /api/customers/:id/invoices
-    GET    /api/customers/:id/tickets
-    POST   /api/customers/import
-    GET    /api/customers/export
-[ ] update main.js
+    [ ] GET    /api/customers/:id/interactions
+    [ ] POST   /api/customers/:id/interactions
+    [ ] GET    /api/customers/:id/services
+    [ ] GET    /api/customers/:id/invoices
+    [ ] GET    /api/customers/:id/tickets
+    [ ] POST   /api/customers/import
+    [ ] GET    /api/customers/export
+[x] update main.js
 ```
 
 ---
@@ -584,44 +583,44 @@
 ### TASK-017 — backend: lead module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/lead.js
+[x] buat domain entity: src/domain/entities/lead.js
     method:
     - canBeConverted() → status === 'qualified' || 'penawaran'
     - isLost() → status === 'lost'
     - convertToCustomer() → return customer data shape
 
-[ ] buat interface repo: src/domain/repositories/lead-repository.js
+[x] buat interface repo: src/domain/repositories/lead-repository.js
 
-[ ] buat use-cases:
+[x] buat use-cases:
     src/use-cases/lead/create-lead-use-case.js
-    src/use-cases/lead/update-lead-use-case.js
+    [ ] src/use-cases/lead/update-lead-use-case.js
     src/use-cases/lead/get-lead-list-use-case.js
       → filter: status, assigned_to, area, source, search, follow_up_date
-    src/use-cases/lead/get-lead-detail-use-case.js
-    src/use-cases/lead/delete-lead-use-case.js
-    src/use-cases/lead/update-lead-status-use-case.js
+    [ ] src/use-cases/lead/get-lead-detail-use-case.js
+    [ ] src/use-cases/lead/delete-lead-use-case.js
+    [ ] src/use-cases/lead/update-lead-status-use-case.js
       → validasi status transition sesuai rules.md
-    src/use-cases/lead/assign-lead-use-case.js
+    [ ] src/use-cases/lead/assign-lead-use-case.js
     src/use-cases/lead/convert-lead-to-customer-use-case.js
       → buat customer baru dari data lead
       → update lead.status = 'converted' + lead.customer_id
-    src/use-cases/lead/import-leads-use-case.js
+    [ ] src/use-cases/lead/import-leads-use-case.js
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-lead-repository.js
-[ ] buat dto: src/interfaces/dtos/lead-dto.js
-[ ] buat controller: src/interfaces/controllers/lead-controller.js
-[ ] buat routes: src/interfaces/routes/lead-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-lead-repository.js
+[x] buat dto: src/interfaces/dtos/lead-dto.js
+[x] buat controller: src/interfaces/controllers/lead-controller.js
+[x] buat routes: src/interfaces/routes/lead-routes.js
     GET    /api/leads
     POST   /api/leads
-    GET    /api/leads/:id
+    [ ] GET    /api/leads/:id
     PUT    /api/leads/:id
-    DELETE /api/leads/:id
-    PATCH  /api/leads/:id/status
-    PATCH  /api/leads/:id/assign
+    [ ] DELETE /api/leads/:id
+    [ ] PATCH  /api/leads/:id/status
+    [ ] PATCH  /api/leads/:id/assign
     POST   /api/leads/:id/convert
-    POST   /api/leads/import
-    GET    /api/leads/export
-[ ] update main.js
+    [ ] POST   /api/leads/import
+    [ ] GET    /api/leads/export
+[x] update main.js
 ```
 
 ---
@@ -629,12 +628,12 @@
 ### TASK-018 — frontend: halaman CRM `/wf-03`
 
 ```
-[ ] buat file: src/features/crm/services/customer-service.js
-[ ] buat file: src/features/crm/services/lead-service.js
-[ ] buat file: src/features/crm/hooks/use-customers.js
-[ ] buat file: src/features/crm/hooks/use-leads.js
+[x] buat file: src/features/crm/services/customer-service.js
+[x] buat file: src/features/crm/services/lead-service.js
+[x] buat file: src/features/crm/hooks/use-customers.js
+[x] buat file: src/features/crm/hooks/use-leads.js
 
-[ ] buat file: src/features/crm/components/CustomerTable.jsx
+[x] buat file: src/features/crm/components/CustomerTable.jsx
     - kolom: nama/perusahaan, tipe badge, status badge, sales, area,
       terakhir kontak, total tagihan, aksi
     - checkbox bulk select, three-dot menu
@@ -645,12 +644,13 @@
     - tab: informasi, kontak, layanan aktif, riwayat, aktivitas, dokumen, catatan
     - ringkasan: total layanan, total invoice, total tagihan, outstanding
 
-[ ] buat file: src/features/crm/components/CustomerForm.jsx
+[x] buat file: src/features/crm/components/CustomerForm.jsx
     - modal form create/edit customer
     - field: nama, tipe, email, phone, website, npwp, alamat, kota, provinsi,
       area, sektor, contact person, sales, branch, status, notes
     - validasi zod
 
+[x] buat file: src/features/crm/components/LeadTable.jsx
 [ ] buat file: src/features/crm/components/LeadForm.jsx
     - modal form create/edit lead
     - field: nama, perusahaan, phone, email, alamat, area, sumber, sales, status,
@@ -660,15 +660,15 @@
     - modal tambah interaksi (call, meeting, email, whatsapp, visit)
     - field: tipe, catatan, next_action, next_action_date
 
-[ ] buat file: src/features/crm/components/CrmStatCards.jsx
+[x] buat file: src/features/crm/components/CrmStatCards.jsx
     - stat card: total customers, new this month, active, inactive, leads baru
 
 [ ] buat file: src/features/crm/components/ConvertLeadModal.jsx
     - konfirmasi konversi lead → customer
     - preview data yang akan dibuat
 
-[ ] buat file: src/pages/CrmPage.jsx
-    - stat cards → tab → tabel dengan side panel
+[x] buat file: src/pages/CustomerPage.jsx
+[x] buat file: src/pages/LeadPage.jsx
 ```
 
 ---
@@ -680,53 +680,53 @@
 ### TASK-019 — backend: deal module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/deal.js
+[x] buat domain entity: src/domain/entities/deal.js
     method:
     - isActive() → status === 'active'
     - canMoveStage(targetStage) → validasi urutan stage
     - calculateWinProbability() → berdasarkan stage (prospek 20%, negosiasi 50%, dll)
     - isWon() / isLost()
 
-[ ] buat interface repo: src/domain/repositories/deal-repository.js
+[x] buat interface repo: src/domain/repositories/deal-repository.js
     methods: findById, findAll(filters), findByStage, create, update, delete,
     moveStage, updateProbability, getActivities(dealId), addActivity(dealId, data)
 
-[ ] buat use-cases:
-    src/use-cases/deal/create-deal-use-case.js
-    src/use-cases/deal/update-deal-use-case.js
-    src/use-cases/deal/get-deal-list-use-case.js
+[x] buat use-cases:
+    [x] src/use-cases/deal/create-deal-use-case.js
+    [ ] src/use-cases/deal/update-deal-use-case.js
+    [ ] src/use-cases/deal/get-deal-list-use-case.js
       → filter: stage, sales_id, customer_id, search, date_range
-    src/use-cases/deal/get-deal-kanban-use-case.js
+    [x] src/use-cases/deal/get-deal-kanban-use-case.js
       → return deals dikelompokkan per stage + summary per stage
-    src/use-cases/deal/get-deal-detail-use-case.js
-    src/use-cases/deal/delete-deal-use-case.js
-    src/use-cases/deal/move-deal-stage-use-case.js
+    [ ] src/use-cases/deal/get-deal-detail-use-case.js
+    [ ] src/use-cases/deal/delete-deal-use-case.js
+    [x] src/use-cases/deal/move-deal-stage-use-case.js
       → validasi transisi stage
       → catat di deal_activities
-    src/use-cases/deal/update-deal-probability-use-case.js
-    src/use-cases/deal/duplicate-deal-use-case.js
-    src/use-cases/deal/mark-deal-won-use-case.js
-    src/use-cases/deal/mark-deal-lost-use-case.js
-    src/use-cases/deal/get-pipeline-summary-use-case.js
+    [ ] src/use-cases/deal/update-deal-probability-use-case.js
+    [ ] src/use-cases/deal/duplicate-deal-use-case.js
+    [ ] src/use-cases/deal/mark-deal-won-use-case.js
+    [ ] src/use-cases/deal/mark-deal-lost-use-case.js
+    [ ] src/use-cases/deal/get-pipeline-summary-use-case.js
       → total deals, total value, per stage breakdown, win rate, avg cycle
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-deal-repository.js
-[ ] buat dto: src/interfaces/dtos/deal-dto.js
-[ ] buat controller: src/interfaces/controllers/deal-controller.js
-[ ] buat routes: src/interfaces/routes/deal-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-deal-repository.js
+[x] buat dto: src/interfaces/dtos/deal-dto.js
+[x] buat controller: src/interfaces/controllers/deal-controller.js
+[x] buat routes: src/interfaces/routes/deal-routes.js
     GET    /api/deals
     GET    /api/deals/kanban          → grouped by stage
-    GET    /api/deals/summary         → pipeline summary stats
+    [ ] GET    /api/deals/summary         → pipeline summary stats
     POST   /api/deals
-    GET    /api/deals/:id
-    PUT    /api/deals/:id
-    DELETE /api/deals/:id
+    [ ] GET    /api/deals/:id
+    [ ] PUT    /api/deals/:id
+    [ ] DELETE /api/deals/:id
     PATCH  /api/deals/:id/move-stage
-    PATCH  /api/deals/:id/probability
-    POST   /api/deals/:id/duplicate
-    PATCH  /api/deals/:id/won
-    PATCH  /api/deals/:id/lost
-[ ] update main.js
+    [ ] PATCH  /api/deals/:id/probability
+    [ ] POST   /api/deals/:id/duplicate
+    [ ] PATCH  /api/deals/:id/won
+    [ ] PATCH  /api/deals/:id/lost
+[x] update main.js
 ```
 
 ---
@@ -734,16 +734,16 @@
 ### TASK-020 — frontend: halaman pipeline `/wf-03`
 
 ```
-[ ] buat file: src/features/pipeline/services/deal-service.js
-[ ] buat file: src/features/pipeline/hooks/use-deals.js
+[x] buat file: src/features/pipeline/services/deal-service.js
+[x] buat file: src/features/pipeline/hooks/use-deals.js
 
-[ ] buat file: src/features/pipeline/components/KanbanBoard.jsx
+[x] buat file: src/features/pipeline/components/KanbanBoard.jsx
     - 5 kolom: prospek, negosiasi, penawaran, closing, instalasi
     - header kolom: nama stage + jumlah deals + total nilai
     - drag & drop menggunakan react-beautiful-dnd
     - saat drop → call PATCH /api/deals/:id/move-stage
 
-[ ] buat file: src/features/pipeline/components/KanbanCard.jsx
+[x] buat file: src/features/pipeline/components/KanbanCard.jsx
     - nama deal
     - nama customer
     - nilai deal (format rupiah)
@@ -775,7 +775,7 @@
     - funnel chart menggunakan recharts
     - 5 stage dengan nilai per stage
 
-[ ] buat file: src/pages/PipelinePage.jsx
+[x] buat file: src/pages/PipelinePage.jsx
     - stat cards → toggle board/table → KanbanBoard atau DealTable
     - PipelineSidebar di kiri
 ```

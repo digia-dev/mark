@@ -1,7 +1,7 @@
-# workflow.md — rapid-mark development workflow
+# workflow.md — Mark development workflow
 
 > dokumen ini mendefinisikan alur kerja pengembangan, git strategy, cara menambah fitur,
-> hingga alur deployment untuk project rapid-mark.
+> hingga alur deployment untuk project Mark.
 
 ---
 
@@ -11,11 +11,11 @@
 
 ```bash
 # clone repository
-git clone https://github.com/digia-dev/mark.git
-cd mark
+git clone https://github.com/[org]/Mark.git
+cd Mark
 
 # install backend
-cd mark-backend
+cd Mark-backend
 cp .env.example .env          # isi semua variabel
 npm install
 npx prisma generate
@@ -24,7 +24,7 @@ npx prisma db seed
 npm run dev                   # berjalan di port 3000
 
 # install frontend (terminal baru)
-cd ../mark-frontend
+cd ../Mark-frontend
 cp .env.example .env          # isi VITE_API_URL=http://localhost:3000
 npm install
 npm run dev                   # berjalan di port 5173
@@ -33,9 +33,9 @@ npm run dev                   # berjalan di port 5173
 ### 1.2 struktur monorepo
 
 ```
-mark/
-├── mark-backend/       # node-js + express + clean architecture
-├── mark-frontend/      # react-js + vite + feature-based
+Mark/
+├── Mark-backend/       # node-js + express + clean architecture
+├── Mark-frontend/      # react-js + vite + feature-based
 ├── docs/
 │   ├── design.md
 │   ├── tech-arch.md
@@ -330,7 +330,7 @@ buat migrasi baru untuk memperbaikinya.
 ### 6.1 struktur test
 
 ```
-rapid-mark-backend/
+Mark-backend/
 ├── src/
 └── tests/
     ├── unit/
@@ -583,5 +583,5 @@ npx prisma generate
 
 ---
 
-*workflow.md — rapid-mark isp sales & management system*
+*workflow.md — Mark isp sales & management system*
 *versi: 1.0*
