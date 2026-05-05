@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Play, 
-  ArrowRight, 
-  Users, 
-  Monitor, 
-  Calendar, 
-  BarChart2, 
-  Shield, 
-  Smile, 
-  Users2, 
-  Layers, 
-  Star, 
+import {
+  Play,
+  ArrowRight,
+  Users,
+  Monitor,
+  Calendar,
+  BarChart2,
+  Shield,
+  Smile,
+  Users2,
+  Layers,
+  Star,
   ChevronLeft,
   ChevronRight,
   Menu,
@@ -22,7 +22,7 @@ import {
 
 const LogoMark = () => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 24L12 8L16 18L20 8L26 24" stroke="url(#paint0_linear)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M6 24L12 8L16 18L20 8L26 24" stroke="url(#paint0_linear)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
     <defs>
       <linearGradient id="paint0_linear" x1="6" y1="8" x2="26" y2="24" gradientUnits="userSpaceOnUse">
         <stop stopColor="#3b82f6" />
@@ -49,10 +49,10 @@ const LaptopIllustration = () => (
     <g filter="url(#laptop-shadow)">
       {/* Laptop Lid (Bezel) */}
       <rect x="100" y="50" width="800" height="500" rx="20" fill="#1e293b" />
-      
+
       {/* Laptop Screen */}
       <rect x="115" y="65" width="770" height="465" rx="8" fill="#ffffff" />
-      
+
       {/* Camera */}
       <circle cx="500" cy="57" r="3" fill="#0f172a" />
 
@@ -61,10 +61,10 @@ const LaptopIllustration = () => (
         {/* Sidebar */}
         <rect x="0" y="0" width="140" height="465" rx="8" fill="#f8fafc" />
         <path d="M 0 8 L 140 8 L 140 465 L 0 465 Z" fill="#f8fafc" />
-        
+
         {/* Sidebar Logo */}
         <rect x="20" y="20" width="80" height="24" rx="4" fill="#e2e8f0" />
-        
+
         {/* Sidebar Menu Items */}
         <rect x="15" y="70" width="110" height="28" rx="6" fill="#0f172a" />
         <rect x="15" y="110" width="90" height="20" rx="4" fill="#e2e8f0" />
@@ -82,7 +82,7 @@ const LaptopIllustration = () => (
         {/* Dashboard Content */}
         <g transform="translate(160, 70)">
           <text x="0" y="15" fill="#0f172a" fontSize="18" fontWeight="bold" fontFamily="sans-serif">Dashboard</text>
-          
+
           {/* Stat Cards */}
           <g transform="translate(0, 40)">
             <rect x="0" y="0" width="140" height="70" rx="8" fill="#ffffff" filter="url(#inner-shadow)" />
@@ -112,7 +112,7 @@ const LaptopIllustration = () => (
             <text x="15" y="25" fill="#64748b" fontSize="12" fontWeight="bold" fontFamily="sans-serif">Grafik Revenue</text>
             <path d="M 20 150 Q 100 130, 150 100 T 260 50" stroke="#3b82f6" strokeWidth="3" fill="none" />
             <path d="M 20 120 Q 100 90, 150 70 T 260 30" stroke="#f97316" strokeWidth="3" fill="none" strokeDasharray="4 4" />
-            
+
             <rect x="295" y="0" width="295" height="180" rx="8" fill="#ffffff" filter="url(#inner-shadow)" />
             <text x="310" y="25" fill="#64748b" fontSize="12" fontWeight="bold" fontFamily="sans-serif">Pipeline Funnel</text>
             <polygon points="360,50 530,50 510,75 380,75" fill="#0f172a" />
@@ -122,7 +122,7 @@ const LaptopIllustration = () => (
           </g>
         </g>
       </g>
-      
+
       <path d="M40 550 L 960 550 L 990 575 C 995 580, 990 585, 980 585 L 20 585 C 10 585, 5 580, 10 575 Z" fill="#cbd5e1" />
       <path d="M450 550 L 550 550 L 555 555 L 445 555 Z" fill="#94a3b8" />
       <path d="M20 585 L 980 585 C 985 585, 985 590, 980 590 L 20 590 C 15 590, 15 585, 20 585 Z" fill="#94a3b8" />
@@ -132,28 +132,28 @@ const LaptopIllustration = () => (
 
 const CompanyLogos = () => (
   <div className="flex flex-wrap justify-center md:justify-between items-center gap-8 md:gap-4 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span className="font-bold text-xl tracking-tight">sinergi</span></div>
-    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20M2 12h20"/></svg><span className="font-bold text-xl tracking-tight">Cahaya</span></div>
-    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span className="font-bold text-xl tracking-tight uppercase">Maju Jaya</span></div>
-    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg><span className="font-bold text-xl tracking-tight uppercase">Nusantara</span></div>
-    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3h18v18H3zM21 3l-18 18M3 3l18 18"/></svg><span className="font-bold text-xl tracking-tight uppercase">Prima</span></div>
-    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="4" height="4"/><rect x="10" y="3" width="4" height="4"/><rect x="17" y="3" width="4" height="4"/><rect x="3" y="10" width="4" height="4"/><rect x="10" y="10" width="4" height="4"/><rect x="17" y="10" width="4" height="4"/></svg><span className="font-bold text-xl tracking-widest uppercase">Inovasi</span></div>
+    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg><span className="font-bold text-xl tracking-tight">sinergi</span></div>
+    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M12 2v20M2 12h20" /></svg><span className="font-bold text-xl tracking-tight">Cahaya</span></div>
+    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg><span className="font-bold text-xl tracking-tight uppercase">Maju Jaya</span></div>
+    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" /></svg><span className="font-bold text-xl tracking-tight uppercase">Nusantara</span></div>
+    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3h18v18H3zM21 3l-18 18M3 3l18 18" /></svg><span className="font-bold text-xl tracking-tight uppercase">Prima</span></div>
+    <div className="flex items-center gap-2 hover:scale-105 transition-transform"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="4" height="4" /><rect x="10" y="3" width="4" height="4" /><rect x="17" y="3" width="4" height="4" /><rect x="3" y="10" width="4" height="4" /><rect x="10" y="10" width="4" height="4" /><rect x="17" y="10" width="4" height="4" /></svg><span className="font-bold text-xl tracking-widest uppercase">Inovasi</span></div>
   </div>
 );
 
 const AvatarMale1 = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="24" r="24" fill="#e2e8f0"/>
-    <circle cx="24" cy="18" r="8" fill="#94a3b8"/>
-    <path d="M10 40C10 32.268 16.268 26 24 26C31.732 26 38 32.268 38 40V48H10V40Z" fill="#94a3b8"/>
+    <circle cx="24" cy="24" r="24" fill="#e2e8f0" />
+    <circle cx="24" cy="18" r="8" fill="#94a3b8" />
+    <path d="M10 40C10 32.268 16.268 26 24 26C31.732 26 38 32.268 38 40V48H10V40Z" fill="#94a3b8" />
   </svg>
 );
 
 const AvatarFemale = () => (
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="24" cy="24" r="24" fill="#ffedd5"/>
-    <circle cx="24" cy="18" r="7" fill="#fdba74"/>
-    <path d="M12 40C12 33.3726 17.3726 28 24 28C30.6274 28 36 33.3726 36 40V48H12V40Z" fill="#fdba74"/>
+    <circle cx="24" cy="24" r="24" fill="#ffedd5" />
+    <circle cx="24" cy="18" r="7" fill="#fdba74" />
+    <path d="M12 40C12 33.3726 17.3726 28 24 28C30.6274 28 36 33.3726 36 40V48H12V40Z" fill="#fdba74" />
   </svg>
 );
 
@@ -165,7 +165,7 @@ const CTAGraphic = () => (
     <rect x="40" y="60" width="60" height="8" rx="4" fill="#cbd5e1" />
     <path d="M 40 140 Q 90 100, 140 120 T 260 80" stroke="#3b82f6" strokeWidth="4" fill="none" strokeLinecap="round" />
     <circle cx="260" cy="80" r="6" fill="#3b82f6" className="drop-shadow-md" />
-    
+
     <g>
       <animateTransform attributeName="transform" type="translate" values="-10,80; -10,65; -10,80" dur="3s" repeatCount="indefinite" />
       <circle cx="20" cy="20" r="25" fill="#ffedd5" className="drop-shadow-lg" />
@@ -177,10 +177,10 @@ const CTAGraphic = () => (
       <path d="M20 5 A 15 15 0 1 1 5 20 L 20 20 Z" fill="#3b82f6" />
     </g>
     <g>
-       <animateTransform attributeName="transform" type="translate" values="50,150; 50,135; 50,150" dur="3.5s" repeatCount="indefinite" />
-       <rect width="40" height="40" rx="10" fill="#dcfce7" className="drop-shadow-lg" />
-       <rect x="10" y="20" width="6" height="10" rx="2" fill="#22c55e" />
-       <rect x="24" y="10" width="6" height="20" rx="2" fill="#22c55e" />
+      <animateTransform attributeName="transform" type="translate" values="50,150; 50,135; 50,150" dur="3.5s" repeatCount="indefinite" />
+      <rect width="40" height="40" rx="10" fill="#dcfce7" className="drop-shadow-lg" />
+      <rect x="10" y="20" width="6" height="10" rx="2" fill="#22c55e" />
+      <rect x="24" y="10" width="6" height="20" rx="2" fill="#22c55e" />
     </g>
   </svg>
 );
@@ -202,7 +202,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans overflow-x-hidden">
-      
+
       {/* NAVBAR */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-1' : 'bg-white/80 backdrop-blur-md py-3 border-b border-slate-100'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -215,7 +215,7 @@ export default function LandingPage() {
 
             {/* Desktop Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-sm font-semibold text-slate-600 hover:text-blue-600 flex items-center gap-1 transition-colors">Produk <ChevronRight className="w-4 h-4 rotate-90"/></a>
+              <a href="#" className="text-sm font-semibold text-slate-600 hover:text-blue-600 flex items-center gap-1 transition-colors">Produk <ChevronRight className="w-4 h-4 rotate-90" /></a>
               <a href="#" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Fitur</a>
               <a href="#" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Harga</a>
               <a href="#" className="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Tentang Kami</a>
@@ -231,9 +231,9 @@ export default function LandingPage() {
                   Coba Gratis
                 </Link>
               </div>
-              
+
               {/* Mobile Menu Button */}
-              <button 
+              <button
                 className="md:hidden p-2 text-slate-600 hover:text-blue-600 transition-colors"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
@@ -267,30 +267,30 @@ export default function LandingPage() {
       <section className="pt-24 pb-12 md:pt-32 md:pb-16 min-h-[90vh] flex items-center overflow-hidden relative">
         {/* Decorative background gradient */}
         <div className="absolute top-0 right-0 -z-10 w-full h-full bg-linear-to-b from-blue-50/50 to-white"></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
-            
+
             {/* Hero Text */}
             <div className="w-full lg:w-1/2 flex flex-col items-start text-left z-10 animate-in fade-in slide-in-from-left-8 duration-700">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100/50 text-blue-700 text-sm font-bold mb-6 border border-blue-200 shadow-sm">
                 <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
                 Satu platform untuk seluruh proses penjualan
               </div>
-              
+
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] text-slate-900 mb-6 tracking-tight">
                 Kelola Penjualan.<br />
                 Pantau Pipeline.<br />
                 Dapat <span className="text-[#f97316] relative inline-block">
                   Lebih Banyak Deal.
-                  <svg className="absolute w-full h-3 -bottom-1 left-0 text-orange-200" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none"/></svg>
+                  <svg className="absolute w-full h-3 -bottom-1 left-0 text-orange-200" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" /></svg>
                 </span>
               </h1>
-              
+
               <p className="text-lg text-slate-600 mb-8 max-w-lg leading-relaxed">
                 Mark membantu tim sales dan manajemen untuk mengelola prospek, pipeline, aktivitas, hingga laporan dalam satu sistem yang mudah digunakan.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mb-10">
                 <Link to="/login" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0B1B3D] hover:bg-[#152a55] text-white px-8 py-4 rounded-xl font-bold transition-all shadow-xl shadow-blue-900/20 hover:-translate-y-1">
                   Coba Gratis 14 Hari <ArrowRight className="w-5 h-5" />
@@ -304,11 +304,11 @@ export default function LandingPage() {
               <div className="flex flex-wrap items-center gap-6 text-sm text-slate-700 font-bold">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 rounded-lg text-blue-700"><Users className="w-5 h-5" /></div>
-                  Kelola prospek <br/>dengan mudah
+                  Kelola prospek <br />dengan mudah
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-indigo-100 rounded-lg text-indigo-700"><Monitor className="w-5 h-5" /></div>
-                  Pantau pipeline <br/>secara real-time
+                  Pantau pipeline <br />secara real-time
                 </div>
               </div>
             </div>
@@ -335,12 +335,12 @@ export default function LandingPage() {
       {/* FEATURES SECTION */}
       <section className="py-24 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="max-w-2xl">
               <span className="text-blue-600 font-black tracking-widest uppercase text-xs mb-3 block">Fitur Unggulan</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
-                Semua yang Anda Butuhkan<br/>untuk Penjualan yang Lebih Efektif
+                Semua yang Anda Butuhkan<br />untuk Penjualan yang Lebih Efektif
               </h2>
             </div>
             <a href="#" className="flex items-center gap-2 text-blue-600 font-bold hover:text-blue-800 hover:gap-3 transition-all">
@@ -349,7 +349,7 @@ export default function LandingPage() {
           </div>
 
           <div className="flex items-center gap-4 relative">
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
               {/* Feature 1 */}
               <div className="bg-white border border-slate-100 p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer">
@@ -391,7 +391,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">Laporan & Analitik</h3>
                 <p className="text-slate-500 leading-relaxed text-sm">
-                  Dapatkan insight penjualan secara real-time untuk keputusan bisnis yang lebih tepat.
+                  Dapat insight penjualan secara real-time untuk keputusan bisnis yang lebih tepat.
                 </p>
               </div>
             </div>
@@ -405,7 +405,7 @@ export default function LandingPage() {
       <section className="py-24 bg-slate-50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-16 lg:gap-20 items-center">
-            
+
             <div className="w-full lg:w-1/3">
               <span className="text-blue-600 font-black tracking-widest uppercase text-xs mb-3 block">Mengapa Mark?</span>
               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight mb-6">
@@ -450,10 +450,10 @@ export default function LandingPage() {
       {/* BOTTOM CTA SECTION */}
       <section className="py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto bg-linear-to-br from-[#0B1B3D] to-blue-900 rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row items-center relative shadow-2xl">
-          
+
           {/* Abstract Graphic */}
           <div className="w-full md:w-2/5 p-8 flex justify-center md:justify-start">
-             <CTAGraphic />
+            <CTAGraphic />
           </div>
 
           {/* Text & Buttons */}
@@ -481,7 +481,7 @@ export default function LandingPage() {
       <footer className="bg-white border-t border-slate-100 pt-16 pb-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 mb-16">
-            
+
             {/* Brand Col */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-2 mb-6">
@@ -493,8 +493,8 @@ export default function LandingPage() {
               </p>
               <div className="flex gap-4 text-slate-400">
                 <a href="#" className="p-2 bg-slate-50 rounded-lg hover:text-blue-600 hover:bg-blue-50 transition-colors"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg></a>
-                <a href="#" className="p-2 bg-slate-50 rounded-lg hover:text-pink-600 hover:bg-pink-50 transition-colors"><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-                <a href="#" className="p-2 bg-slate-50 rounded-lg hover:text-red-600 hover:bg-red-50 transition-colors"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.86-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M9.996,15.005l0-6.01L15.224,12L9.996,15.005z"/></svg></a>
+                <a href="#" className="p-2 bg-slate-50 rounded-lg hover:text-pink-600 hover:bg-pink-50 transition-colors"><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg></a>
+                <a href="#" className="p-2 bg-slate-50 rounded-lg hover:text-red-600 hover:bg-red-50 transition-colors"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.86-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M9.996,15.005l0-6.01L15.224,12L9.996,15.005z" /></svg></a>
                 <a href="#" className="p-2 bg-slate-50 rounded-lg hover:text-blue-800 hover:bg-blue-50 transition-colors"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" /></svg></a>
               </div>
             </div>

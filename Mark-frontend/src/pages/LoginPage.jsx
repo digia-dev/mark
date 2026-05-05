@@ -35,7 +35,7 @@ const DashboardIllustration = () => (
     {/* Main Dashboard Card */}
     <g filter="url(#shadow)">
       <rect x="100" y="120" width="600" height="380" rx="20" fill="white" />
-      
+
       {/* Sidebar */}
       <rect x="100" y="120" width="120" height="380" rx="20" fill="#f8fafc" />
       {/* Sidebar Logo area */}
@@ -79,7 +79,7 @@ const DashboardIllustration = () => (
         <line x1="15" y1="90" x2="200" y2="90" stroke="#e2e8f0" strokeDasharray="4 4" />
         <line x1="15" y1="130" x2="200" y2="130" stroke="#e2e8f0" strokeDasharray="4 4" />
         <line x1="15" y1="170" x2="200" y2="170" stroke="#e2e8f0" />
-        
+
         {/* Lines */}
         <path d="M 20 150 Q 60 120, 100 130 T 180 80" stroke="#3b82f6" strokeWidth="3" fill="none" />
         <circle cx="20" cy="150" r="4" fill="#3b82f6" />
@@ -96,14 +96,14 @@ const DashboardIllustration = () => (
       <g transform="translate(470, 220)">
         <rect x="0" y="0" width="210" height="250" rx="10" fill="#f8fafc" />
         <text x="15" y="25" fill="#64748b" fontSize="12" fontWeight="bold">Pipeline Funnel</text>
-        
+
         {/* Funnel Shapes */}
         <polygon points="50,50 160,50 150,80 60,80" fill="#0f172a" />
         <text x="105" y="70" fill="white" fontSize="10" textAnchor="middle">214</text>
-        
+
         <polygon points="60,85 150,85 140,115 70,115" fill="#3b82f6" />
         <text x="105" y="105" fill="white" fontSize="10" textAnchor="middle">86</text>
-        
+
         <polygon points="70,120 140,120 130,150 80,150" fill="#f97316" />
         <text x="105" y="140" fill="white" fontSize="10" textAnchor="middle">54</text>
 
@@ -137,7 +137,7 @@ const DashboardIllustration = () => (
       <path d="M15 45 L 25 30 L 35 35 L 45 15" stroke="#f97316" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M35 15 L 45 15 L 45 25" stroke="#f97316" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </g>
-    
+
     {/* Floating Element: Top Left Bar Chart */}
     <g transform="translate(50, 180)" filter="url(#soft-shadow)">
       <rect width="60" height="60" rx="16" fill="#ffedd5" />
@@ -170,14 +170,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#F4F7FB] flex items-center justify-center p-4 lg:p-8 font-sans text-slate-800">
       <div className="max-w-[1300px] w-full flex flex-col xl:flex-row items-center gap-12 xl:gap-20">
-        
+
         {/* --- Bagian Kiri: Teks & Ilustrasi --- */}
         <div className="flex-1 w-full max-w-2xl xl:max-w-none relative z-10 flex flex-col justify-center">
-          
+
           {/* Logo */}
           <div className="flex items-center gap-2 mb-6 xl:mb-8">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 24L12 8L16 18L20 8L26 24" stroke="url(#paint0_linear)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6 24L12 8L16 18L20 8L26 24" stroke="url(#paint0_linear)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
               <defs>
                 <linearGradient id="paint0_linear" x1="6" y1="8" x2="26" y2="24" gradientUnits="userSpaceOnUse">
                   <stop stopColor="#3b82f6" />
@@ -192,9 +192,9 @@ export default function LoginPage() {
           <h1 className="text-4xl md:text-5xl lg:text-[44px] xl:text-[52px] font-bold leading-[1.15] text-[#0f172a] mb-4 xl:mb-6">
             Kelola Penjualan.<br />
             Pantau Pipeline.<br />
-            Dapatkan <span className="text-[#f97316]">Lebih Banyak Deal.</span>
+            Dapat <span className="text-[#f97316]">Lebih Banyak Deal.</span>
           </h1>
-          
+
           {/* Subheading */}
           <p className="text-slate-500 text-base md:text-lg leading-relaxed max-w-[480px] mb-8">
             Mark membantu tim sales dan manajemen untuk mengelola prospek, pipeline, aktivitas, hingga laporan dalam satu sistem yang mudah digunakan.
@@ -209,7 +209,7 @@ export default function LoginPage() {
         {/* --- Bagian Kanan: Form Login --- */}
         <div className="w-full max-w-[520px] shrink-0 relative z-20">
           <div className="bg-white p-8 sm:p-10 lg:p-12 rounded-4xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100">
-            
+
             {/* Header Form */}
             <h2 className="text-2xl sm:text-3xl font-bold text-[#0f172a] mb-2">
               Selamat Datang Kembali! <span className="inline-block origin-bottom-right animate-wave">👋</span>
@@ -220,7 +220,7 @@ export default function LoginPage() {
 
             {/* Form */}
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-              
+
               {/* Input Email/Username */}
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-[#0f172a] block">
@@ -280,7 +280,7 @@ export default function LoginPage() {
                       className="peer appearance-none w-5 h-5 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500/20 checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
                     />
                     <svg className="absolute w-3 h-3 text-white opacity-0 peer-checked:opacity-100 pointer-events-none" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 5L4.5 8.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M1 5L4.5 8.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                   <span className="text-sm text-slate-600 group-hover:text-slate-800 transition-colors">Ingat saya</span>
@@ -330,10 +330,10 @@ export default function LoginPage() {
               </button>
               <button className="flex items-center justify-center gap-3 py-3 px-4 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
                 <svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 0H0V10H10V0Z" fill="#F25022"/>
-                  <path d="M21 0H11V10H21V0Z" fill="#7FBA00"/>
-                  <path d="M10 11H0V21H10V11Z" fill="#00A4EF"/>
-                  <path d="M21 11H11V21H21V11Z" fill="#FFB900"/>
+                  <path d="M10 0H0V10H10V0Z" fill="#F25022" />
+                  <path d="M21 0H11V10H21V0Z" fill="#7FBA00" />
+                  <path d="M10 11H0V21H10V11Z" fill="#00A4EF" />
+                  <path d="M21 11H11V21H21V11Z" fill="#FFB900" />
                 </svg>
                 <span className="text-sm font-semibold text-slate-700">Microsoft</span>
               </button>
@@ -343,7 +343,7 @@ export default function LoginPage() {
             <p className="text-center text-sm text-slate-500 mt-8">
               Belum punya akun? <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-700 hover:underline transition-all">Daftar sekarang</Link>
             </p>
-            
+
           </div>
         </div>
 
