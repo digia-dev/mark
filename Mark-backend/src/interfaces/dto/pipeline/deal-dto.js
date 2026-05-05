@@ -1,6 +1,6 @@
 const { z } = require('zod');
 
-const createDealDto = z.object({
+const baseDealSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   customer_id: z.number().int().optional(),
   lead_id: z.number().int().optional(),
@@ -11,11 +11,13 @@ const createDealDto = z.object({
   sales_id: z.number().int().optional(),
   area: z.string().optional(),
   notes: z.string().optional()
-}).refine(data => data.customer_id || data.lead_id, {
+});
+
+const createDealDto = baseDealSchema.refine(data => data.customer_id || data.lead_id, {
   message: "Either customer_id or lead_id must be provided"
 });
 
-const updateDealDto = createDealDto.partial();
+const updateDealDto = baseDealSchema.partial();
 
 const moveStageDto = z.object({
   targetStage: z.enum(['prospek', 'negosiasi', 'penawaran', 'closing', 'instalasi']),

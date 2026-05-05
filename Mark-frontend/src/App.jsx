@@ -11,7 +11,7 @@ import LeadPage from './pages/LeadPage';
 import PipelinePage from './pages/PipelinePage';
 import QuotationPage from './pages/QuotationPage';
 import TimelinePage from './pages/TimelinePage';
-import TicketPage from './pages/TicketPage';
+import TroubleTicketPage from './pages/TroubleTicketPage';
 import InvoicePage from './pages/InvoicePage';
 import PresentationPage from './pages/PresentationPage';
 import ReportPage from './pages/ReportPage';
@@ -59,7 +59,7 @@ function App() {
         <Route path="quotation" element={<QuotationPage />} />
         <Route path="presentation" element={<PresentationPage />} />
         <Route path="timeline" element={<TimelinePage />} />
-        <Route path="tickets" element={<TicketPage />} />
+        <Route path="tickets" element={<TroubleTicketPage />} />
         <Route path="invoices" element={<InvoicePage />} />
         <Route path="products" element={<ProductPage />} />
         <Route path="reports/*" element={<ReportPage />} />

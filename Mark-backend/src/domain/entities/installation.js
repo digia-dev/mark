@@ -48,7 +48,24 @@ class Installation {
     return new Date() > new Date(this.target_end_date);
   }
 
-  static generateNumber(sequence, year = new Date().getFullYear()) {
+  canUpdateStage(newStage) {
+    const stages = ['survey', 'preparation', 'installation', 'testing'];
+    const currentIndex = stages.indexOf(this.current_stage);
+    const nextIndex = stages.indexOf(newStage);
+    
+    // Allow moving forward or staying in the same stage
+    return nextIndex >= currentIndex;
+  }
+
+  getDuration() {
+    if (!this.start_date || !this.actual_end_date) return this.duration_days || 0;
+    const start = new Date(this.start_date);
+    const end = new Date(this.actual_end_date);
+    const diffTime = Math.abs(end - start);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
+
+  static generateInstNumber(sequence, year = new Date().getFullYear()) {
     return `INST-${year}-${sequence.toString().padStart(4, '0')}`;
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 
-const DealsBySalesChart = ({ data, isLoading }) => {
+const DealsBySalesChart = ({ data = [], isLoading }) => {
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse h-full">

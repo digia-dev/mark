@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { X, Save, Plus, Trash2, Package, User, Calculator, FileText, Info } from 'lucide-react';
 import * as Dialog from '@radix-ui/react-dialog';
+import QuotationItemRow from './QuotationItemRow';
 
 const quotationSchema = z.object({
   customer_id: z.number().optional(),
@@ -144,53 +145,15 @@ const QuotationForm = ({ isOpen, onClose, onSubmit, isLoading, customers = [], l
 
                   <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
                     {fields.map((field, index) => (
-                      <div key={field.id} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-4 relative group">
-                        <button 
-                          type="button" 
-                          onClick={() => remove(index)}
-                          className="absolute -top-2 -right-2 w-7 h-7 bg-white text-red-500 rounded-full flex items-center justify-center shadow-lg border border-gray-100 opacity-0 group-hover:opacity-100 transition-all hover:bg-red-50"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                          <div className="md:col-span-2 space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Pilih Produk (Opsional)</label>
-                            <select 
-                              onChange={(e) => handleProductSelect(index, e.target.value)}
-                              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold focus:outline-none focus:border-blue-900 transition-all"
-                            >
-                              <option value="">-- Pilih Produk --</option>
-                              {products.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-                            </select>
-                          </div>
-                          <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Jumlah</label>
-                            <input 
-                              {...register(`items.${index}.quantity`, { valueAsNumber: true })}
-                              type="number" 
-                              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold focus:outline-none focus:border-blue-900" 
-                            />
-                          </div>
-                          <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Harga Satuan</label>
-                            <input 
-                              {...register(`items.${index}.price`, { valueAsNumber: true })}
-                              type="number" 
-                              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold focus:outline-none focus:border-blue-900" 
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-1.5">
-                          <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nama / Deskripsi Item</label>
-                          <input 
-                            {...register(`items.${index}.name`)}
-                            className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-xs font-bold focus:outline-none focus:border-blue-900" 
-                            placeholder="Deskripsi produk atau layanan..."
-                          />
-                        </div>
-                      </div>
+                      <QuotationItemRow 
+                        key={field.id}
+                        index={index}
+                        register={register}
+                        remove={remove}
+                        products={products}
+                        onProductSelect={handleProductSelect}
+                        errors={errors}
+                      />
                     ))}
                   </div>
 

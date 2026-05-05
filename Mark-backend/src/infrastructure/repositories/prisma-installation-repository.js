@@ -4,11 +4,18 @@ class PrismaInstallationRepository {
   }
 
   async create(data) {
+    const { stages, ...rest } = data;
     return await this.prisma.installation.create({
-      data,
+      data: {
+        ...rest,
+        stages: stages ? {
+          create: stages
+        } : undefined
+      },
       include: {
         customer: { select: { name: true } },
-        technician: { select: { name: true } }
+        technician: { select: { name: true } },
+        stages: true
       }
     });
   }
@@ -82,6 +89,85 @@ class PrismaInstallationRepository {
       select: { inst_number: true }
     });
     return latest ? latest.inst_number : null;
+  }
+
+  async updateStage(id, stageData) {
+    // This is complex because stages is a related model or a JSON field?
+    // Based on findById include stages, it seems to be a related model: installation_stages
+    const { stage, status, notes } = stageData;
+    
+    // Update the specific stage record
+    await this.prisma.installation_stage.updateMany({
+      where: {
+        installation_id: id,
+        stage_name: stage
+      },
+      data: {
+        status,
+        notes,
+        updated_at: new Date()
+      }
+    });
+
+    // Update current_stage on main installation
+    return await this.prisma.installation.update({
+      where: { id },
+      data: {
+        current_stage: stage,
+        status: status === 'on-progress' ? 'on-progress' : (stage === 'testing' && status === 'done' ? 'done' : undefined)
+      },
+      include: {
+        stages: true,
+        customer: { select: { name: true } }
+      }
+    });
+  }
+
+  async assignTechnician(id, technician_id) {
+    return await this.prisma.installation.update({
+      where: { id },
+      data: { technician_id },
+      include: {
+        technician: { select: { name: true } },
+        customer: { select: { name: true } }
+      }
+    });
+  }
+
+  async getStats() {
+    const counts = await this.prisma.installation.groupBy({
+      by: ['status'],
+      _count: { id: true }
+    });
+
+    const overdueCount = await this.prisma.installation.count({
+      where: {
+        status: { notIn: ['done', 'cancelled'] },
+        target_end_date: { lt: new Date() }
+      }
+    });
+
+    return {
+      by_status: counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {}),
+      overdue: overdueCount
+    };
+  }
+
+  async getGanttData(filters) {
+    // Simplistic gantt data return
+    return await this.prisma.installation.findMany({
+      where: filters,
+      select: {
+        id: true,
+        inst_number: true,
+        scheduled_date: true,
+        target_end_date: true,
+        status: true,
+        current_stage: true,
+        customer: { select: { name: true } }
+      },
+      orderBy: { scheduled_date: 'asc' }
+    });
   }
 }
 

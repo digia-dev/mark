@@ -1,6 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { useTarget } from '../../features/report/hooks/use-target';
+import { useTarget } from '../../../features/report/hooks/use-target';
 
 const TargetWidget = ({ isCollapsed }) => {
   const currentMonth = new Date().getMonth() + 1;

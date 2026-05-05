@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import { ChevronDown, MoreVertical } from 'lucide-react';
 
-const RevenueChart = ({ data, isLoading }) => {
+const RevenueChart = ({ data = [], isLoading }) => {
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse">

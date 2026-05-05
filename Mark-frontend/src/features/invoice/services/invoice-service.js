@@ -1,4 +1,4 @@
-import axiosInstance from '../../../shared/services/axios-instance';
+import axiosInstance from '../../../lib/axios';
 
 const invoiceService = {
   getInvoices: async (params) => {

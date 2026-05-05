@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, User, MapPin, Clock, MoreVertical, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Calendar, User, MapPin, Clock, MoreVertical, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 const statusConfig = {

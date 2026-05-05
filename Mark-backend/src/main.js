@@ -17,6 +17,7 @@ const PrismaQuotationRepository = require('./infrastructure/repositories/prisma-
 const PrismaInstallationRepository = require('./infrastructure/repositories/prisma-installation-repository');
 const PrismaTroubleTicketRepository = require('./infrastructure/repositories/prisma-trouble-ticket-repository');
 const PrismaInvoiceRepository = require('./infrastructure/repositories/prisma-invoice-repository');
+const PrismaPaymentRepository = require('./infrastructure/repositories/prisma-payment-repository');
 const PrismaPresentationRepository = require('./infrastructure/repositories/prisma-presentation-repository');
 
 // 2. Use Cases (Auth)
@@ -92,14 +93,31 @@ const SendQuotationUseCase = require('./use-cases/quotation/send-quotation-use-c
 const DuplicateQuotationUseCase = require('./use-cases/quotation/duplicate-quotation-use-case');
 const GeneratePdfUseCase = require('./use-cases/quotation/generate-pdf-use-case');
 const ConvertToInvoiceUseCase = require('./use-cases/quotation/convert-to-invoice-use-case');
-const ScheduleInstallationUseCase = require('./use-cases/timeline/schedule-installation-use-case');
-const GetInstallationListUseCase = require('./use-cases/timeline/get-installation-list-use-case');
-const UpdateInstallationStatusUseCase = require('./use-cases/timeline/update-installation-status-use-case');
+const CreateInstallationUseCase = require('./use-cases/installation/create-installation-use-case');
+const GetInstallationListUseCase = require('./use-cases/installation/get-installation-list-use-case');
+const GetInstallationDetailUseCase = require('./use-cases/installation/get-installation-detail-use-case');
+const UpdateInstallationUseCase = require('./use-cases/installation/update-installation-use-case');
+const UpdateInstallationStageUseCase = require('./use-cases/installation/update-installation-stage-use-case');
+const AssignTechnicianUseCase = require('./use-cases/installation/assign-technician-use-case');
+const GetInstallationGanttUseCase = require('./use-cases/installation/get-installation-gantt-use-case');
+const GetInstallationStatsUseCase = require('./use-cases/installation/get-installation-stats-use-case');
 const CreateTicketUseCase = require('./use-cases/trouble-ticket/create-ticket-use-case');
 const GetTicketListUseCase = require('./use-cases/trouble-ticket/get-ticket-list-use-case');
+const GetTicketDetailUseCase = require('./use-cases/trouble-ticket/get-ticket-detail-use-case');
+const UpdateTicketUseCase = require('./use-cases/trouble-ticket/update-ticket-use-case');
 const UpdateTicketStatusUseCase = require('./use-cases/trouble-ticket/update-ticket-status-use-case');
+const AssignTicketUseCase = require('./use-cases/trouble-ticket/assign-ticket-use-case');
+const AddTicketNoteUseCase = require('./use-cases/trouble-ticket/add-ticket-note-use-case');
+const GetTicketStatsUseCase = require('./use-cases/trouble-ticket/get-ticket-stats-use-case');
 const CreateInvoiceUseCase = require('./use-cases/invoice/create-invoice-use-case');
 const GetInvoiceListUseCase = require('./use-cases/invoice/get-invoice-list-use-case');
+const GetInvoiceDetailUseCase = require('./use-cases/invoice/get-invoice-detail-use-case');
+const UpdateInvoiceUseCase = require('./use-cases/invoice/update-invoice-use-case');
+const DeleteInvoiceUseCase = require('./use-cases/invoice/delete-invoice-use-case');
+const RecordPaymentUseCase = require('./use-cases/invoice/record-payment-use-case');
+const SendInvoiceUseCase = require('./use-cases/invoice/send-invoice-use-case');
+const GenerateInvoicePdfUseCase = require('./use-cases/invoice/generate-pdf-use-case');
+const GetInvoiceStatsUseCase = require('./use-cases/invoice/get-invoice-stats-use-case');
 const CreatePresentationUseCase = require('./use-cases/presentation/create-presentation-use-case');
 const GetPresentationListUseCase = require('./use-cases/presentation/get-presentation-list-use-case');
 
@@ -161,6 +179,7 @@ const quotationRepository = new PrismaQuotationRepository(prisma);
 const installationRepository = new PrismaInstallationRepository(prisma);
 const troubleTicketRepository = new PrismaTroubleTicketRepository(prisma);
 const invoiceRepository = new PrismaInvoiceRepository(prisma);
+const paymentRepository = new PrismaPaymentRepository(prisma);
 const presentationRepository = new PrismaPresentationRepository(prisma);
 
 const loggerService = new LoggerService(prisma);
@@ -350,7 +369,7 @@ const duplicateQuotationUseCase = new DuplicateQuotationUseCase({ quotationRepos
 const generatePdfUseCase = new GeneratePdfUseCase({ quotationRepository, pdfService });
 const convertToInvoiceUseCase = new ConvertToInvoiceUseCase({ 
   quotationRepository, 
-  createInvoiceUseCase: new CreateInvoiceUseCase({ invoiceRepository }) // Pass the use-case
+  createInvoiceUseCase: new CreateInvoiceUseCase({ invoiceRepository })
 });
 
 const quotationController = new QuotationController({
@@ -367,34 +386,68 @@ const quotationController = new QuotationController({
 });
 
 // --- Timeline (Installation) Module ---
-const scheduleInstallationUseCase = new ScheduleInstallationUseCase({ installationRepository });
+const createInstallationUseCase = new CreateInstallationUseCase({ installationRepository });
 const getInstallationListUseCase = new GetInstallationListUseCase({ installationRepository });
-const updateInstallationStatusUseCase = new UpdateInstallationStatusUseCase({ installationRepository });
+const getInstallationDetailUseCase = new GetInstallationDetailUseCase({ installationRepository });
+const updateInstallationUseCase = new UpdateInstallationUseCase({ installationRepository });
+const updateInstallationStageUseCase = new UpdateInstallationStageUseCase({ installationRepository });
+const assignTechnicianUseCase = new AssignTechnicianUseCase({ installationRepository });
+const getInstallationGanttUseCase = new GetInstallationGanttUseCase({ installationRepository });
+const getInstallationStatsUseCase = new GetInstallationStatsUseCase({ installationRepository });
 
 const installationController = new InstallationController({
-  scheduleInstallationUseCase,
+  createInstallationUseCase,
   getInstallationListUseCase,
-  updateInstallationStatusUseCase
+  getInstallationDetailUseCase,
+  updateInstallationUseCase,
+  updateInstallationStageUseCase,
+  assignTechnicianUseCase,
+  getInstallationGanttUseCase,
+  getInstallationStatsUseCase
 });
 
 // --- Trouble Ticket Module ---
 const createTicketUseCase = new CreateTicketUseCase({ troubleTicketRepository });
 const getTicketListUseCase = new GetTicketListUseCase({ troubleTicketRepository });
+const getTicketDetailUseCase = new GetTicketDetailUseCase({ troubleTicketRepository });
+const updateTicketUseCase = new UpdateTicketUseCase({ troubleTicketRepository });
 const updateTicketStatusUseCase = new UpdateTicketStatusUseCase({ troubleTicketRepository });
+const assignTicketUseCase = new AssignTicketUseCase({ troubleTicketRepository });
+const addTicketNoteUseCase = new AddTicketNoteUseCase({ troubleTicketRepository });
+const getTicketStatsUseCase = new GetTicketStatsUseCase({ troubleTicketRepository });
 
 const troubleTicketController = new TroubleTicketController({
   createTicketUseCase,
   getTicketListUseCase,
-  updateTicketStatusUseCase
+  getTicketDetailUseCase,
+  updateTicketUseCase,
+  updateTicketStatusUseCase,
+  assignTicketUseCase,
+  addTicketNoteUseCase,
+  getTicketStatsUseCase
 });
 
 // --- Invoice & Payment Module ---
 const createInvoiceUseCase = new CreateInvoiceUseCase({ invoiceRepository });
 const getInvoiceListUseCase = new GetInvoiceListUseCase({ invoiceRepository });
+const getInvoiceDetailUseCase = new GetInvoiceDetailUseCase({ invoiceRepository });
+const updateInvoiceUseCase = new UpdateInvoiceUseCase({ invoiceRepository });
+const deleteInvoiceUseCase = new DeleteInvoiceUseCase({ invoiceRepository });
+const recordPaymentUseCase = new RecordPaymentUseCase({ invoiceRepository, paymentRepository });
+const sendInvoiceUseCase = new SendInvoiceUseCase({ invoiceRepository, mailService, notificationService });
+const generateInvoicePdfUseCase = new GenerateInvoicePdfUseCase({ invoiceRepository, pdfService });
+const getInvoiceStatsUseCase = new GetInvoiceStatsUseCase({ invoiceRepository });
 
 const invoiceController = new InvoiceController({
   createInvoiceUseCase,
-  getInvoiceListUseCase
+  getInvoiceListUseCase,
+  getInvoiceDetailUseCase,
+  updateInvoiceUseCase,
+  deleteInvoiceUseCase,
+  recordPaymentUseCase,
+  sendInvoiceUseCase,
+  generatePdfUseCase: generateInvoicePdfUseCase,
+  getInvoiceStatsUseCase
 });
 
 // --- Presentation Module ---

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TargetBulanIni = ({ data, isLoading }) => {
+const TargetBulanIni = ({ data = {}, isLoading }) => {
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse">

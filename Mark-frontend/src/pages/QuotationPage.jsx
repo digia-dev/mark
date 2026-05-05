@@ -3,11 +3,13 @@ import { Plus, Search, FileText, Download, Filter, Calendar } from 'lucide-react
 import { useQuotations, useCreateQuotation, useUpdateQuotationStatus } from '../features/quotation/hooks/use-quotations';
 import { useCustomers } from '../features/crm/hooks/use-customers';
 import { useLeads } from '../features/crm/hooks/use-leads';
-import { useProducts } from '../features/product/hooks/use-products';
+import { useProductList } from '../features/product/hooks/use-products';
 
 // Components
 import QuotationTable from '../features/quotation/components/QuotationTable';
 import QuotationForm from '../features/quotation/components/QuotationForm';
+import QuotationStatCards from '../features/quotation/components/QuotationStatCards';
+import QuotationDetailPanel from '../features/quotation/components/QuotationDetailPanel';
 
 const QuotationPage = () => {
   const [params, setParams] = useState({
@@ -19,11 +21,13 @@ const QuotationPage = () => {
   });
 
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedQuotation, setSelectedQuotation] = useState(null);
   
   const { data, isLoading } = useQuotations(params);
   const { data: customersData } = useCustomers({ limit: 100 });
   const { data: leadsData } = useLeads({ limit: 100 });
-  const { data: productsData } = useProducts({ limit: 100 });
+  const { data: productsData } = useProductList({ limit: 100 });
 
   const createMutation = useCreateQuotation();
   const updateStatusMutation = useUpdateQuotationStatus();
@@ -68,6 +72,17 @@ const QuotationPage = () => {
           </button>
         </div>
       </div>
+      
+      {/* Statistics Section */}
+      {!isLoading && (
+        <QuotationStatCards stats={{
+          total: data?.meta?.total || 0,
+          totalValue: 1250000000, // Dummy for now, ideally from meta
+          approved: 45,
+          conversionRate: 68,
+          averageValue: 25000000
+        }} />
+      )}
 
       {/* Filters & Search Bar */}
       <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -110,7 +125,10 @@ const QuotationPage = () => {
         meta={data?.meta || {}}
         isLoading={isLoading}
         onPageChange={(page) => setParams({ ...params, page })}
-        onView={(quot) => console.log('View detail:', quot)}
+        onView={(quot) => {
+          setSelectedQuotation(quot);
+          setIsDetailOpen(true);
+        }}
         onUpdateStatus={handleUpdateStatus}
       />
 
@@ -123,6 +141,13 @@ const QuotationPage = () => {
         customers={customersData?.data || []}
         leads={leadsData?.data || []}
         products={productsData?.data || []}
+      />
+
+      {/* Detail Panel */}
+      <QuotationDetailPanel 
+        isOpen={isDetailOpen}
+        onClose={() => setIsDetailOpen(false)}
+        quotation={selectedQuotation}
       />
     </div>
   );

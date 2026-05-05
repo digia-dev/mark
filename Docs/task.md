@@ -850,21 +850,21 @@
 ### TASK-022 — frontend: halaman quotation `/wf-03`
 
 ```
-[ ] buat file: src/features/quotation/services/quotation-service.js
-[ ] buat file: src/features/quotation/hooks/use-quotations.js
+[x] buat file: src/features/quotation/services/quotation-service.js
+[x] buat file: src/features/quotation/hooks/use-quotations.js
 
-[ ] buat file: src/features/quotation/components/QuotationTable.jsx
+[x] buat file: src/features/quotation/components/QuotationTable.jsx
     - tab status: semua, draft, sent, approved, rejected, expired
     - kolom: nomor, customer, nilai, valid until, sales, status badge, aksi
     - three-dot menu: edit, send, duplicate, download pdf, hapus
 
-[ ] buat file: src/features/quotation/components/QuotationDetailPanel.jsx
+[x] buat file: src/features/quotation/components/QuotationDetailPanel.jsx
     - tab: detail, item, syarat & ketentuan, riwayat, catatan, lampiran
     - progress tracker vertikal:
       draft created → sent → viewed → approved/rejected
     - ringkasan harga: subtotal, diskon, pajak 11%, total
 
-[ ] buat file: src/features/quotation/components/QuotationForm.jsx
+[x] buat file: src/features/quotation/components/QuotationForm.jsx
     - multi-step atau single large form
     - step 1: pilih customer (search dropdown) + data umum
     - step 2: tambah items (produk search dropdown + qty + harga + diskon)
@@ -872,14 +872,14 @@
     - live preview total (subtotal + tax + total)
     - validasi zod
 
-[ ] buat file: src/features/quotation/components/QuotationItemRow.jsx
+[x] buat file: src/features/quotation/components/QuotationItemRow.jsx
     - satu baris item: produk, deskripsi, qty, harga satuan, diskon, total
     - tombol hapus baris
 
-[ ] buat file: src/features/quotation/components/QuotationStatCards.jsx
+[x] buat file: src/features/quotation/components/QuotationStatCards.jsx
     - stat card: total, total value, approved, conversion rate, rata-rata nilai
 
-[ ] buat file: src/pages/QuotationPage.jsx
+[x] buat file: src/pages/QuotationPage.jsx
 ```
 
 ---
@@ -891,33 +891,33 @@
 ### TASK-023 — backend: installation module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/installation.js
+[x] buat domain entity: src/domain/entities/installation.js
     method:
     - generateInstNumber(sequence) → INST-yyyy-nnnn
     - canUpdateStage(newStage) → validasi stage transition
     - isOverdue() → cek target_end_date vs now
     - getDuration() → selisih start_date dan end_date
 
-[ ] buat interface repo: src/domain/repositories/installation-repository.js
+[x] buat interface repo: src/domain/repositories/installation-repository.js
 
-[ ] buat use-cases:
-    src/use-cases/installation/create-installation-use-case.js
+[x] buat use-cases:
+    [x] src/use-cases/installation/create-installation-use-case.js
       → auto-buat installation_stages awal (4 tahapan)
-    src/use-cases/installation/update-installation-use-case.js
-    src/use-cases/installation/get-installation-list-use-case.js
+    [x] src/use-cases/installation/update-installation-use-case.js
+    [x] src/use-cases/installation/get-installation-list-use-case.js
       → filter: status, sales_id, technician_id, date_range, customer_id
-    src/use-cases/installation/get-installation-gantt-use-case.js
+    [x] src/use-cases/installation/get-installation-gantt-use-case.js
       → return data dalam format gantt (start, end, stage, status per item)
-    src/use-cases/installation/get-installation-detail-use-case.js
-    src/use-cases/installation/update-installation-stage-use-case.js
+    [x] src/use-cases/installation/get-installation-detail-use-case.js
+    [x] src/use-cases/installation/update-installation-stage-use-case.js
       → update stage_status: scheduled → on-progress → done
-    src/use-cases/installation/assign-technician-use-case.js
-    src/use-cases/installation/get-installation-stats-use-case.js
+    [x] src/use-cases/installation/assign-technician-use-case.js
+    [x] src/use-cases/installation/get-installation-stats-use-case.js
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-installation-repository.js
-[ ] buat dto: src/interfaces/dtos/installation-dto.js
-[ ] buat controller: src/interfaces/controllers/installation-controller.js
-[ ] buat routes: src/interfaces/routes/installation-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-installation-repository.js
+[x] buat dto: src/interfaces/dtos/installation-dto.js
+[x] buat controller: src/interfaces/controllers/installation-controller.js
+[x] buat routes: src/interfaces/routes/installation-routes.js
     GET    /api/installations
     GET    /api/installations/gantt
     POST   /api/installations
@@ -925,7 +925,7 @@
     PUT    /api/installations/:id
     PATCH  /api/installations/:id/update-stage
     PATCH  /api/installations/:id/assign-technician
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -933,35 +933,35 @@
 ### TASK-024 — frontend: halaman timeline instalasi `/wf-03`
 
 ```
-[ ] buat file: src/features/timeline/services/installation-service.js
-[ ] buat file: src/features/timeline/hooks/use-installations.js
+[x] buat file: src/features/timeline/services/installation-service.js
+[x] buat file: src/features/timeline/hooks/use-installations.js
 
-[ ] buat file: src/features/timeline/components/GanttChart.jsx
+[x] buat file: src/features/timeline/components/GanttChart.jsx
     - gantt chart dari recharts atau custom SVG
     - setiap row: 1 instalasi dengan bar per stage
     - warna per status: survey(biru), instalasi(orange), aktivasi(hijau), selesai(teal), tertunda(merah)
     - legenda warna di bawah
     - hover tooltip: detail instalasi
 
-[ ] buat file: src/features/timeline/components/InstallationTable.jsx
+[x] buat file: src/features/timeline/components/InstallationTable.jsx
     - view alternatif tabel
     - kolom: nomor, customer, paket, sales, teknisi, mulai, target selesai, status
 
-[ ] buat file: src/features/timeline/components/InstallationDetailPanel.jsx
+[x] buat file: src/features/timeline/components/InstallationDetailPanel.jsx
     - tab: detail, aktivitas, dokumen, catatan
     - informasi: nomor, sales, paket, alamat, mulai, target, durasi, status
     - progress tahapan vertikal:
       survey → desain & penawaran → instalasi → aktivasi
       dengan status & tanggal per tahapan
 
-[ ] buat file: src/features/timeline/components/InstallationForm.jsx
+[x] buat file: src/features/timeline/components/InstallationForm.jsx
     - field: customer, deal, sales, teknisi, paket/layanan, alamat,
       lat/lng, mulai, target selesai, notes
 
-[ ] buat file: src/features/timeline/components/InstallationStatCards.jsx
+[x] buat file: src/features/timeline/components/InstallationStatCards.jsx
     - stat card: total, scheduled, on-progress, selesai, tertunda
 
-[ ] buat file: src/pages/TimelinePage.jsx
+[x] buat file: src/pages/TimelinePage.jsx
     - stat cards → tab (gantt / table) → GanttChart atau InstallationTable
 ```
 
@@ -974,7 +974,7 @@
 ### TASK-025 — backend: trouble ticket module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/trouble-ticket.js
+[x] buat domain entity: src/domain/entities/trouble-ticket.js
     method:
     - generateTicketNumber(sequence) → TT-yyyy-nnnn
     - isOverSla() → cek sla_deadline vs now
@@ -982,27 +982,27 @@
     - canClose() → status === 'resolved'
     - canReopen() → status === 'closed'
 
-[ ] buat interface repo: src/domain/repositories/trouble-ticket-repository.js
+[x] buat interface repo: src/domain/repositories/trouble-ticket-repository.js
 
-[ ] buat use-cases:
-    src/use-cases/trouble-ticket/create-ticket-use-case.js
+[x] buat use-cases:
+    [x] src/use-cases/trouble-ticket/create-ticket-use-case.js
       → hitung sla_deadline berdasarkan prioritas:
         critical: 4 jam, high: 8 jam, medium: 24 jam, low: 48 jam
-    src/use-cases/trouble-ticket/update-ticket-use-case.js
-    src/use-cases/trouble-ticket/get-ticket-list-use-case.js
+    [x] src/use-cases/trouble-ticket/update-ticket-use-case.js
+    [x] src/use-cases/trouble-ticket/get-ticket-list-use-case.js
       → filter: status, priority, assigned_to, customer_id, category, date_range
-    src/use-cases/trouble-ticket/get-ticket-detail-use-case.js
-    src/use-cases/trouble-ticket/update-ticket-status-use-case.js
+    [x] src/use-cases/trouble-ticket/get-ticket-detail-use-case.js
+    [x] src/use-cases/trouble-ticket/update-ticket-status-use-case.js
       → validasi transisi: open → in-progress → resolved → closed
-    src/use-cases/trouble-ticket/assign-ticket-use-case.js
-    src/use-cases/trouble-ticket/add-ticket-note-use-case.js
-    src/use-cases/trouble-ticket/get-ticket-stats-use-case.js
+    [x] src/use-cases/trouble-ticket/assign-ticket-use-case.js
+    [x] src/use-cases/trouble-ticket/add-ticket-note-use-case.js
+    [x] src/use-cases/trouble-ticket/get-ticket-stats-use-case.js
       → total, open, in-progress, resolved, closed, rata-rata resolusi
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-trouble-ticket-repository.js
-[ ] buat dto: src/interfaces/dtos/trouble-ticket-dto.js
-[ ] buat controller: src/interfaces/controllers/trouble-ticket-controller.js
-[ ] buat routes: src/interfaces/routes/trouble-ticket-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-trouble-ticket-repository.js
+[x] buat dto: src/interfaces/dtos/trouble-ticket-dto.js
+[x] buat controller: src/interfaces/controllers/trouble-ticket-controller.js
+[x] buat routes: src/interfaces/routes/trouble-ticket-routes.js
     GET    /api/trouble-tickets
     POST   /api/trouble-tickets
     GET    /api/trouble-tickets/:id
@@ -1010,7 +1010,7 @@
     PATCH  /api/trouble-tickets/:id/status
     PATCH  /api/trouble-tickets/:id/assign
     POST   /api/trouble-tickets/:id/notes
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -1018,36 +1018,36 @@
 ### TASK-026 — frontend: halaman trouble ticket `/wf-03`
 
 ```
-[ ] buat file: src/features/trouble-ticket/services/ticket-service.js
-[ ] buat file: src/features/trouble-ticket/hooks/use-tickets.js
+[x] buat file: src/features/trouble-ticket/services/ticket-service.js
+[x] buat file: src/features/trouble-ticket/hooks/use-tickets.js
 
-[ ] buat file: src/features/trouble-ticket/components/TicketTable.jsx
+[x] buat file: src/features/trouble-ticket/components/TicketTable.jsx
     - tab: semua, open, in-progress, resolved, closed
     - kolom: nomor, customer, kategori, prioritas badge, status badge,
       sla, assigned to, tanggal, aksi
 
-[ ] buat file: src/features/trouble-ticket/components/TicketDetailPanel.jsx
+[x] buat file: src/features/trouble-ticket/components/TicketDetailPanel.jsx
     - informasi tiket: nomor, tanggal, prioritas, status, sla target
     - SLA timer: ring timer countdown (sisa waktu atau melewati deadline)
     - PIC & progress: nama penanggung jawab + tim teknis + progress bar
     - quick actions: update status, tambah catatan, upload lampiran, close
     - tab: detail, aktivitas, catatan, lampiran, riwayat, sla
 
-[ ] buat file: src/features/trouble-ticket/components/SlaTimer.jsx
+[x] buat file: src/features/trouble-ticket/components/SlaTimer.jsx
     - ring/donut animasi countdown
     - berubah merah jika < 20% waktu tersisa atau sudah lewat
 
-[ ] buat file: src/features/trouble-ticket/components/TicketForm.jsx
+[x] buat file: src/features/trouble-ticket/components/TicketForm.jsx
     - field: customer, kategori, sub-kategori, prioritas, sumber,
       deskripsi keluhan, assigned to, lampiran
 
-[ ] buat file: src/features/trouble-ticket/components/TicketNoteForm.jsx
+[x] buat file: src/features/trouble-ticket/components/TicketNoteForm.jsx
     - tambah catatan internal ke tiket
 
-[ ] buat file: src/features/trouble-ticket/components/TicketStatCards.jsx
+[x] buat file: src/features/trouble-ticket/components/TicketStatCards.jsx
     - stat card: total, open, in-progress, resolved, closed, rata-rata resolusi
 
-[ ] buat file: src/pages/TroubleTicketPage.jsx
+[x] buat file: src/pages/TroubleTicketPage.jsx
 ```
 
 ---
@@ -1059,7 +1059,7 @@
 ### TASK-027 — backend: invoice & payment module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/invoice.js
+[x] buat domain entity: src/domain/entities/invoice.js
     method:
     - generateInvoiceNumber(sequence) → INV-yyyy-nnnn
     - calculateTotal(items) → subtotal + tax - discount = total
@@ -1070,14 +1070,14 @@
       → partial jika paidAmount < total
       → paid jika paidAmount >= total
 
-[ ] buat domain entity: src/domain/entities/payment.js
+[x] buat domain entity: src/domain/entities/payment.js
     method:
     - generatePaymentNumber(sequence) → PAY-yyyy-nnnn
 
-[ ] buat interface repo: src/domain/repositories/invoice-repository.js
-[ ] buat interface repo: src/domain/repositories/payment-repository.js
+[x] buat interface repo: src/domain/repositories/invoice-repository.js
+[x] buat interface repo: src/domain/repositories/payment-repository.js
 
-[ ] buat use-cases:
+[x] buat use-cases:
     src/use-cases/invoice/create-invoice-use-case.js
       → bisa dibuat manual atau dari quotation (convert)
     src/use-cases/invoice/update-invoice-use-case.js
@@ -1096,11 +1096,11 @@
     src/use-cases/invoice/get-invoice-stats-use-case.js
       → total invoice, total penagihan, total terbayar, total terhutang
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-invoice-repository.js
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-payment-repository.js
-[ ] buat dto: src/interfaces/dtos/invoice-dto.js
-[ ] buat controller: src/interfaces/controllers/invoice-controller.js
-[ ] buat routes: src/interfaces/routes/invoice-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-invoice-repository.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-payment-repository.js
+[x] buat dto: src/interfaces/dtos/invoice-dto.js
+[x] buat controller: src/interfaces/controllers/invoice-controller.js
+[x] buat routes: src/interfaces/routes/invoice-routes.js
     GET    /api/invoices
     POST   /api/invoices
     GET    /api/invoices/:id
@@ -1109,7 +1109,7 @@
     POST   /api/invoices/:id/record-payment
     PATCH  /api/invoices/:id/send
     GET    /api/invoices/:id/pdf
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -1117,33 +1117,33 @@
 ### TASK-028 — frontend: halaman invoices `/wf-03`
 
 ```
-[ ] buat file: src/features/invoice/services/invoice-service.js
-[ ] buat file: src/features/invoice/hooks/use-invoices.js
+[x] buat file: src/features/invoice/services/invoice-service.js
+[x] buat file: src/features/invoice/hooks/use-invoices.js
 
-[ ] buat file: src/features/invoice/components/InvoiceTable.jsx
+[x] buat file: src/features/invoice/components/InvoiceTable.jsx
     - tab: semua, draft, unpaid, partial, paid, overdue
     - kolom: nomor, customer, total, jatuh tempo, sales, status, aksi
 
-[ ] buat file: src/features/invoice/components/InvoiceDetailPanel.jsx
+[x] buat file: src/features/invoice/components/InvoiceDetailPanel.jsx
     - informasi: nomor, tanggal, jatuh tempo, periode layanan, sales, status
     - ringkasan: subtotal, ppn, total, terbayar, sisa tagihan
     - cap "LUNAS" watermark jika paid
     - riwayat pembayaran: list kronologis (nomor, tanggal, metode, nominal)
     - tab: detail, item, pembayaran, riwayat, catatan, lampiran
 
-[ ] buat file: src/features/invoice/components/InvoiceForm.jsx
+[x] buat file: src/features/invoice/components/InvoiceForm.jsx
     - mirip quotation form
     - field: customer, period, due_date, items (produk + qty + harga), notes
 
-[ ] buat file: src/features/invoice/components/RecordPaymentModal.jsx
+[x] buat file: src/features/invoice/components/RecordPaymentModal.jsx
     - modal input pembayaran
     - field: tanggal, nominal, metode (transfer/cash/qris/virtual account), referensi/nomor bukti
     - tampilkan sisa tagihan yang harus dibayar
 
-[ ] buat file: src/features/invoice/components/InvoiceStatCards.jsx
+[x] buat file: src/features/invoice/components/InvoiceStatCards.jsx
     - total invoice, total penagihan, terbayar, terhutang, rata-rata pembayaran
 
-[ ] buat file: src/pages/InvoicePage.jsx
+[x] buat file: src/pages/InvoicePage.jsx
 ```
 
 ---
@@ -1155,14 +1155,14 @@
 ### TASK-029 — backend: presentation module `/wf-01` `/wf-05`
 
 ```
-[ ] buat domain entity: src/domain/entities/presentation.js
+[x] buat domain entity: src/domain/entities/presentation.js
     method:
     - generatePresNumber(sequence) → PRES-yyyy-nnnn-nnn
     - canShare() → status !== 'draft'
 
-[ ] buat interface repo: src/domain/repositories/presentation-repository.js
+[x] buat interface repo: src/domain/repositories/presentation-repository.js
 
-[ ] buat use-cases:
+[~] buat use-cases:
     src/use-cases/presentation/create-presentation-use-case.js
     src/use-cases/presentation/update-presentation-use-case.js
     src/use-cases/presentation/get-presentation-list-use-case.js
@@ -1173,10 +1173,10 @@
       → buat unique share token, simpan ke database
     src/use-cases/presentation/get-presentation-templates-use-case.js
 
-[ ] buat prisma repo: src/infrastructure/repositories/prisma-presentation-repository.js
-[ ] buat dto: src/interfaces/dtos/presentation-dto.js
-[ ] buat controller: src/interfaces/controllers/presentation-controller.js
-[ ] buat routes: src/interfaces/routes/presentation-routes.js
+[x] buat prisma repo: src/infrastructure/repositories/prisma-presentation-repository.js
+[x] buat dto: src/interfaces/dtos/presentation-dto.js
+[x] buat controller: src/interfaces/controllers/presentation-controller.js
+[x] buat routes: src/interfaces/routes/presentation-routes.js
     GET    /api/presentations
     POST   /api/presentations
     GET    /api/presentations/:id
@@ -1185,7 +1185,7 @@
     GET    /api/presentations/:id/pdf
     POST   /api/presentations/:id/share
     GET    /api/presentation-templates
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -1193,23 +1193,23 @@
 ### TASK-030 — frontend: halaman presentation `/wf-03`
 
 ```
-[ ] buat file: src/features/presentation/services/presentation-service.js
-[ ] buat file: src/features/presentation/hooks/use-presentations.js
+[x] buat file: src/features/presentation/services/presentation-service.js
+[x] buat file: src/features/presentation/hooks/use-presentations.js
 
-[ ] buat file: src/features/presentation/components/PresentationTable.jsx
+[x] buat file: src/features/presentation/components/PresentationTable.jsx
     - tab: semua, dipresentasikan, draft, template, arsip
 
-[ ] buat file: src/features/presentation/components/PresentationPreviewPanel.jsx
+[x] buat file: src/features/presentation/components/PresentationPreviewPanel.jsx
     - slide thumbnail + navigasi prev/next
     - outline presentasi (daftar judul slide)
     - info: customer, sales, produk, tanggal, status
     - tombol: edit, download pdf, presentasikan, bagikan
 
-[ ] buat file: src/features/presentation/components/PresentationForm.jsx
+[x] buat file: src/features/presentation/components/PresentationForm.jsx
     - field: judul, customer, produk yang dipresentasikan, tanggal, status
     - editor slide (title, content, layout per slide)
 
-[ ] buat file: src/pages/PresentationPage.jsx
+[x] buat file: src/pages/PresentationPage.jsx
 ```
 
 ---
@@ -1221,7 +1221,7 @@
 ### TASK-031 — backend: dashboard endpoint `/wf-05`
 
 ```
-[ ] buat use-case: src/use-cases/report/get-dashboard-stats-use-case.js
+[x] buat use-case: src/use-cases/report/get-dashboard-stats-use-case.js
     return:
     - stat cards: total_customers, revenue_bulan_ini (% vs bulan lalu),
       deals_closing, instalasi_aktif, trouble_ticket_open
@@ -1233,7 +1233,7 @@
     - lead terbaru: 3 lead terbaru
     - tugas mendatang: tasks/follow-up dari interactions
 
-[ ] buat use-case: src/use-cases/report/get-sales-report-use-case.js
+[x] buat use-case: src/use-cases/report/get-sales-report-use-case.js
     - stat cards: total deals, total revenue, rata-rata nilai, win rate
     - grafik sales over time vs target (line chart)
     - top 5 sales by value
@@ -1241,26 +1241,26 @@
     - sales by area (donut)
     - tabel detail per sales
 
-[ ] buat use-case: src/use-cases/report/get-pipeline-report-use-case.js
+[x] buat use-case: src/use-cases/report/get-pipeline-report-use-case.js
     - stat cards: total pipeline value, deals per stage, avg deal size
     - pipeline trend (line chart)
     - pipeline by salesperson (horizontal bar)
     - tabel top deals
 
-[ ] buat use-case: src/use-cases/report/get-product-performance-use-case.js
+[x] buat use-case: src/use-cases/report/get-product-performance-use-case.js
     - top 5 produk terlaris
     - revenue by product (horizontal bar)
     - distribusi teknologi (donut)
     - tabel performa lengkap
 
-[ ] buat route: src/interfaces/routes/report-routes.js
+[x] buat route: src/interfaces/routes/report-routes.js
     GET /api/reports/dashboard       → semua role
     GET /api/reports/sales           → super-admin, admin, sales (own)
     GET /api/reports/pipeline        → super-admin, admin, sales
     GET /api/reports/product-performance
     GET /api/reports/conversion
     GET /api/reports/export
-[ ] update main.js
+[x] update main.js
 ```
 
 ---
@@ -1268,65 +1268,65 @@
 ### TASK-032 — frontend: halaman dashboard `/wf-03`
 
 ```
-[ ] buat file: src/features/report/services/report-service.js
-[ ] buat file: src/features/report/hooks/use-dashboard.js
-[ ] buat file: src/features/report/hooks/use-reports.js
+[x] buat file: src/features/report/services/report-service.js
+[x] buat file: src/features/report/hooks/use-dashboard.js
+[x] buat file: src/features/report/hooks/use-reports.js
 
-[ ] buat file: src/features/report/components/DashboardStatCards.jsx
+[x] buat file: src/features/report/components/DashboardStatCards.jsx
     - 5 stat cards: customers, revenue, deals closing, instalasi aktif, trouble ticket
     - persentase perubahan vs bulan lalu (▲ hijau / ▼ merah)
 
-[ ] buat file: src/features/report/components/RevenueChart.jsx
+[x] buat file: src/features/report/components/RevenueChart.jsx
     - line chart recharts: revenue (biru) vs target (oranye dashed)
     - 12 bulan sumbu x
     - tooltip: nilai bulan terpilih
 
-[ ] buat file: src/features/report/components/PipelineFunnelDashboard.jsx
+[x] buat file: src/features/report/components/PipelineFunnelDashboard.jsx
     - funnel chart vertikal recharts
     - 5 stage dengan warna berbeda
     - label count di dalam bar
     - conversion rate di bawah
 
-[ ] buat file: src/features/report/components/CustomerMap.jsx
+[x] buat file: src/features/report/components/CustomerMap.jsx
     - leaflet-js map
     - cluster marker: lingkaran dengan angka
     - legenda cluster (1-10, 11-30, 31-50, >50)
     - filter dropdown area di sudut kanan atas
 
-[ ] buat file: src/features/report/components/DealsBySalesChart.jsx
+[x] buat file: src/features/report/components/DealsBySalesChart.jsx
     - horizontal bar chart top 5 sales
     - warna berbeda per sales
     - label nilai di ujung bar
 
-[ ] buat file: src/features/report/components/RecentActivity.jsx
+[x] buat file: src/features/report/components/RecentActivity.jsx
     - feed kronologis
     - ikon per jenis aktivitas (quotation, deal, instalasi, dll)
     - link "Lihat Semua"
 
-[ ] buat file: src/features/report/components/RecentLeads.jsx
+[x] buat file: src/features/report/components/RecentLeads.jsx
     - list 3 lead terbaru
     - avatar initial + nama + produk diminati + tanggal
 
-[ ] buat file: src/features/report/components/UpcomingTasks.jsx
+[x] buat file: src/features/report/components/UpcomingTasks.jsx
     - daftar task/follow-up
     - checkbox selesai
     - nama customer + tanggal + assigned sales badge
 
-[ ] buat file: src/features/report/components/PipelineOverviewTable.jsx
+[x] buat file: src/features/report/components/PipelineOverviewTable.jsx
     - tabel horizontal per stage
     - 5 kolom: PROSPEK, NEGOSIASI, PENAWARAN, CLOSING, INSTALASI
     - header kolom: nama stage + total deals + total nilai
     - preview 3 deal terbaru per stage
     - link "+ N deals lainnya"
 
-[ ] buat file: src/pages/DashboardPage.jsx
+[x] buat file: src/pages/DashboardPage.jsx
     - date range picker + filter sales di atas
     - tombol refresh data
     - layout grid: stat cards → revenue chart + funnel + activity
     - customer map (full width)
     - deals by sales + pipeline overview
 
-[ ] buat file: src/pages/ReportPage.jsx
+[x] buat file: src/pages/ReportPage.jsx
     - sub-menu: overview, sales, pipeline, product, conversion
     - masing-masing sub-page dengan stat cards + charts + tabel
 ```

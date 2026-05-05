@@ -57,7 +57,7 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
     );
   }
 
-  if (!customer && isOpen) return null;
+  if (!customer) return null;
 
   const tabs = [
     { id: 'informasi', label: 'Informasi' },
@@ -89,15 +89,15 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
       <div className="px-6 py-4 bg-gray-50/50 grid grid-cols-2 gap-3 border-b border-gray-100">
         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Layanan</p>
-          <p className="text-sm font-black text-blue-900">{customer.customer_services?.length || 0} Aktif</p>
+          <p className="text-sm font-black text-blue-900">{customer?.customer_services?.length || 0} Aktif</p>
         </div>
         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Tagihan</p>
-          <p className="text-sm font-black text-blue-900">Rp {new Intl.NumberFormat('id-ID').format(customer.invoices?.reduce((acc, inv) => acc + inv.total, 0) || 0)}</p>
+          <p className="text-sm font-black text-blue-900">Rp {new Intl.NumberFormat('id-ID').format(customer?.invoices?.reduce((acc, inv) => acc + inv.total, 0) || 0)}</p>
         </div>
         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Outstanding</p>
-          <p className="text-sm font-black text-orange-600">Rp {new Intl.NumberFormat('id-ID').format(customer.invoices?.filter(i => i.status !== 'paid').reduce((acc, inv) => acc + inv.total, 0) || 0)}</p>
+          <p className="text-sm font-black text-orange-600">Rp {new Intl.NumberFormat('id-ID').format(customer?.invoices?.filter(i => i.status !== 'paid').reduce((acc, inv) => acc + inv.total, 0) || 0)}</p>
         </div>
         <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Tiket Aktif</p>
@@ -122,26 +122,26 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
           <>
             <Section title="Informasi Dasar">
               <div className="grid grid-cols-2 gap-4">
-                <InfoItem icon={User} label="Contact Person" value={customer.contact_person} />
-                <InfoItem icon={Building2} label="Sektor" value={customer.sector} />
-                <InfoItem icon={Globe} label="Tipe" value={customer.type} color="bg-blue-50 text-blue-600" />
-                <InfoItem icon={Calendar} label="Status" value={customer.status} color={customer.status === 'active' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} />
+                <InfoItem icon={User} label="Contact Person" value={customer?.contact_person} />
+                <InfoItem icon={Building2} label="Sektor" value={customer?.sector} />
+                <InfoItem icon={Globe} label="Tipe" value={customer?.type} color="bg-blue-50 text-blue-600" />
+                <InfoItem icon={Calendar} label="Status" value={customer?.status} color={customer?.status === 'active' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'} />
               </div>
             </Section>
 
             <Section title="Kontak & Alamat">
               <div className="space-y-4">
-                <InfoItem icon={Phone} label="Telepon" value={customer.phone} />
-                <InfoItem icon={Mail} label="Email" value={customer.email} />
-                <InfoItem icon={MapPin} label="Alamat" value={customer.address} />
+                <InfoItem icon={Phone} label="Telepon" value={customer?.phone} />
+                <InfoItem icon={Mail} label="Email" value={customer?.email} />
+                <InfoItem icon={MapPin} label="Alamat" value={customer?.address} />
                 <div className="ml-11 grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Kota</p>
-                    <p className="text-sm font-black text-gray-900">{customer.city || '-'}</p>
+                    <p className="text-sm font-black text-gray-900">{customer?.city || '-'}</p>
                   </div>
                   <div>
                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Area</p>
-                    <p className="text-sm font-black text-gray-900">{customer.area || '-'}</p>
+                    <p className="text-sm font-black text-gray-900">{customer?.area || '-'}</p>
                   </div>
                 </div>
               </div>
@@ -151,7 +151,7 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
 
         {activeTab === 'layanan' && (
           <Section title="Layanan Aktif" action={<button className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest">+ Tambah</button>}>
-            {customer.customer_services?.length > 0 ? (
+            {customer?.customer_services?.length > 0 ? (
               customer.customer_services.map(service => (
                 <div key={service.id} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-blue-200 transition-all">
                   <div className="flex justify-between items-start mb-2">
@@ -175,7 +175,7 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
 
         {activeTab === 'keuangan' && (
           <Section title="Riwayat Keuangan" action={<button className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest">Semua</button>}>
-             {customer.invoices?.length > 0 ? (
+             {customer?.invoices?.length > 0 ? (
                customer.invoices.map(invoice => (
                  <div key={invoice.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-all cursor-pointer mb-3 last:mb-0">
                     <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
         {activeTab === 'aktivitas' && (
           <Section title="Aktivitas & Log" action={<button className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest">+ Catatan</button>}>
              <div className="relative space-y-6 before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-[2px] before:bg-gray-100">
-                {customer.interactions?.map(log => (
+                {customer?.interactions?.map(log => (
                   <div key={log.id} className="relative pl-10">
                      <div className="absolute left-0 top-1 w-8 h-8 rounded-full bg-white border-4 border-white shadow-sm flex items-center justify-center z-10">
                         <div className="w-2 h-2 rounded-full bg-blue-600" />

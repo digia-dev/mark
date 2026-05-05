@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { Calendar, List, LayoutGrid, Plus, Filter, Download, Search } from 'lucide-react';
+import { Calendar, List, Plus, Filter, Search, Download } from 'lucide-react';
 import { useInstallations, useUpdateInstallationStatus } from '../features/timeline/hooks/use-installations';
 
 // Components
 import InstallationTable from '../features/timeline/components/InstallationTable';
-import InstallationGantt from '../features/timeline/components/InstallationGantt';
+import GanttChart from '../features/timeline/components/GanttChart';
+import InstallationStatCards from '../features/timeline/components/InstallationStatCards';
+import InstallationDetailPanel from '../features/timeline/components/InstallationDetailPanel';
+import InstallationForm from '../features/timeline/components/InstallationForm';
 
 const TimelinePage = () => {
   const [viewMode, setViewMode] = useState('gantt'); // 'gantt' | 'list'
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedInstallation, setSelectedInstallation] = useState(null);
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
@@ -26,8 +31,22 @@ const TimelinePage = () => {
     }
   };
 
+  const handleCreateInstallation = (formData) => {
+    console.log('Create installation:', formData);
+    setIsFormOpen(false);
+  };
+
+  // Mock stats
+  const stats = {
+    total: data?.meta?.total || 0,
+    scheduled: 12,
+    onProgress: 8,
+    done: 45,
+    delayed: 3
+  };
+
   return (
-    <div className="pb-8">
+    <div className="pb-8 relative overflow-hidden">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
@@ -52,12 +71,18 @@ const TimelinePage = () => {
               List
             </button>
           </div>
-          <button className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+          <button 
+            onClick={() => setIsFormOpen(true)}
+            className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
+          >
             <Plus size={18} />
             Atur Jadwal Baru
           </button>
         </div>
       </div>
+
+      {/* Stat Cards */}
+      <InstallationStatCards stats={stats} />
 
       {/* Quick Filters */}
       <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -91,16 +116,31 @@ const TimelinePage = () => {
 
       {/* Main Content */}
       {viewMode === 'gantt' ? (
-        <InstallationGantt installations={data?.data || []} />
+        <GanttChart installations={data?.data || []} />
       ) : (
         <InstallationTable 
           installations={data?.data || []} 
           isLoading={isLoading} 
           onUpdateStatus={handleUpdateStatus}
+          onViewDetail={(inst) => setSelectedInstallation(inst)}
         />
       )}
+
+      {/* Modals & Panels */}
+      <InstallationForm 
+        isOpen={isFormOpen} 
+        onClose={() => setIsFormOpen(false)} 
+        onSubmit={handleCreateInstallation}
+      />
+
+      <InstallationDetailPanel 
+        isOpen={!!selectedInstallation} 
+        onClose={() => setSelectedInstallation(null)} 
+        installation={selectedInstallation}
+      />
     </div>
   );
 };
 
 export default TimelinePage;
+

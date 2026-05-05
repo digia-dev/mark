@@ -1,7 +1,7 @@
 import React from 'react';
 import { Users, DollarSign, Briefcase, Activity, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
 
-const DashboardStatCards = ({ data, isLoading }) => {
+const DashboardStatCards = ({ data = {}, isLoading }) => {
   const stats = [
     { 
       label: 'Total Customers', 
