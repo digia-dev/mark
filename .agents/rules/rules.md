@@ -3,7 +3,9 @@ trigger: always_on
 description: if agent.md not aplicable
 ---
 
-# rules.md — Mark development rules
+---
+trigger: always_on
+---
 
 > aturan wajib yang berlaku untuk semua kontributor, semua lapisan kode, dan semua output dokumen dalam project Mark. tidak ada pengecualian tanpa diskusi dan persetujuan tim.
 
@@ -20,7 +22,7 @@ sebelum membuat file, fungsi, komponen, atau apapun yang berhubungan dengan kode
 ```
 langkah wajib sebelum coding:
 
-1. buka task.md
+1. buka /docs/task.md
 2. temukan task yang sedang dikerjakan berdasarkan nomor task (TASK-001, dst)
 3. baca seluruh checklist sub-task di dalamnya
 4. identifikasi file apa saja yang perlu dibuat

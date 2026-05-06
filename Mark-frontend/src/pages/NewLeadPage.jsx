@@ -36,12 +36,15 @@ const NewLeadPage = () => {
         </div>
       </div>
 
-      <LeadForm 
-        isOpen={true} 
-        onClose={() => navigate(-1)} 
-        onSubmit={handleSubmit}
-        isLoading={isLoading}
-      />
+      <div className="bg-white rounded-[32px] border border-gray-100 shadow-xl shadow-blue-900/5 overflow-hidden p-8">
+        <LeadForm 
+          isOpen={true} 
+          isEmbedded={true}
+          onClose={() => navigate(-1)} 
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+        />
+      </div>
     </div>
   );
 };

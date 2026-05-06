@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { Plus, Search, Filter, Download } from 'lucide-react';
-import { useLeads, useCreateLead, useUpdateLead, useConvertLead } from '../features/crm/hooks/use-leads';
+import { 
+  useLeads, 
+  useCreateLead, 
+  useUpdateLead, 
+  useConvertLead,
+  useDeleteLead
+} from '../features/crm/hooks/use-leads';
 
 // Components
 import LeadTable from '../features/crm/components/LeadTable';
 import LeadForm from '../features/crm/components/LeadForm';
 import ConvertLeadModal from '../features/crm/components/ConvertLeadModal';
+import ConfirmDeleteModal from '../shared/components/ConfirmDeleteModal';
 
 const LeadPage = () => {
   const [params, setParams] = useState({
@@ -18,12 +25,14 @@ const LeadPage = () => {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isConvertOpen, setIsConvertOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
 
   const { data, isLoading } = useLeads(params);
   const createMutation = useCreateLead();
   const updateMutation = useUpdateLead();
   const convertMutation = useConvertLead();
+  const deleteMutation = useDeleteLead();
 
   const handleCreate = async (formData) => {
     try {
@@ -52,6 +61,22 @@ const LeadPage = () => {
     } catch (error) {
       console.error('Failed to convert lead:', error);
     }
+  };
+
+  const handleDelete = async () => {
+    if (!selectedLead) return;
+    try {
+      await deleteMutation.mutateAsync(selectedLead.id);
+      setIsDeleteOpen(false);
+      setSelectedLead(null);
+    } catch (error) {
+      console.error('Failed to delete lead:', error);
+    }
+  };
+
+  const openDeleteModal = (lead) => {
+    setSelectedLead(lead);
+    setIsDeleteOpen(true);
   };
 
   return (
@@ -112,6 +137,7 @@ const LeadPage = () => {
         onPageChange={(page) => setParams({ ...params, page })}
         onConvert={(lead) => { setSelectedLead(lead); setIsConvertOpen(true); }}
         onEdit={(lead) => { setSelectedLead(lead); setIsFormOpen(true); }}
+        onDelete={openDeleteModal}
       />
 
       {/* Modals */}
@@ -129,6 +155,14 @@ const LeadPage = () => {
         lead={selectedLead}
         onConvert={handleConvert}
         isLoading={convertMutation.isLoading}
+      />
+
+      <ConfirmDeleteModal 
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Hapus Lead"
+        itemName={selectedLead?.name}
       />
     </div>
   );

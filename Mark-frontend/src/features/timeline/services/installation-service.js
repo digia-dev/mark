@@ -14,6 +14,11 @@ const installationService = {
   updateStatus: async (id, data) => {
     const response = await axiosInstance.patch(`/installations/${id}/status`, data);
     return response.data;
+  },
+
+  getStats: async () => {
+    const response = await axiosInstance.get('/installations/stats');
+    return response.data;
   }
 };
 

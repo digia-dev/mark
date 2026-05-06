@@ -3,11 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import InvoiceForm from '../features/invoice/components/InvoiceForm';
 import { useCreateInvoice } from '../features/invoice/hooks/use-invoices';
+import { useCustomers } from '../features/crm/hooks/use-customers';
+import { useProductList } from '../features/product/hooks/use-products';
 import { toast } from 'react-hot-toast';
 
 const NewInvoicePage = () => {
   const navigate = useNavigate();
-  const { mutate: createInvoice, isLoading } = useCreateInvoice();
+  const { mutate: createInvoice, isLoading: isSubmitting } = useCreateInvoice();
+  
+  const { data: customersData, isLoading: isLoadingCustomers } = useCustomers({ limit: 100 });
+  const { data: productsData, isLoading: isLoadingProducts } = useProductList({ limit: 100 });
+
+  const customers = customersData?.data || [];
+  const products = productsData?.data || [];
 
   const handleSubmit = (data) => {
     createInvoice(data, {
@@ -38,10 +46,11 @@ const NewInvoicePage = () => {
 
       <div className="bg-white rounded-[32px] border border-gray-100 shadow-xl overflow-hidden">
         <InvoiceForm 
-          isOpen={true} 
-          onClose={() => navigate(-1)} 
+          onCancel={() => navigate(-1)} 
           onSubmit={handleSubmit}
-          isLoading={isLoading}
+          isSubmitting={isSubmitting}
+          customers={customers}
+          products={products}
         />
       </div>
     </div>

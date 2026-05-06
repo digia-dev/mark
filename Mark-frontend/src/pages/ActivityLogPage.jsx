@@ -1,8 +1,9 @@
-import React from 'react';
-import ActivityLogTable from '../features/activity-log/components/ActivityLogTable';
-import ActivityLogStatPanel from '../features/activity-log/components/ActivityLogStatPanel';
+import { useActivityLogs, useActivityLogStats } from '../features/activity-log/hooks/use-activity-logs';
 
 const ActivityLogPage = () => {
+  const { data: logsData, isLoading: isLogsLoading } = useActivityLogs({ page: 1, limit: 10 });
+  const { data: statsData, isLoading: isStatsLoading } = useActivityLogStats();
+
   return (
     <div className="pb-12 space-y-8">
       {/* Header */}
@@ -16,7 +17,10 @@ const ActivityLogPage = () => {
           <ActivityLogTable />
         </div>
         <div className="xl:col-span-4 h-full">
-          <ActivityLogStatPanel />
+          <ActivityLogStatPanel 
+            stats={statsData?.data} 
+            isLoading={isStatsLoading} 
+          />
         </div>
       </div>
     </div>

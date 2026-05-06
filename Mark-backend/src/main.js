@@ -19,6 +19,8 @@ const PrismaTroubleTicketRepository = require('./infrastructure/repositories/pri
 const PrismaInvoiceRepository = require('./infrastructure/repositories/prisma-invoice-repository');
 const PrismaPaymentRepository = require('./infrastructure/repositories/prisma-payment-repository');
 const PrismaPresentationRepository = require('./infrastructure/repositories/prisma-presentation-repository');
+const PrismaChatRepository = require('./infrastructure/repositories/prisma-chat-repository');
+const PrismaSettingRepository = require('./infrastructure/repositories/prisma-setting-repository');
 
 // 2. Use Cases (Auth)
 const LoginUseCase = require('./use-cases/auth/login-use-case');
@@ -51,6 +53,8 @@ const ToggleProductStatusUseCase = require('./use-cases/product/toggle-product-s
 
 // 2. Use Cases (Report/Dashboard)
 const GetDashboardStatsUseCase = require('./use-cases/report/get-dashboard-stats-use-case');
+const SendChatMessageUseCase = require('./use-cases/send-chat-message-use-case');
+const ListChatMessagesUseCase = require('./use-cases/list-chat-messages-use-case');
 
 // 2. Use Cases (CRM)
 const CreateCustomerUseCase = require('./use-cases/crm/create-customer-use-case');
@@ -93,6 +97,7 @@ const SendQuotationUseCase = require('./use-cases/quotation/send-quotation-use-c
 const DuplicateQuotationUseCase = require('./use-cases/quotation/duplicate-quotation-use-case');
 const GeneratePdfUseCase = require('./use-cases/quotation/generate-pdf-use-case');
 const ConvertToInvoiceUseCase = require('./use-cases/quotation/convert-to-invoice-use-case');
+const GetQuotationStatsUseCase = require('./use-cases/quotation/get-quotation-stats-use-case');
 const CreateInstallationUseCase = require('./use-cases/installation/create-installation-use-case');
 const GetInstallationListUseCase = require('./use-cases/installation/get-installation-list-use-case');
 const GetInstallationDetailUseCase = require('./use-cases/installation/get-installation-detail-use-case');
@@ -124,8 +129,29 @@ const GetPresentationListUseCase = require('./use-cases/presentation/get-present
 // 2. Use Cases (Search)
 const GlobalSearchUseCase = require('./use-cases/search/global-search-use-case');
 
+// 2. Use Cases (Notification)
+const GetNotificationListUseCase = require('./use-cases/notification/get-notification-list-use-case');
+const MarkAsReadUseCase = require('./use-cases/notification/mark-as-read-use-case');
+const MarkAllAsReadUseCase = require('./use-cases/notification/mark-all-as-read-use-case');
+const DeleteNotificationUseCase = require('./use-cases/notification/delete-notification-use-case');
+const GetNotificationStatsUseCase = require('./use-cases/notification/get-notification-stats-use-case');
+
+// 2. Use Cases (Activity Log)
+const GetActivityLogListUseCase = require('./use-cases/activity-log/get-activity-log-list-use-case');
+const GetActivityLogStatsUseCase = require('./use-cases/activity-log/get-activity-log-stats-use-case');
+
+// 2. Use Cases (Setting)
+const {
+  GetCompanyProfileUseCase,
+  UpdateCompanyProfileUseCase,
+  GetSettingsUsersUseCase,
+  GetPreferencesUseCase,
+  UpdatePreferencesUseCase
+} = require('./use-cases/setting/setting-use-cases');
+
 // 3. Middlewares
 const createAuthMiddleware = require('./interfaces/middlewares/auth-middleware');
+const roleMiddleware = require('./interfaces/middlewares/role-middleware');
 const activityLogger = require('./interfaces/middlewares/activity-logger');
 
 // 4. Controllers
@@ -143,6 +169,10 @@ const InstallationController = require('./interfaces/controllers/installation-co
 const TroubleTicketController = require('./interfaces/controllers/trouble-ticket-controller');
 const InvoiceController = require('./interfaces/controllers/invoice-controller');
 const PresentationController = require('./interfaces/controllers/presentation-controller');
+const ChatController = require('./interfaces/controllers/chat-controller');
+const NotificationController = require('./interfaces/controllers/notification-controller');
+const ActivityLogController = require('./interfaces/controllers/activity-log-controller');
+const SettingController = require('./interfaces/controllers/setting-controller');
 
 // 5. Routes
 const createAuthRoutes = require('./interfaces/routes/auth-routes');
@@ -159,6 +189,10 @@ const createInstallationRoutes = require('./interfaces/routes/installation-route
 const createTroubleTicketRoutes = require('./interfaces/routes/trouble-ticket-routes');
 const createInvoiceRoutes = require('./interfaces/routes/invoice-routes');
 const createPresentationRoutes = require('./interfaces/routes/presentation-routes');
+const createChatRoutes = require('./interfaces/routes/chat-routes');
+const createNotificationRoutes = require('./interfaces/routes/notification-routes');
+const createActivityLogRoutes = require('./interfaces/routes/activity-log-routes');
+const createSettingRoutes = require('./interfaces/routes/setting-routes');
 
 // Services
 const LoggerService = require('./infrastructure/services/logger-service');
@@ -181,6 +215,8 @@ const troubleTicketRepository = new PrismaTroubleTicketRepository(prisma);
 const invoiceRepository = new PrismaInvoiceRepository(prisma);
 const paymentRepository = new PrismaPaymentRepository(prisma);
 const presentationRepository = new PrismaPresentationRepository(prisma);
+const chatRepository = new PrismaChatRepository(prisma);
+const settingRepository = new PrismaSettingRepository(prisma);
 
 const loggerService = new LoggerService(prisma);
 const notificationService = new NotificationService(prisma);
@@ -277,7 +313,7 @@ const addInteractionUseCase = new AddInteractionUseCase(prisma);
 const getCustomerStatsUseCase = new GetCustomerStatsUseCase(prisma);
 const importCustomersUseCase = new ImportCustomersUseCase(prisma);
 const exportCustomersUseCase = new ExportCustomersUseCase(prisma);
-const deleteCustomerUseCase = new DeleteCustomerUseCase(prisma);
+const deleteCustomerUseCase = new DeleteCustomerUseCase({ customerRepository });
 const getCustomerInteractionsUseCase = new GetCustomerInteractionsUseCase(prisma);
 const getCustomerServicesUseCase = new GetCustomerServicesUseCase(prisma);
 const getCustomerInvoicesUseCase = new GetCustomerInvoicesUseCase(prisma);
@@ -371,6 +407,7 @@ const convertToInvoiceUseCase = new ConvertToInvoiceUseCase({
   quotationRepository, 
   createInvoiceUseCase: new CreateInvoiceUseCase({ invoiceRepository })
 });
+const getQuotationStatsUseCase = new GetQuotationStatsUseCase({ quotationRepository });
 
 const quotationController = new QuotationController({
   createQuotationUseCase,
@@ -382,7 +419,8 @@ const quotationController = new QuotationController({
   updateQuotationStatusUseCase,
   duplicateQuotationUseCase,
   generatePdfUseCase,
-  convertToInvoiceUseCase
+  convertToInvoiceUseCase,
+  getQuotationStatsUseCase
 });
 
 // --- Timeline (Installation) Module ---
@@ -459,6 +497,14 @@ const presentationController = new PresentationController({
   getPresentationListUseCase
 });
 
+const sendChatMessageUseCase = new SendChatMessageUseCase({ chatRepository });
+const listChatMessagesUseCase = new ListChatMessagesUseCase({ chatRepository });
+
+const chatController = new ChatController({
+  sendChatMessageUseCase,
+  listChatMessagesUseCase
+});
+
 // --- Search Module ---
 const globalSearchUseCase = new GlobalSearchUseCase(prisma);
 const searchController = new SearchController(globalSearchUseCase);
@@ -472,6 +518,45 @@ const createTargetRoutes = require('./interfaces/routes/target-routes');
 const createSalesTargetUseCase = new CreateSalesTargetUseCase(prisma);
 const getSalesTargetUseCase = new GetSalesTargetUseCase(prisma);
 const targetController = new TargetController({ createSalesTargetUseCase, getSalesTargetUseCase });
+
+// --- Notification Module ---
+const getNotificationListUseCase = new GetNotificationListUseCase(prisma);
+const markAsReadUseCase = new MarkAsReadUseCase(prisma);
+const markAllAsReadUseCase = new MarkAllAsReadUseCase(prisma);
+const deleteNotificationUseCase = new DeleteNotificationUseCase(prisma);
+const getNotificationStatsUseCase = new GetNotificationStatsUseCase(prisma);
+
+const notificationController = new NotificationController({
+  getNotificationListUseCase,
+  markAsReadUseCase,
+  markAllAsReadUseCase,
+  deleteNotificationUseCase,
+  getNotificationStatsUseCase
+});
+
+// --- Activity Log Module ---
+const getActivityLogListUseCase = new GetActivityLogListUseCase(prisma);
+const getActivityLogStatsUseCase = new GetActivityLogStatsUseCase({ activityLogRepository });
+
+const activityLogController = new ActivityLogController({
+  getActivityLogListUseCase,
+  getActivityLogStatsUseCase
+});
+
+// --- Setting Module ---
+const getCompanyProfileUseCase = new GetCompanyProfileUseCase({ settingRepository });
+const updateCompanyProfileUseCase = new UpdateCompanyProfileUseCase({ settingRepository });
+const getSettingsUsersUseCase = new GetSettingsUsersUseCase({ settingRepository });
+const getPreferencesUseCase = new GetPreferencesUseCase({ settingRepository });
+const updatePreferencesUseCase = new UpdatePreferencesUseCase({ settingRepository });
+
+const settingController = new SettingController({
+  getCompanyProfileUseCase,
+  updateCompanyProfileUseCase,
+  getSettingsUsersUseCase,
+  getPreferencesUseCase,
+  updatePreferencesUseCase
+});
 
 // --- Mount Routes ---
 router.use('/auth', createAuthRoutes({ authController, authMiddleware }));
@@ -489,6 +574,10 @@ router.use('/installations', createInstallationRoutes({ installationController, 
 router.use('/trouble-tickets', createTroubleTicketRoutes({ troubleTicketController, authMiddleware }));
 router.use('/invoices', createInvoiceRoutes({ invoiceController, authMiddleware }));
 router.use('/presentations', createPresentationRoutes({ presentationController, authMiddleware }));
+router.use('/chats', createChatRoutes({ chatController, authMiddleware }));
+router.use('/notifications', createNotificationRoutes({ notificationController, authMiddleware }));
+router.use('/activity-logs', createActivityLogRoutes({ activityLogController, authMiddleware }));
+router.use('/settings', createSettingRoutes({ settingController, authMiddleware, roleMiddleware }));
 
 // Health check endpoint
 router.get('/health', (req, res) => {

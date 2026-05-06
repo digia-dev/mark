@@ -67,14 +67,23 @@ const PresentationTable = ({ presentations, isLoading }) => {
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Portal>
                     <DropdownMenu.Content className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 min-w-[180px] z-200">
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-orange-50 hover:text-orange-900 rounded-xl cursor-pointer outline-none transition-all">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Start presentation', pres.id)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-orange-50 hover:text-orange-900 rounded-xl cursor-pointer outline-none transition-all"
+                      >
                         <Play size={16} /> Mulai Presentasi
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Reschedule presentation', pres.id)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all"
+                      >
                         <Calendar size={16} /> Reschedule
                       </DropdownMenu.Item>
                       <div className="h-px bg-gray-50 my-1 mx-2" />
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-green-600 hover:bg-green-50 rounded-xl cursor-pointer outline-none transition-all">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Mark as completed', pres.id)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-green-600 hover:bg-green-50 rounded-xl cursor-pointer outline-none transition-all"
+                      >
                         <CheckCircle2 size={16} /> Mark as Completed
                       </DropdownMenu.Item>
                     </DropdownMenu.Content>

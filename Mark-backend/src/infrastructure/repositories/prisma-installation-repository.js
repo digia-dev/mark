@@ -140,6 +140,8 @@ class PrismaInstallationRepository {
       _count: { id: true }
     });
 
+    const statusCounts = counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {});
+
     const overdueCount = await this.prisma.installation.count({
       where: {
         status: { notIn: ['done', 'cancelled'] },
@@ -147,9 +149,14 @@ class PrismaInstallationRepository {
       }
     });
 
+    const totalCount = await this.prisma.installation.count();
+
     return {
-      by_status: counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {}),
-      overdue: overdueCount
+      total: totalCount,
+      scheduled: statusCounts['scheduled'] || 0,
+      onProgress: statusCounts['on-progress'] || 0,
+      done: statusCounts['done'] || 0,
+      delayed: overdueCount
     };
   }
 

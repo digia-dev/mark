@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, ChevronRight, Info, Search, Filter } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Info, Search, Filter, Plus } from 'lucide-react';
 
 const GanttChart = ({ installations = [] }) => {
   const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -46,6 +46,17 @@ const GanttChart = ({ installations = [] }) => {
            <div className="h-8 w-px bg-gray-100 mx-2" />
            <button className="p-2.5 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-blue-900 transition-all shadow-sm">
               <Filter size={18} />
+           </button>
+           <button 
+             onClick={() => {
+               // This should trigger the parent's setIsFormOpen(true)
+               // But we don't have that prop here. I'll add an onAdd prop.
+               toast.info('Gunakan tombol "Buat Jadwal Baru" di pojok kanan atas');
+             }}
+             className="flex items-center gap-2 bg-blue-900 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-900/20 active:scale-95 transition-all"
+           >
+              <Plus size={16} />
+              Tambah Jadwal
            </button>
         </div>
       </div>

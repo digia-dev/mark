@@ -77,24 +77,42 @@ const DealTable = ({ data }) => {
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Portal>
                     <DropdownMenu.Content className="min-w-[180px] bg-white rounded-2xl p-2 shadow-2xl border border-gray-100 z-120 animate-in fade-in zoom-in duration-200">
-                      <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('View deal details', deal.id)}
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none"
+                      >
                         <Eye size={14} /> Detail Deal
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Edit deal', deal.id)}
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none"
+                      >
                         <Edit2 size={14} /> Edit Data
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Duplicate deal', deal.id)}
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none"
+                      >
                         <Copy size={14} /> Duplikat
                       </DropdownMenu.Item>
                       <DropdownMenu.Separator className="h-px bg-gray-50 my-1" />
-                      <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-green-600 hover:bg-green-50 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Mark deal as won', deal.id)}
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-green-600 hover:bg-green-50 rounded-xl cursor-pointer outline-none"
+                      >
                         <Trophy size={14} /> Mark as Won
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-orange-600 hover:bg-orange-50 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Mark deal as lost', deal.id)}
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-orange-600 hover:bg-orange-50 rounded-xl cursor-pointer outline-none"
+                      >
                         <XCircle size={14} /> Mark as Lost
                       </DropdownMenu.Item>
                       <DropdownMenu.Separator className="h-px bg-gray-50 my-1" />
-                      <DropdownMenu.Item className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => console.log('Delete deal', deal.id)}
+                        className="flex items-center gap-2 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl cursor-pointer outline-none"
+                      >
                         <Trash2 size={14} /> Hapus Deal
                       </DropdownMenu.Item>
                     </DropdownMenu.Content>

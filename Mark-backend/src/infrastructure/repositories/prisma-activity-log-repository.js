@@ -25,6 +25,32 @@ class PrismaActivityLogRepository {
       include: { user: { select: { name: true, email: true } } }
     });
   }
+
+  async getStats() {
+    const byModule = await this.prisma.activityLog.groupBy({
+      by: ['module'],
+      _count: { id: true }
+    });
+
+    const byAction = await this.prisma.activityLog.groupBy({
+      by: ['action'],
+      _count: { id: true }
+    });
+
+    const totalLogs = await this.prisma.activityLog.count();
+
+    return {
+      byModule: byModule.map(m => ({
+        name: m.module.charAt(0).toUpperCase() + m.module.slice(1),
+        value: m._count.id
+      })),
+      byAction: byAction.map(a => ({
+        name: a.action,
+        count: a._count.id
+      })),
+      recentActivityCount: totalLogs
+    };
+  }
 }
 
 module.exports = PrismaActivityLogRepository;

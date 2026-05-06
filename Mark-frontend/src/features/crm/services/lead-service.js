@@ -19,6 +19,11 @@ const leadService = {
   convertLead: async (id, data) => {
     const response = await axios.post(`/leads/${id}/convert`, data);
     return response.data;
+  },
+
+  deleteLead: async (id) => {
+    const response = await axios.delete(`/leads/${id}`);
+    return response.data;
   }
 };
 

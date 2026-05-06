@@ -1,5 +1,5 @@
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable } from '@hello-pangea/dnd';
 import { MoreHorizontal, Calendar, MapPin, Building2, User } from 'lucide-react';
 
 const KanbanCard = ({ deal, index }) => {

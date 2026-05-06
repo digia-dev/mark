@@ -2,6 +2,8 @@ import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 
 const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm, title, message, itemName }) => {
+  const [isConfirmed, setIsConfirmed] = React.useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -23,7 +25,9 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm, title, message, itemNa
           <div className="flex bg-red-50/50 p-3 rounded-xl border border-red-100 mb-6 text-left items-start gap-3">
             <input 
               type="checkbox" 
-              id="confirm-delete" 
+              id="confirm-delete"
+              checked={isConfirmed}
+              onChange={(e) => setIsConfirmed(e.target.checked)}
               className="mt-1 rounded border-red-300 text-red-600 focus:ring-red-500" 
             />
             <label htmlFor="confirm-delete" className="text-xs font-bold text-red-800 cursor-pointer select-none">
@@ -40,7 +44,8 @@ const ConfirmDeleteModal = ({ isOpen, onClose, onConfirm, title, message, itemNa
             </button>
             <button
               onClick={onConfirm}
-              className="flex-1 py-3 px-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-sm shadow-red-600/20 transition-all active:scale-[0.98]"
+              disabled={!isConfirmed}
+              className="flex-1 py-3 px-4 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-sm shadow-red-600/20 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Ya, Hapus Data
             </button>

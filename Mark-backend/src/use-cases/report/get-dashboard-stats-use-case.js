@@ -14,22 +14,19 @@ class GetDashboardStatsUseCase {
     const prevEnd = new Date(start.getTime());
 
     const whereDate = {
-      created_at: {
-        gte: start,
-        lte: end
-      }
+      created_at: { gte: start, lte: end },
+      deleted_at: null
     };
 
     const prevWhereDate = {
-      created_at: {
-        gte: prevStart,
-        lte: prevEnd
-      }
+      created_at: { gte: prevStart, lte: prevEnd },
+      deleted_at: null
     };
 
-    if (salesId && salesId !== 'all') {
-      whereDate.sales_id = parseInt(salesId);
-      prevWhereDate.sales_id = parseInt(salesId);
+    const filterSales = salesId && salesId !== 'all' ? parseInt(salesId) : null;
+    if (filterSales) {
+      whereDate.sales_id = filterSales;
+      prevWhereDate.sales_id = filterSales;
     }
 
     // Parallel queries for current period
@@ -47,7 +44,10 @@ class GetDashboardStatsUseCase {
       recentActivities,
       recentLeads,
       upcomingTasks,
-      salesList
+      salesList,
+      revenueByMonth,
+      dealsByStage,
+      currentTarget
     ] = await Promise.all([
       // Current Stats
       this.prisma.customer.count({ where: whereDate }),
@@ -86,6 +86,7 @@ class GetDashboardStatsUseCase {
         include: { user: { select: { name: true } } }
       }),
       this.prisma.lead.findMany({
+        where: { deleted_at: null },
         take: 5,
         orderBy: { created_at: 'desc' },
         select: { id: true, name: true, company: true, status: true, created_at: true }
@@ -106,6 +107,29 @@ class GetDashboardStatsUseCase {
       this.prisma.user.findMany({
         where: { role: 'sales', is_active: true },
         select: { id: true, name: true }
+      }),
+
+      // Charts & Grouping
+      this.prisma.invoice.groupBy({
+        by: ['invoice_date'],
+        where: {
+          invoice_date: { gte: new Date(new Date().getFullYear(), 0, 1) }, // Since Jan
+          status: 'paid',
+          deleted_at: null
+        },
+        _sum: { total: true }
+      }),
+      this.prisma.deal.groupBy({
+        by: ['stage'],
+        where: { deleted_at: null },
+        _count: { id: true }
+      }),
+      this.prisma.salesTarget.findFirst({
+        where: {
+          month: new Date().getMonth() + 1,
+          year: new Date().getFullYear(),
+          user_id: filterSales || undefined
+        }
       })
     ]);
 
@@ -119,22 +143,24 @@ class GetDashboardStatsUseCase {
     const rev = totalRevenue._sum.total || 0;
     const prevRev = prevTotalRevenue._sum.total || 0;
 
-    // Mock revenue chart data (as we don't have enough data to group by month properly yet)
-    const revenueChart = [
-      { name: 'Jan', revenue: 400, target: 500 },
-      { name: 'Feb', revenue: 300, target: 500 },
-      { name: 'Mar', revenue: 600, target: 500 },
-      { name: 'Apr', revenue: 800, target: 1000 },
-      { name: 'Mei', revenue: Math.round(rev / 1000000) || 850, target: 1000 },
-    ];
+    // Process revenue chart (Group by month)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    const monthlyRev = Array(12).fill(0).map((_, i) => ({ name: months[i], revenue: 0, target: 1000 }));
+    
+    revenueByMonth.forEach(item => {
+      const m = new Date(item.invoice_date).getMonth();
+      monthlyRev[m].revenue += Math.round(Number(item._sum.total) / 1000000);
+    });
 
-    const pipelineFunnel = [
-      { stage: 'Prospek', count: 214 },
-      { stage: 'Negosiasi', count: 86 },
-      { stage: 'Penawaran', count: 54 },
-      { stage: 'Closing', count: totalDeals || 12 },
-      { stage: 'Instalasi', count: installations || 5 },
-    ];
+    // Process pipeline funnel
+    const stages = ['prospek', 'negosiasi', 'penawaran', 'closing', 'instalasi'];
+    const funnel = stages.map(s => {
+      const found = dealsByStage.find(d => d.stage.toLowerCase() === s);
+      return {
+        stage: s.charAt(0).toUpperCase() + s.slice(1),
+        count: found ? found._count.id : 0
+      };
+    });
 
     return {
       statCards: {
@@ -142,10 +168,10 @@ class GetDashboardStatsUseCase {
         revenue: { value: rev, trend: calculateTrend(rev, prevRev), isUp: rev >= prevRev },
         deals: { value: totalDeals, trend: calculateTrend(totalDeals, prevTotalDeals), isUp: totalDeals >= prevTotalDeals },
         activeInstallations: { value: installations, trend: calculateTrend(installations, prevInstallations), isUp: installations >= prevInstallations },
-        activeTickets: { value: activeTickets, trend: calculateTrend(activeTickets, prevActiveTickets), isUp: activeTickets <= prevActiveTickets } // For tickets, down is good
+        activeTickets: { value: activeTickets, trend: calculateTrend(activeTickets, prevActiveTickets), isUp: activeTickets <= prevActiveTickets }
       },
-      revenueChart,
-      pipelineFunnel,
+      revenueChart: monthlyRev.slice(0, new Date().getMonth() + 1),
+      pipelineFunnel: funnel,
       recentActivities: recentActivities.map(log => ({
         id: log.id,
         user: log.user?.name || 'System',
@@ -163,13 +189,12 @@ class GetDashboardStatsUseCase {
       })),
       salesList,
       targetBulanIni: {
-        target: 1000000000,
+        target: Number(currentTarget?.target) || 1000000000,
         achieved: rev,
-        percentage: Math.min(100, Math.round((rev / 1000000000) * 100))
+        percentage: currentTarget ? Math.min(100, Math.round((rev / Number(currentTarget.target)) * 100)) : 0
       }
     };
   }
-
 }
 
 module.exports = GetDashboardStatsUseCase;

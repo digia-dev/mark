@@ -29,7 +29,7 @@ class PrismaProductRepository {
       ];
     }
 
-    const [products, total] = await Promise.all([
+    const [products, total, counts] = await Promise.all([
       this.prisma.product.findMany({
         where,
         skip,
@@ -37,7 +37,13 @@ class PrismaProductRepository {
         orderBy: { created_at: 'desc' },
       }),
       this.prisma.product.count({ where }),
+      this.prisma.product.groupBy({
+        by: ['status'],
+        _count: { id: true }
+      })
     ]);
+
+    const statusCounts = counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {});
 
     return {
       data: products.map(p => new Product(p)),
@@ -46,7 +52,29 @@ class PrismaProductRepository {
         page,
         limit,
         totalPages: Math.ceil(total / limit),
+        stats: {
+          active: statusCounts['active'] || 0,
+          inactive: statusCounts['inactive'] || 0,
+          promo: statusCounts['promo'] || 0
+        }
       },
+    };
+  }
+
+  async getStats() {
+    const counts = await this.prisma.product.groupBy({
+      by: ['status'],
+      _count: { id: true }
+    });
+    
+    const statusCounts = counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {});
+    const total = await this.prisma.product.count();
+    
+    return {
+      total,
+      active: statusCounts['active'] || 0,
+      inactive: statusCounts['inactive'] || 0,
+      promo: statusCounts['promo'] || 0
     };
   }
 

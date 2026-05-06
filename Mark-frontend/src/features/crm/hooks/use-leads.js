@@ -39,3 +39,13 @@ export const useConvertLead = () => {
     }
   });
 };
+
+export const useDeleteLead = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => leadService.deleteLead(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['leads']);
+    }
+  });
+};

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, List, Plus, Filter, Search, Download } from 'lucide-react';
-import { useInstallations, useUpdateInstallationStatus } from '../features/timeline/hooks/use-installations';
+import { useInstallations, useUpdateInstallationStatus, useScheduleInstallation, useInstallationStats } from '../features/timeline/hooks/use-installations';
 
 // Components
 import InstallationTable from '../features/timeline/components/InstallationTable';
@@ -21,6 +21,8 @@ const TimelinePage = () => {
   });
 
   const { data, isLoading } = useInstallations(params);
+  const { data: statsData } = useInstallationStats();
+  const createMutation = useScheduleInstallation();
   const updateStatusMutation = useUpdateInstallationStatus();
 
   const handleUpdateStatus = async (id, updateData) => {
@@ -31,18 +33,22 @@ const TimelinePage = () => {
     }
   };
 
-  const handleCreateInstallation = (formData) => {
-    console.log('Create installation:', formData);
-    setIsFormOpen(false);
+  const handleCreateInstallation = async (formData) => {
+    try {
+      await createMutation.mutateAsync(formData);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Failed to create installation:', error);
+    }
   };
 
-  // Mock stats
-  const stats = {
+  // Stats from API or fallback to data meta
+  const stats = statsData?.data || {
     total: data?.meta?.total || 0,
-    scheduled: 12,
-    onProgress: 8,
-    done: 45,
-    delayed: 3
+    scheduled: 0,
+    onProgress: 0,
+    done: 0,
+    delayed: 0
   };
 
   return (

@@ -1,19 +1,22 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   FileText, Briefcase, Settings, UserPlus, 
   CheckCircle2, Clock, AlertCircle, ShoppingCart 
 } from 'lucide-react';
 
 const iconConfig = {
-  'lead': { icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-50' },
-  'deal': { icon: Briefcase, color: 'text-orange-600', bg: 'bg-orange-50' },
-  'quotation': { icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50' },
-  'installation': { icon: Settings, color: 'text-green-600', bg: 'bg-green-50' },
-  'trouble-ticket': { icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
-  'invoice': { icon: ShoppingCart, color: 'text-emerald-600', bg: 'bg-emerald-50' }
+  'lead': { icon: UserPlus, color: 'text-blue-600', bg: 'bg-blue-50', path: '/crm/leads' },
+  'deal': { icon: Briefcase, color: 'text-orange-600', bg: 'bg-orange-50', path: '/pipeline' },
+  'quotation': { icon: FileText, color: 'text-purple-600', bg: 'bg-purple-50', path: '/quotation' },
+  'installation': { icon: Settings, color: 'text-green-600', bg: 'bg-green-50', path: '/timeline' },
+  'trouble-ticket': { icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50', path: '/trouble-ticket' },
+  'invoice': { icon: ShoppingCart, color: 'text-emerald-600', bg: 'bg-emerald-50', path: '/invoice' }
 };
 
 const RecentActivity = ({ activities, isLoading }) => {
+  const navigate = useNavigate();
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse h-full">
@@ -40,17 +43,23 @@ const RecentActivity = ({ activities, isLoading }) => {
           <h3 className="font-black text-gray-900 text-lg tracking-tight">Recent Activity</h3>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Log Aktivitas Sistem Terbaru</p>
         </div>
-        <button className="text-[10px] font-black text-blue-900 uppercase tracking-widest hover:underline">
+        <button 
+          onClick={() => navigate('/activity-logs')}
+          className="text-[10px] font-black text-blue-900 uppercase tracking-widest hover:underline"
+        >
           Lihat Semua
         </button>
       </div>
 
       <div className="flex-1 space-y-6">
         {activities.map((activity, i) => {
-          const config = iconConfig[activity.module] || { icon: Clock, color: 'text-gray-600', bg: 'bg-gray-50' };
+          const config = iconConfig[activity.module] || { icon: Clock, color: 'text-gray-600', bg: 'bg-gray-50', path: '/activity-logs' };
           return (
             <div key={i} className="flex gap-4 group/item">
-              <div className={`w-10 h-10 shrink-0 rounded-2xl ${config.bg} ${config.color} flex items-center justify-center shadow-sm group-hover/item:scale-110 transition-all`}>
+              <div 
+                onClick={() => navigate(config.path)}
+                className={`w-10 h-10 shrink-0 rounded-2xl ${config.bg} ${config.color} flex items-center justify-center shadow-sm group-hover/item:scale-110 transition-all cursor-pointer active:scale-95`}
+              >
                 <config.icon size={18} />
               </div>
               <div className="flex-1">
@@ -62,7 +71,10 @@ const RecentActivity = ({ activities, isLoading }) => {
                     {new Date(activity.time).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB
                   </span>
                   <div className="w-1 h-1 rounded-full bg-gray-200" />
-                  <span className="text-[10px] font-black text-blue-900 uppercase tracking-tight group-hover/item:underline cursor-pointer">
+                  <span 
+                    onClick={() => navigate(config.path)}
+                    className="text-[10px] font-black text-blue-900 uppercase tracking-tight group-hover/item:underline cursor-pointer"
+                  >
                     Detail
                   </span>
                 </div>

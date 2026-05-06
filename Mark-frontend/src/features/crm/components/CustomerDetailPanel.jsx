@@ -4,6 +4,8 @@ import {
   Calendar, CreditCard, Activity, Package, Clock, 
   FileText, Plus, ChevronRight, ExternalLink, MessageSquare 
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import SidePanel from '../../../shared/components/SidePanel';
 import { useCustomerDetail } from '../hooks/use-customers';
 
@@ -42,7 +44,8 @@ const InfoItem = ({ icon: Icon, label, value, color = 'bg-gray-50 text-gray-400'
   </div>
 );
 
-const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
+const CustomerDetailPanel = ({ isOpen, onClose, customerId, onEdit }) => {
+  const navigate = useNavigate();
   const { data: customer, isLoading } = useCustomerDetail(customerId);
   const [activeTab, setActiveTab] = useState('informasi');
 
@@ -68,6 +71,15 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
     { id: 'catatan', label: 'Catatan' }
   ];
 
+  const handleWhatsApp = () => {
+    if (!customer?.phone) {
+      toast.error('Nomor telepon tidak tersedia');
+      return;
+    }
+    const phone = customer.phone.replace(/[^0-9]/g, '');
+    window.open(`https://wa.me/${phone}`, '_blank');
+  };
+
   return (
     <SidePanel 
       isOpen={isOpen} 
@@ -76,10 +88,19 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
       subtitle={customer?.name}
       footer={
         <div className="flex gap-3">
-          <button className="flex-1 py-3 bg-blue-900 text-white rounded-xl text-xs font-black hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+          <button 
+            onClick={() => {
+              onEdit(customer);
+              onClose();
+            }}
+            className="flex-1 py-3 bg-blue-900 text-white rounded-xl text-xs font-black hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 active:scale-95"
+          >
             Edit Profil
           </button>
-          <button className="flex-1 py-3 bg-white border border-gray-100 text-gray-700 rounded-xl text-xs font-black hover:bg-gray-50 transition-all">
+          <button 
+            onClick={handleWhatsApp}
+            className="flex-1 py-3 bg-white border border-gray-100 text-gray-700 rounded-xl text-xs font-black hover:bg-gray-50 transition-all active:scale-95 shadow-sm"
+          >
             Kirim WhatsApp
           </button>
         </div>
@@ -87,19 +108,28 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
     >
       {/* Summary Stats */}
       <div className="px-6 py-4 bg-gray-50/50 grid grid-cols-2 gap-3 border-b border-gray-100">
-        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div 
+          onClick={() => setActiveTab('layanan')}
+          className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:border-blue-200 transition-all active:scale-95"
+        >
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Layanan</p>
           <p className="text-sm font-black text-blue-900">{customer?.customer_services?.length || 0} Aktif</p>
         </div>
-        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div 
+          onClick={() => setActiveTab('keuangan')}
+          className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:border-blue-200 transition-all active:scale-95"
+        >
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Total Tagihan</p>
           <p className="text-sm font-black text-blue-900">Rp {new Intl.NumberFormat('id-ID').format(customer?.invoices?.reduce((acc, inv) => acc + inv.total, 0) || 0)}</p>
         </div>
-        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div 
+          onClick={() => setActiveTab('keuangan')}
+          className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm cursor-pointer hover:border-orange-200 transition-all active:scale-95"
+        >
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Outstanding</p>
           <p className="text-sm font-black text-orange-600">Rp {new Intl.NumberFormat('id-ID').format(customer?.invoices?.filter(i => i.status !== 'paid').reduce((acc, inv) => acc + inv.total, 0) || 0)}</p>
         </div>
-        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="p-3 bg-white rounded-xl border border-gray-100 shadow-sm cursor-not-allowed opacity-60">
           <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Tiket Aktif</p>
           <p className="text-sm font-black text-red-600">0 Open</p>
         </div>
@@ -150,10 +180,20 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
         )}
 
         {activeTab === 'layanan' && (
-          <Section title="Layanan Aktif" action={<button className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest">+ Tambah</button>}>
+          <Section 
+            title="Layanan Aktif" 
+            action={
+              <button 
+                onClick={() => toast.success('Membuka form layanan baru...')}
+                className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest active:scale-95"
+              >
+                + Tambah
+              </button>
+            }
+          >
             {customer?.customer_services?.length > 0 ? (
               customer.customer_services.map(service => (
-                <div key={service.id} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-blue-200 transition-all">
+                <div key={service.id} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-blue-200 transition-all cursor-pointer">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="text-sm font-black text-gray-900">{service.product?.name}</h4>
                     <span className="px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-black rounded uppercase">{service.status}</span>
@@ -167,17 +207,31 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
             ) : (
               <div className="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
                 <Package className="mx-auto text-gray-300 mb-2" size={24} />
-                <p className="text-xs font-bold text-gray-400">Belum ada layanan aktif</p>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Belum ada layanan aktif</p>
               </div>
             )}
           </Section>
         )}
 
         {activeTab === 'keuangan' && (
-          <Section title="Riwayat Keuangan" action={<button className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest">Semua</button>}>
+          <Section 
+            title="Riwayat Keuangan" 
+            action={
+              <button 
+                onClick={() => navigate('/invoices')}
+                className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest active:scale-95"
+              >
+                Semua
+              </button>
+            }
+          >
              {customer?.invoices?.length > 0 ? (
                customer.invoices.map(invoice => (
-                 <div key={invoice.id} className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-all cursor-pointer mb-3 last:mb-0">
+                 <div 
+                   key={invoice.id} 
+                   onClick={() => navigate(`/invoices`)}
+                   className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl hover:shadow-md transition-all cursor-pointer mb-3 last:mb-0 active:scale-[0.98]"
+                 >
                     <div className="flex items-center gap-3">
                        <div className="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center">
                           <FileText size={16} />
@@ -196,21 +250,31 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
              ) : (
               <div className="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
                 <CreditCard className="mx-auto text-gray-300 mb-2" size={24} />
-                <p className="text-xs font-bold text-gray-400">Belum ada riwayat tagihan</p>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Belum ada riwayat tagihan</p>
               </div>
              )}
           </Section>
         )}
 
         {activeTab === 'aktivitas' && (
-          <Section title="Aktivitas & Log" action={<button className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest">+ Catatan</button>}>
+          <Section 
+            title="Aktivitas & Log" 
+            action={
+              <button 
+                onClick={() => toast.success('Fitur tambah catatan segera hadir')}
+                className="text-[10px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest active:scale-95"
+              >
+                + Catatan
+              </button>
+            }
+          >
              <div className="relative space-y-6 before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-[2px] before:bg-gray-100">
                 {customer?.interactions?.map(log => (
                   <div key={log.id} className="relative pl-10">
                      <div className="absolute left-0 top-1 w-8 h-8 rounded-full bg-white border-4 border-white shadow-sm flex items-center justify-center z-10">
                         <div className="w-2 h-2 rounded-full bg-blue-600" />
                      </div>
-                     <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                     <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-blue-200 transition-all cursor-pointer">
                         <div className="flex justify-between items-center mb-2">
                            <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{log.type}</span>
                            <span className="text-[10px] font-bold text-gray-400">{new Date(log.created_at).toLocaleString('id-ID')}</span>
@@ -225,15 +289,21 @@ const CustomerDetailPanel = ({ isOpen, onClose, customerId }) => {
                      </div>
                   </div>
                 ))}
+                {(!customer?.interactions || customer.interactions.length === 0) && (
+                  <div className="p-8 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                    <Activity className="mx-auto text-gray-300 mb-2" size={24} />
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Belum ada aktivitas tercatat</p>
+                  </div>
+                )}
              </div>
           </Section>
         )}
 
         {(activeTab === 'dokumen' || activeTab === 'catatan') && (
-          <div className="p-12 text-center">
+          <div className="p-12 text-center bg-gray-50/50 rounded-3xl border border-dashed border-gray-200">
             <Clock className="mx-auto text-gray-200 mb-4" size={48} />
-            <h3 className="text-sm font-black text-gray-900 mb-1">Segera Hadir</h3>
-            <p className="text-xs font-bold text-gray-400">Fitur ini sedang dalam pengembangan</p>
+            <h3 className="text-sm font-black text-gray-900 mb-1 uppercase tracking-tight">Segera Hadir</h3>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Fitur ini sedang dalam pengembangan</p>
           </div>
         )}
       </div>

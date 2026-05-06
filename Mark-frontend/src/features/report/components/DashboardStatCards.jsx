@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Users, DollarSign, Briefcase, Activity, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
 
 const DashboardStatCards = ({ data = {}, isLoading }) => {
+  const navigate = useNavigate();
   const stats = [
     { 
       label: 'Total Customers', 
@@ -10,7 +12,8 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
       isUp: data?.totalCustomers?.isUp, 
       icon: Users, 
       color: 'text-blue-600', 
-      bg: 'bg-blue-50' 
+      bg: 'bg-blue-50',
+      path: '/crm/customers'
     },
     { 
       label: 'Revenue (Monthly)', 
@@ -19,7 +22,8 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
       isUp: data?.revenue?.isUp, 
       icon: DollarSign, 
       color: 'text-orange-600', 
-      bg: 'bg-orange-50' 
+      bg: 'bg-orange-50',
+      path: '/invoice'
     },
     { 
       label: 'Deals Closing', 
@@ -28,7 +32,8 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
       isUp: data?.deals?.isUp, 
       icon: Briefcase, 
       color: 'text-green-600', 
-      bg: 'bg-green-50' 
+      bg: 'bg-green-50',
+      path: '/pipeline'
     },
     { 
       label: 'Active Installs', 
@@ -37,7 +42,8 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
       isUp: data?.activeInstallations?.isUp, 
       icon: Activity, 
       color: 'text-purple-600', 
-      bg: 'bg-purple-50' 
+      bg: 'bg-purple-50',
+      path: '/timeline'
     },
     { 
       label: 'Trouble Tickets', 
@@ -46,7 +52,8 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
       isUp: data?.activeTickets?.isUp, 
       icon: AlertTriangle, 
       color: 'text-red-600', 
-      bg: 'bg-red-50' 
+      bg: 'bg-red-50',
+      path: '/trouble-ticket'
     },
   ];
 
@@ -64,7 +71,11 @@ const DashboardStatCards = ({ data = {}, isLoading }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
       {stats.map((stat, i) => (
-        <div key={i} className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm group hover:scale-[1.02] transition-all hover:border-blue-900/10">
+        <div 
+          key={i} 
+          onClick={() => navigate(stat.path)}
+          className="bg-white p-6 rounded-[32px] border border-gray-100 shadow-sm group hover:scale-[1.02] transition-all hover:border-blue-900/10 cursor-pointer active:scale-95"
+        >
           <div className="flex justify-between items-start mb-4">
             <div className={`p-3 rounded-2xl ${stat.bg} ${stat.color} shadow-sm group-hover:scale-110 transition-all`}>
               <stat.icon size={20} />

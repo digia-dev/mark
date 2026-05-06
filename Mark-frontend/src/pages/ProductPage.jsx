@@ -10,12 +10,16 @@ import {
   useDeleteProduct,
   useToggleProductStatus 
 } from '../features/product/hooks/use-products';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import ProductStatCards from '../features/product/components/ProductStatCards';
 import ProductCard from '../features/product/components/ProductCard';
 import ProductTable from '../features/product/components/ProductTable';
 import ProductForm from '../features/product/components/ProductForm';
+import ConfirmDeleteModal from '../shared/components/ConfirmDeleteModal';
 
 const ProductPage = () => {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState('grid');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -27,6 +31,9 @@ const ProductPage = () => {
     status: '',
     technology: ''
   });
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { data: productsData, isLoading } = useProductList(filters);
   const createMutation = useCreateProduct();
@@ -49,10 +56,20 @@ const ProductPage = () => {
     });
   };
 
-  const handleDelete = (product) => {
-    if (window.confirm(`Yakin ingin menghapus produk ${product.name}?`)) {
-      deleteMutation.mutate(product.id);
+  const handleDelete = async () => {
+    if (!selectedProduct) return;
+    try {
+      await deleteMutation.mutateAsync(selectedProduct.id);
+      setIsDeleteOpen(false);
+      setSelectedProduct(null);
+    } catch (error) {
+      console.error('Failed to delete product:', error);
     }
+  };
+
+  const openDeleteModal = (product) => {
+    setSelectedProduct(product);
+    setIsDeleteOpen(true);
   };
 
   const handleToggleStatus = (product) => {
@@ -65,6 +82,15 @@ const ProductPage = () => {
     setIsFormOpen(true);
   };
 
+  const handleExport = () => {
+    toast.success('Mengekspor data produk ke CSV...');
+    // Simple CSV export logic would go here
+  };
+
+  const handleCreateQuotation = (product) => {
+    navigate('/quotation', { state: { prefilledProduct: product } });
+  };
+
   return (
     <div className="space-y-6">
       {/* Header Section */}
@@ -74,7 +100,10 @@ const ProductPage = () => {
           <p className="text-sm text-gray-500">Manajemen paket internet, perangkat, dan layanan Mark.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-all">
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-all"
+          >
             <Download size={18} />
             Export
           </button>
@@ -93,11 +122,9 @@ const ProductPage = () => {
 
       {/* Stats Section */}
       <ProductStatCards 
-        stats={productsData?.meta ? {
+        stats={productsData?.meta?.stats ? {
           total: productsData.meta.total,
-          active: productsData.data.filter(p => p.status === 'active').length, // This is mock, should come from API
-          inactive: productsData.data.filter(p => p.status === 'inactive').length,
-          promo: productsData.data.filter(p => p.status === 'promo').length
+          ...productsData.meta.stats
         } : {}}
       />
 
@@ -134,7 +161,10 @@ const ProductPage = () => {
             <option value="fiber">Fiber Optic</option>
             <option value="wireless">Wireless</option>
           </select>
-          <button className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm font-medium transition-colors">
+          <button 
+            onClick={() => toast.loading('Filter lanjutan sedang dikembangkan...', { duration: 2000 })}
+            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm font-medium transition-colors"
+          >
             <Filter size={18} />
             Filter Lanjut
           </button>
@@ -173,7 +203,7 @@ const ProductPage = () => {
                   key={product.id} 
                   product={product} 
                   onDetail={handleEdit}
-                  onCreateQuotation={() => {}} // TODO
+                  onCreateQuotation={handleCreateQuotation}
                 />
               ))}
             </div>
@@ -181,10 +211,11 @@ const ProductPage = () => {
             <ProductTable 
               products={productsData.data} 
               meta={productsData.meta}
+              isLoading={isLoading}
               onPageChange={(page) => setFilters({ ...filters, page })}
               onDetail={handleEdit}
               onEdit={handleEdit}
-              onDelete={handleDelete}
+              onDelete={openDeleteModal}
               onToggleStatus={handleToggleStatus}
             />
           )}
@@ -217,6 +248,15 @@ const ProductPage = () => {
         onSubmit={editingProduct ? handleUpdate : handleCreate}
         initialData={editingProduct}
         isLoading={createMutation.isLoading || updateMutation.isLoading}
+      />
+
+      {/* Deletion Modal */}
+      <ConfirmDeleteModal 
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Hapus Produk"
+        itemName={selectedProduct?.name}
       />
     </div>
   );

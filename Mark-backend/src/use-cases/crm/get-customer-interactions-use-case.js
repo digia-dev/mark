@@ -8,7 +8,7 @@ class GetCustomerInteractionsUseCase {
       where: { customer_id: parseInt(customerId) },
       include: {
         creator: {
-          select: { name: true, role: true }
+          select: { id: true, name: true, role: true }
         }
       },
       orderBy: { created_at: 'desc' }

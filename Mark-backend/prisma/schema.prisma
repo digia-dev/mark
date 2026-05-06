@@ -27,6 +27,7 @@ model User {
   last_login_at DateTime? @map("last_login_at")
   created_at    DateTime  @default(now()) @map("created_at")
   updated_at    DateTime  @updatedAt @map("updated_at")
+  deleted_at    DateTime? @map("deleted_at")
 
   branch              Branch?          @relation(fields: [branch_id], references: [id])
   refresh_tokens      RefreshToken[]
@@ -107,6 +108,7 @@ model Customer {
   notes         String?  @db.Text
   created_at    DateTime @default(now()) @map("created_at")
   updated_at    DateTime @updatedAt @map("updated_at")
+  deleted_at    DateTime? @map("deleted_at")
 
   sales            User?              @relation(fields: [sales_id], references: [id])
   interactions     Interaction[]
@@ -148,6 +150,7 @@ model Lead {
   // diisi setelah lead dikonversi menjadi customer
   created_at     DateTime  @default(now()) @map("created_at")
   updated_at     DateTime  @updatedAt @map("updated_at")
+  deleted_at     DateTime? @map("deleted_at")
 
   assigned_user User?         @relation("LeadAssignedTo", fields: [assigned_to], references: [id])
   interactions  Interaction[]
@@ -212,6 +215,7 @@ model Product {
   // status: active | inactive | promo
   created_at    DateTime @default(now()) @map("created_at")
   updated_at    DateTime @updatedAt @map("updated_at")
+  deleted_at    DateTime? @map("deleted_at")
 
   quotation_items   QuotationItem[]
   invoice_items     InvoiceItem[]
@@ -274,6 +278,7 @@ model Deal {
   last_activity_at DateTime? @map("last_activity_at")
   created_at     DateTime @default(now()) @map("created_at")
   updated_at     DateTime @updatedAt @map("updated_at")
+  deleted_at     DateTime? @map("deleted_at")
 
   lead       Lead?           @relation(fields: [lead_id], references: [id])
   customer   Customer?       @relation(fields: [customer_id], references: [id])
@@ -341,6 +346,7 @@ model Quotation {
   created_by  Int       @map("created_by")
   created_at  DateTime  @default(now()) @map("created_at")
   updated_at  DateTime  @updatedAt @map("updated_at")
+  deleted_at  DateTime? @map("deleted_at")
 
   customer Customer?       @relation(fields: [customer_id], references: [id])
   lead     Lead?           @relation(fields: [lead_id], references: [id])
@@ -459,6 +465,7 @@ model Installation {
   created_by     Int      @map("created_by")
   created_at     DateTime @default(now()) @map("created_at")
   updated_at     DateTime @updatedAt @map("updated_at")
+  deleted_at     DateTime? @map("deleted_at")
 
   customer   Customer           @relation(fields: [customer_id], references: [id])
   technician User?              @relation("InstallationTechnician", fields: [technician_id], references: [id])
@@ -528,6 +535,7 @@ model TroubleTicket {
   // 0 - 100 persen
   created_at   DateTime @default(now()) @map("created_at")
   updated_at   DateTime @updatedAt @map("updated_at")
+  deleted_at   DateTime? @map("deleted_at")
 
   customer     Customer       @relation(fields: [customer_id], references: [id])
   assigned_user User?         @relation("TicketAssignedTo", fields: [assigned_to], references: [id])
@@ -591,6 +599,7 @@ model Invoice {
   created_by    Int      @map("created_by")
   created_at    DateTime @default(now()) @map("created_at")
   updated_at    DateTime @updatedAt @map("updated_at")
+  deleted_at    DateTime? @map("deleted_at")
 
   customer   Customer      @relation(fields: [customer_id], references: [id])
   quotation  Quotation?    @relation(fields: [quotation_id], references: [id])
@@ -757,4 +766,44 @@ model SalesTarget {
   @@map("sales_targets")
   @@index([user_id])
   @@index([year, month])
+}
+
+model ChatMessage {
+  id             Int      @id @default(autoincrement())
+  conversation_id Int     @map("conversation_id")
+  sender_id      Int      @map("sender_id")
+  message        String   @db.Text
+  type           String   @default("text") @db.VarChar(30)
+  metadata       Json?    @map("metadata")
+  created_at     DateTime @default(now()) @map("created_at")
+  updated_at     DateTime @updatedAt @map("updated_at")
+
+  @@map("chat_messages")
+  @@index([conversation_id])
+  @@index([sender_id])
+  @@index([created_at])
+}
+
+model CompanySetting {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  address   String?  @db.Text
+  phone     String?  @db.VarChar(20)
+  email     String?  @db.VarChar(150)
+  website   String?  @db.VarChar(150)
+  logo_url  String?  @map("logo_url") @db.VarChar(255)
+  tax_id    String?  @map("tax_id") @db.VarChar(50)
+  updated_at DateTime @updatedAt @map("updated_at")
+
+  @@map("company_settings")
+}
+
+model AppPreference {
+  id        Int      @id @default(autoincrement())
+  theme     String   @default("light") @db.VarChar(20)
+  language  String   @default("id") @db.VarChar(5)
+  timezone  String   @default("Asia/Jakarta") @db.VarChar(50)
+  updated_at DateTime @updatedAt @map("updated_at")
+
+  @@map("app_preferences")
 }

@@ -84,15 +84,15 @@
 
 ### tabel & filter
 - [ ] 🔴 halaman CRM load dan menampilkan daftar customer + lead
-- [ ] 🟠 tab "Customers" hanya menampilkan data customer
-- [ ] 🟠 tab "Leads" hanya menampilkan data lead
+- [x] 🟠 tab "Customers" hanya menampilkan data customer
+- [x] 🟠 tab "Leads" hanya menampilkan data lead
 - [ ] 🟠 tab "Semua" menampilkan customer + lead
 - [ ] 🟠 filter status, sales, area, tanggal bekerja dan memfilter tabel
-- [ ] 🟠 search by nama/email/telepon memfilter hasil secara real-time
-- [ ] 🟡 pagination berfungsi — pindah halaman menampilkan data berbeda
-- [ ] 🟡 tombol "Export" menghasilkan file excel/csv yang bisa didownload
-- [ ] 🟡 tombol "Import" membuka popup import dan berhasil upload file template
-- [ ] 🟢 column toggle menyembunyikan/menampilkan kolom sesuai pilihan
+- [x] 🟠 search by nama/email/telepon memfilter hasil secara real-time
+- [x] 🟡 pagination berfungsi — pindah halaman menampilkan data berbeda
+- [x] 🟡 tombol "Export" menghasilkan file excel/csv yang bisa didownload
+- [x] 🟡 tombol "Import" membuka popup import dan berhasil upload file template
+- [x] 🟢 column toggle menyembunyikan/menampilkan kolom sesuai pilihan
 
 ### tambah data
 - [ ] 🔴 tombol "Tambah Baru" → "Customer Baru" membuka form customer

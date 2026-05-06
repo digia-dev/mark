@@ -1,5 +1,6 @@
 const { successResponse } = require('../../shared/response');
 const { createCustomerDto, updateCustomerDto } = require('../dto/crm/customer-dto');
+const ExcelJS = require('exceljs');
 
 class CustomerController {
   constructor({ 
@@ -161,8 +162,54 @@ class CustomerController {
 
   async importCustomers(req, res, next) {
     try {
-      // Assuming array of customer objects in req.body.customers
-      const result = await this.importCustomersUseCase.execute(req.body.customers, req.user.id);
+      let customers = [];
+
+      // If client sent JSON payload with customers array
+      if (req.body && req.body.customers && Array.isArray(req.body.customers)) {
+        customers = req.body.customers;
+      } else if (req.file && req.file.buffer) {
+        const fileName = req.file.originalname || '';
+        const isXlsx = fileName.toLowerCase().endsWith('.xlsx') || req.file.mimetype.includes('spreadsheet');
+
+        if (isXlsx) {
+          // Parse XLSX using exceljs
+          const workbook = new ExcelJS.Workbook();
+          await workbook.xlsx.load(req.file.buffer);
+          const worksheet = workbook.worksheets[0];
+          const headerRow = worksheet.getRow(1);
+          const headers = headerRow.values.filter(v => v !== undefined).slice(1).map(h => String(h).trim());
+
+          worksheet.eachRow((row, rowNumber) => {
+            if (rowNumber === 1) return; // skip header
+            const values = row.values.filter(v => v !== undefined).slice(1);
+            const obj = {};
+            headers.forEach((h, i) => {
+              obj[h] = values[i] !== undefined ? values[i] : null;
+            });
+            customers.push(obj);
+          });
+        } else {
+          // Parse CSV (simple parser)
+          const text = req.file.buffer.toString('utf8');
+          const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
+          if (lines.length > 0) {
+            const header = lines[0].split(',').map(h => h.trim());
+            for (let i = 1; i < lines.length; i++) {
+              const row = lines[i];
+              const cols = row.split(',').map(c => c.trim());
+              const obj = {};
+              header.forEach((h, idx) => {
+                obj[h] = cols[idx] !== undefined ? cols[idx] : null;
+              });
+              customers.push(obj);
+            }
+          }
+        }
+      } else {
+        return res.status(400).json({ success: false, error: { code: 'INVALID_PAYLOAD', message: 'No customers data or file provided' } });
+      }
+
+      const result = await this.importCustomersUseCase.execute(customers, req.user.id);
       return res.status(200).json(successResponse(result));
     } catch (error) {
       next(error);

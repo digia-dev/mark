@@ -13,19 +13,26 @@ const ActivityLogStatPanel = ({ stats, isLoading }) => {
     );
   }
 
-  const moduleData = [
-    { name: 'Lead', value: 45, color: '#2563EB' },
-    { name: 'Deal', value: 30, color: '#F97316' },
-    { name: 'Quotation', value: 15, color: '#9333EA' },
-    { name: 'Invoice', value: 10, color: '#10B981' },
-  ];
+  const moduleColors = {
+    'Lead': '#2563EB',
+    'Deal': '#F97316',
+    'Quotation': '#9333EA',
+    'Invoice': '#10B981',
+    'Trouble-ticket': '#EF4444',
+    'Installation': '#059669',
+    'Auth': '#6366F1'
+  };
 
-  const actionData = [
-    { action: 'Create', count: 120 },
-    { action: 'Update', count: 85 },
-    { action: 'Delete', count: 12 },
-    { action: 'Login', count: 45 },
-  ];
+  const moduleData = stats?.byModule?.map(m => ({
+    name: m.name,
+    value: m.value,
+    color: moduleColors[m.name] || '#94A3B8'
+  })) || [];
+
+  const actionData = stats?.byAction?.map(a => ({
+    action: a.name,
+    count: a.count
+  })) || [];
 
   return (
     <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm h-full group hover:border-blue-900/10 transition-all flex flex-col">
@@ -76,7 +83,7 @@ const ActivityLogStatPanel = ({ stats, isLoading }) => {
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                 <span className="text-2xl font-black text-gray-900">100</span>
+                 <span className="text-2xl font-black text-gray-900">{stats?.recentActivityCount || 0}</span>
                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Total Logs</span>
               </div>
             </div>

@@ -37,7 +37,7 @@ class TroubleTicketController {
       const ticket = await this.createTicketUseCase.execute(validatedData);
       res.status(201).json(successResponse(ticket));
     } catch (error) {
-      res.status(400).json(errorResponse('CREATE_TICKET_ERROR', error.message));
+      next(error);
     }
   }
 
@@ -46,7 +46,7 @@ class TroubleTicketController {
       const result = await this.getTicketListUseCase.execute(req.query);
       res.json(successResponse(result.data, result.meta));
     } catch (error) {
-      res.status(400).json(errorResponse('LIST_TICKET_ERROR', error.message));
+      next(error);
     }
   }
 
@@ -55,7 +55,7 @@ class TroubleTicketController {
       const ticket = await this.getTicketDetailUseCase.execute(parseInt(req.params.id));
       res.json(successResponse(ticket));
     } catch (error) {
-      res.status(404).json(errorResponse('NOT_FOUND', error.message));
+      next(error);
     }
   }
 
@@ -65,7 +65,7 @@ class TroubleTicketController {
       const ticket = await this.updateTicketUseCase.execute(parseInt(req.params.id), validatedData);
       res.json(successResponse(ticket));
     } catch (error) {
-      res.status(400).json(errorResponse('UPDATE_TICKET_ERROR', error.message));
+      next(error);
     }
   }
 
@@ -75,7 +75,7 @@ class TroubleTicketController {
       const ticket = await this.updateTicketStatusUseCase.execute(parseInt(req.params.id), validatedData);
       res.json(successResponse(ticket));
     } catch (error) {
-      res.status(400).json(errorResponse('UPDATE_STATUS_ERROR', error.message));
+      next(error);
     }
   }
 
@@ -85,7 +85,7 @@ class TroubleTicketController {
       const ticket = await this.assignTicketUseCase.execute(parseInt(req.params.id), user_id);
       res.json(successResponse(ticket));
     } catch (error) {
-      res.status(400).json(errorResponse('ASSIGN_TICKET_ERROR', error.message));
+      next(error);
     }
   }
 
@@ -98,7 +98,7 @@ class TroubleTicketController {
       });
       res.status(201).json(successResponse(note));
     } catch (error) {
-      res.status(400).json(errorResponse('ADD_NOTE_ERROR', error.message));
+      next(error);
     }
   }
 
@@ -107,7 +107,7 @@ class TroubleTicketController {
       const stats = await this.getTicketStatsUseCase.execute();
       res.json(successResponse(stats));
     } catch (error) {
-      res.status(400).json(errorResponse('STATS_ERROR', error.message));
+      next(error);
     }
   }
 }

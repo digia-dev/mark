@@ -26,11 +26,12 @@ class GetPipelineSummaryUseCase {
     }, {});
 
     return {
-      totalDeals,
-      totalValue,
-      winRate,
-      perStage,
-      avgCycle: 0 // Placeholder for average sales cycle
+      totalDeals: { value: totalDeals, trend: '0%', isPositive: true },
+      totalValue: { value: totalValue, trend: '0%', isPositive: true },
+      dealsWon: { value: deals.filter(d => d.status === 'won').length, trend: '0%', isPositive: true },
+      winRate: { value: `${winRate.toFixed(1)}%`, trend: '0%', isPositive: true },
+      avgCycle: { value: '0 hari', trend: '0%', isPositive: true },
+      perStage
     };
   }
 }

@@ -1,12 +1,10 @@
 class DeleteCustomerUseCase {
-  constructor(prisma) {
-    this.prisma = prisma;
+  constructor({ customerRepository }) {
+    this.customerRepository = customerRepository;
   }
 
   async execute(id) {
-    return this.prisma.customer.delete({
-      where: { id: parseInt(id) }
-    });
+    return await this.customerRepository.delete(parseInt(id));
   }
 }
 

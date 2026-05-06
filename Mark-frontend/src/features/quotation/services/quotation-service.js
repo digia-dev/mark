@@ -19,6 +19,16 @@ const quotationService = {
   updateStatus: async (id, status) => {
     const response = await axiosInstance.patch(`/quotations/${id}/status`, { status });
     return response.data;
+  },
+
+  updateQuotation: async (id, data) => {
+    const response = await axiosInstance.put(`/quotations/${id}`, data);
+    return response.data;
+  },
+
+  getStats: async () => {
+    const response = await axiosInstance.get('/quotations/stats');
+    return response.data;
   }
 };
 

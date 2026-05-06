@@ -139,6 +139,26 @@ class PrismaQuotationRepository {
       where: { id }
     });
   }
+  
+  async getStats() {
+    const totalCount = await this.prisma.quotation.count();
+    const aggregate = await this.prisma.quotation.aggregate({
+      _sum: { total: true },
+      _avg: { total: true }
+    });
+    
+    const approvedCount = await this.prisma.quotation.count({
+      where: { status: 'approved' }
+    });
+    
+    return {
+      total: totalCount,
+      totalValue: Number(aggregate._sum.total || 0),
+      approved: approvedCount,
+      conversionRate: totalCount > 0 ? Math.round((approvedCount / totalCount) * 100) : 0,
+      averageValue: Math.round(Number(aggregate._avg.total || 0))
+    };
+  }
 }
 
 module.exports = PrismaQuotationRepository;

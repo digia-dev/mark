@@ -7,3 +7,10 @@ export const useActivityLogs = (params) => {
     queryFn: () => activityLogService.getLogs(params)
   });
 };
+
+export const useActivityLogStats = () => {
+  return useQuery({
+    queryKey: ['activity-logs', 'stats'],
+    queryFn: () => activityLogService.getStats()
+  });
+};

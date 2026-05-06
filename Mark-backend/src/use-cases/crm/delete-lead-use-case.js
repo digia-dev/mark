@@ -4,7 +4,7 @@ class DeleteLeadUseCase {
   }
 
   async execute(id) {
-    return this.leadRepository.delete(parseInt(id));
+    return await this.leadRepository.delete(parseInt(id));
   }
 }
 

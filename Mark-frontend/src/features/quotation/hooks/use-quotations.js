@@ -26,6 +26,24 @@ export const useCreateQuotation = () => {
   });
 };
 
+export const useUpdateQuotation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }) => quotationService.updateQuotation(id, data),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries(['quotations']);
+      queryClient.invalidateQueries(['quotations', id]);
+    }
+  });
+};
+
+export const useQuotationStats = () => {
+  return useQuery({
+    queryKey: ['quotations', 'stats'],
+    queryFn: () => quotationService.getStats()
+  });
+};
+
 export const useUpdateQuotationStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({

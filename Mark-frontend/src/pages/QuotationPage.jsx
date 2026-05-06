@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Plus, Search, FileText, Download, Filter, Calendar } from 'lucide-react';
-import { useQuotations, useCreateQuotation, useUpdateQuotationStatus } from '../features/quotation/hooks/use-quotations';
+import { useQuotations, useQuotationStats, useCreateQuotation, useUpdateQuotation, useUpdateQuotationStatus } from '../features/quotation/hooks/use-quotations';
 import { useCustomers } from '../features/crm/hooks/use-customers';
 import { useLeads } from '../features/crm/hooks/use-leads';
 import { useProductList } from '../features/product/hooks/use-products';
@@ -25,11 +26,32 @@ const QuotationPage = () => {
   const [selectedQuotation, setSelectedQuotation] = useState(null);
   
   const { data, isLoading } = useQuotations(params);
+  const { data: statsData, isLoading: isStatsLoading } = useQuotationStats();
   const { data: customersData } = useCustomers({ limit: 100 });
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.prefilledProduct) {
+      // Small delay to ensure other data is ready
+      setTimeout(() => {
+        setEditingQuotation({
+          items: [{
+            product_id: location.state.prefilledProduct.id,
+            name: location.state.prefilledProduct.name,
+            price: location.state.prefilledProduct.price,
+            quantity: 1,
+            total: location.state.prefilledProduct.price
+          }]
+        });
+        setIsFormOpen(true);
+      }, 100);
+    }
+  }, [location.state]);
   const { data: leadsData } = useLeads({ limit: 100 });
   const { data: productsData } = useProductList({ limit: 100 });
 
   const createMutation = useCreateQuotation();
+  const updateMutation = useUpdateQuotation();
   const updateStatusMutation = useUpdateQuotationStatus();
 
   const handleCreate = async (formData) => {
@@ -39,6 +61,21 @@ const QuotationPage = () => {
     } catch (error) {
       console.error('Failed to create quotation:', error);
     }
+  };
+
+  const handleUpdate = async (formData) => {
+    try {
+      await updateMutation.mutateAsync({ id: selectedQuotation.id, data: formData });
+      setIsFormOpen(false);
+      setSelectedQuotation(null);
+    } catch (error) {
+      console.error('Failed to update quotation:', error);
+    }
+  };
+
+  const handleEdit = (quot) => {
+    setSelectedQuotation(quot);
+    setIsFormOpen(true);
   };
 
   const handleUpdateStatus = async (id, status) => {
@@ -74,15 +111,16 @@ const QuotationPage = () => {
       </div>
       
       {/* Statistics Section */}
-      {!isLoading && (
-        <QuotationStatCards stats={{
+      <QuotationStatCards 
+        stats={statsData?.data || {
           total: data?.meta?.total || 0,
-          totalValue: 1250000000, // Dummy for now, ideally from meta
-          approved: 45,
-          conversionRate: 68,
-          averageValue: 25000000
-        }} />
-      )}
+          totalValue: 0,
+          approved: 0,
+          conversionRate: 0,
+          averageValue: 0
+        }} 
+        isLoading={isStatsLoading}
+      />
 
       {/* Filters & Search Bar */}
       <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
@@ -129,15 +167,20 @@ const QuotationPage = () => {
           setSelectedQuotation(quot);
           setIsDetailOpen(true);
         }}
+        onEdit={handleEdit}
         onUpdateStatus={handleUpdateStatus}
       />
 
       {/* Form Modal */}
       <QuotationForm 
         isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleCreate}
-        isLoading={createMutation.isLoading}
+        onClose={() => {
+          setIsFormOpen(false);
+          setSelectedQuotation(null);
+        }}
+        onSubmit={selectedQuotation ? handleUpdate : handleCreate}
+        initialData={selectedQuotation}
+        isLoading={createMutation.isLoading || updateMutation.isLoading}
         customers={customersData?.data || []}
         leads={leadsData?.data || []}
         products={productsData?.data || []}

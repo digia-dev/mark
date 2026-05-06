@@ -1,5 +1,4 @@
-import React from 'react';
-import { MoreHorizontal, Eye, Send, CheckCircle, XCircle, FileText, Download } from 'lucide-react';
+import { MoreHorizontal, Eye, Send, CheckCircle, XCircle, FileText, Download, Edit } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 const statusConfig = {
@@ -10,7 +9,7 @@ const statusConfig = {
   expired: { label: 'Expired', color: 'bg-orange-100 text-orange-600' }
 };
 
-const QuotationTable = ({ quotations, meta, isLoading, onPageChange, onView, onUpdateStatus }) => {
+const QuotationTable = ({ quotations, meta, isLoading, onPageChange, onView, onEdit, onUpdateStatus }) => {
   if (isLoading) {
     return (
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
@@ -89,12 +88,21 @@ const QuotationTable = ({ quotations, meta, isLoading, onPageChange, onView, onU
                     <DropdownMenu.Portal>
                       <DropdownMenu.Content className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 min-w-[180px] z-200 animate-in fade-in zoom-in duration-200">
                         <DropdownMenu.Item 
+                          onClick={() => onEdit(quot)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all"
+                        >
+                          <Edit size={16} /> Edit Penawaran
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item 
                           onClick={() => onView(quot)}
                           className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all"
                         >
                           <Eye size={16} /> Detail Penawaran
                         </DropdownMenu.Item>
-                        <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all">
+                        <DropdownMenu.Item 
+                          onClick={() => console.log('Download PDF', quot.id)}
+                          className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all"
+                        >
                           <Download size={16} /> Download PDF
                         </DropdownMenu.Item>
                         

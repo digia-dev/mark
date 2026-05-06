@@ -7,8 +7,15 @@ class GetCustomerServicesUseCase {
     return this.prisma.customerService.findMany({
       where: { customer_id: parseInt(customerId) },
       include: {
-        product: true
-      }
+        product: {
+          select: {
+            name: true,
+            category: true,
+            technology: true
+          }
+        }
+      },
+      orderBy: { created_at: 'desc' }
     });
   }
 }

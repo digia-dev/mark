@@ -6,16 +6,32 @@ const errorHandler = (err, req, res, next) => {
   logger.error(`${err.name}: ${err.message}`, { stack: err.stack });
 
   // Handle specific errors
+  if (err.name === 'ZodError') {
+    const details = err.errors.map(e => ({
+      field: e.path.join('.'),
+      message: e.message
+    }));
+    return res.status(400).json(
+      errorResponse('VALIDATION_ERROR', 'Input tidak valid', details)
+    );
+  }
+
   if (err.name === 'ValidationError') {
     return res.status(400).json(
-      errorResponse('VALIDATION_ERROR', 'Input validation failed', err.details)
+      errorResponse('VALIDATION_ERROR', 'Validasi gagal', err.details)
     );
   }
 
   if (err.name === 'PrismaClientKnownRequestError') {
-    // Handle Prisma specific errors if needed
+    // Handle unique constraint violation
+    if (err.code === 'P2002') {
+      return res.status(409).json(
+        errorResponse('CONFLICT', 'Data sudah ada (duplicate entry)', err.meta?.target)
+      );
+    }
+    
     return res.status(400).json(
-      errorResponse('DATABASE_ERROR', 'Database operation failed', err.message)
+      errorResponse('DATABASE_ERROR', 'Gagal memproses data ke database', err.message)
     );
   }
 

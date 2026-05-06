@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, Search, Filter, Play, Calendar, Monitor, Users } from 'lucide-react';
 import { usePresentations } from '../features/presentation/hooks/use-presentations';
 
@@ -6,6 +7,7 @@ import { usePresentations } from '../features/presentation/hooks/use-presentatio
 import PresentationTable from '../features/presentation/components/PresentationTable';
 
 const PresentationPage = () => {
+  const navigate = useNavigate();
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
@@ -25,7 +27,10 @@ const PresentationPage = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+          <button 
+            onClick={() => navigate('/presentation/new')}
+            className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20"
+          >
             <Plus size={18} />
             Jadwalkan Demo
           </button>
@@ -61,7 +66,10 @@ const PresentationPage = () => {
           </div>
         </div>
 
-        <div className="p-6 bg-white border border-gray-100 rounded-[32px] shadow-sm flex flex-col items-center justify-center text-center group hover:bg-gray-50 transition-all cursor-pointer border-dashed">
+        <div 
+          onClick={() => navigate('/presentation/new')}
+          className="p-6 bg-white border border-gray-100 rounded-[32px] shadow-sm flex flex-col items-center justify-center text-center group hover:bg-gray-50 transition-all cursor-pointer border-dashed"
+        >
           <div className="p-4 bg-gray-50 text-gray-300 rounded-full mb-4 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all">
             <Plus size={32} />
           </div>

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MoreHorizontal, ExternalLink } from 'lucide-react';
 
-const PipelineOverviewTable = ({ data = [], isLoading }) => {
+const PipelineOverviewTable = ({ data = {}, isLoading }) => {
+  const navigate = useNavigate();
   const stages = [
     { key: 'prospek', label: 'PROSPEK', color: 'border-blue-900', bg: 'bg-blue-900' },
     { key: 'negosiasi', label: 'NEGOSIASI', color: 'border-blue-600', bg: 'bg-blue-600' },
@@ -9,16 +11,6 @@ const PipelineOverviewTable = ({ data = [], isLoading }) => {
     { key: 'closing', label: 'CLOSING', color: 'border-green-600', bg: 'bg-green-600' },
     { key: 'instalasi', label: 'INSTALASI', color: 'border-orange-500', bg: 'bg-orange-500' }
   ];
-
-  // Mock data mapping for overview
-  const getDealsForStage = (stageKey) => {
-    // In real app, this data would come from the API grouped by stage
-    return [
-      { id: 1, name: 'PT. Maju Jaya', value: 15000000 },
-      { id: 2, name: 'Bapak Ahmad', value: 2500000 },
-      { id: 3, name: 'Corporate X', value: 85000000 }
-    ];
-  };
 
   if (isLoading) {
     return <div className="h-96 bg-gray-50 rounded-[32px] animate-pulse" />;
@@ -31,12 +23,19 @@ const PipelineOverviewTable = ({ data = [], isLoading }) => {
           <h3 className="font-black text-gray-900 text-lg tracking-tight">Pipeline Overview</h3>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Detail Transaksi Per Tahapan Pipeline</p>
         </div>
+        <button 
+          onClick={() => navigate('/pipeline')}
+          className="p-2.5 text-gray-400 hover:text-blue-900 hover:bg-blue-50 rounded-xl transition-all"
+        >
+          <ExternalLink size={18} />
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         {stages.map((stage) => {
-          const deals = getDealsForStage(stage.key);
-          const totalValue = deals.reduce((acc, d) => acc + d.value, 0);
+          const stageData = data[stage.key] || { deals: [], total: 0 };
+          const deals = stageData.deals || [];
+          const totalValue = stageData.total || 0;
           
           return (
             <div key={stage.key} className="flex flex-col">
@@ -49,8 +48,12 @@ const PipelineOverviewTable = ({ data = [], isLoading }) => {
               </div>
 
               <div className="space-y-3">
-                {deals.map((deal) => (
-                  <div key={deal.id} className="p-3 rounded-2xl bg-gray-50 border border-transparent hover:border-gray-100 hover:bg-white transition-all cursor-pointer group/item shadow-sm hover:shadow-md">
+                {deals.slice(0, 3).map((deal) => (
+                  <div 
+                    key={deal.id} 
+                    onClick={() => navigate(`/pipeline?id=${deal.id}`)}
+                    className="p-3 rounded-2xl bg-gray-50 border border-transparent hover:border-gray-100 hover:bg-white transition-all cursor-pointer group/item shadow-sm hover:shadow-md active:scale-95"
+                  >
                     <div className="text-[10px] font-black text-gray-900 truncate mb-1">{deal.name}</div>
                     <div className="flex justify-between items-center">
                       <span className="text-[9px] font-bold text-gray-400 uppercase">Rp {(deal.value / 1000000).toFixed(1)}jt</span>
@@ -59,9 +62,20 @@ const PipelineOverviewTable = ({ data = [], isLoading }) => {
                   </div>
                 ))}
                 
-                <button className="w-full py-2 text-[9px] font-black text-blue-900 uppercase tracking-widest hover:bg-blue-50 rounded-xl transition-all mt-2">
-                  + 12 Deals Lainnya
-                </button>
+                {deals.length > 3 && (
+                  <button 
+                    onClick={() => navigate('/pipeline')}
+                    className="w-full py-2 text-[9px] font-black text-blue-900 uppercase tracking-widest hover:bg-blue-50 rounded-xl transition-all mt-2"
+                  >
+                    + {deals.length - 3} Deals Lainnya
+                  </button>
+                )}
+
+                {deals.length === 0 && (
+                  <div className="py-4 text-center">
+                    <p className="text-[9px] font-bold text-gray-300 uppercase tracking-widest">Kosong</p>
+                  </div>
+                )}
               </div>
             </div>
           );

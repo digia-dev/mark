@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   MoreVertical, Edit2, UserCheck, 
   Phone, Mail, MapPin, Building2,
-  ChevronRight, ChevronLeft, Calendar
+  ChevronRight, ChevronLeft, Calendar, Trash2
 } from 'lucide-react';
 
 const LeadTable = ({ 
@@ -11,7 +11,8 @@ const LeadTable = ({
   meta = {}, 
   onPageChange,
   onEdit,
-  onConvert
+  onConvert,
+  onDelete
 }) => {
   if (isLoading) {
     return (
@@ -113,7 +114,17 @@ const LeadTable = ({
                     >
                       <Edit2 size={16} />
                     </button>
-                    <button className="p-1.5 hover:bg-gray-100 text-gray-400 rounded-lg">
+                    <button 
+                      onClick={() => onDelete(lead)}
+                      className="p-1.5 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded-lg transition-colors"
+                      title="Hapus"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                    <button 
+                      onClick={() => console.log('More options', lead.id)}
+                      className="p-1.5 hover:bg-gray-100 text-gray-400 rounded-lg"
+                    >
                       <MoreVertical size={16} />
                     </button>
                   </div>

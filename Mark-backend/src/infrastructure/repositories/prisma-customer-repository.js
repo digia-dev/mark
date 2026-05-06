@@ -38,9 +38,16 @@ class PrismaCustomerRepository {
     });
   }
 
-  async findById(id) {
-    return await this.prisma.customer.findUnique({
+  async delete(id) {
+    return await this.prisma.customer.update({
       where: { id },
+      data: { deleted_at: new Date() }
+    });
+  }
+
+  async findById(id) {
+    const customer = await this.prisma.customer.findFirst({
+      where: { id, deleted_at: null },
       include: {
         sales: { select: { id: true, name: true, avatar: true } },
         interactions: {
@@ -65,10 +72,11 @@ class PrismaCustomerRepository {
         }
       }
     });
+    return customer;
   }
 
   async findAll({ offset, limit, search, status, type, area, salesId, branchId }) {
-    const where = {};
+    const where = { deleted_at: null };
     
     if (search) {
       where.OR = [
@@ -97,8 +105,8 @@ class PrismaCustomerRepository {
   }
 
   async count(whereClause) {
-    const where = {};
-    const { search, status, type, area, salesId, branchId } = whereClause;
+    const where = { deleted_at: null };
+    const { search, status, type, area, salesId, branchId } = whereClause || {};
 
     if (search) {
       where.OR = [

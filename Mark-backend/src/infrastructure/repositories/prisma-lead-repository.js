@@ -29,8 +29,8 @@ class PrismaLeadRepository {
   }
 
   async findById(id) {
-    return await this.prisma.lead.findUnique({
-      where: { id },
+    return await this.prisma.lead.findFirst({
+      where: { id, deleted_at: null },
       include: {
         assigned_user: { select: { id: true, name: true } }
       }
@@ -38,7 +38,7 @@ class PrismaLeadRepository {
   }
 
   async findAll({ offset, limit, search, status, source, assignedTo }) {
-    const where = {};
+    const where = { deleted_at: null };
     if (search) {
       where.OR = [
         { name: { contains: search } },
@@ -62,8 +62,8 @@ class PrismaLeadRepository {
   }
 
   async count(whereClause) {
-    const where = {};
-    const { search, status, source, assignedTo } = whereClause;
+    const where = { deleted_at: null };
+    const { search, status, source, assignedTo } = whereClause || {};
     if (search) {
       where.OR = [
         { name: { contains: search } },
@@ -79,8 +79,9 @@ class PrismaLeadRepository {
   }
 
   async delete(id) {
-    return await this.prisma.lead.delete({
-      where: { id }
+    return await this.prisma.lead.update({
+      where: { id },
+      data: { deleted_at: new Date() }
     });
   }
 }

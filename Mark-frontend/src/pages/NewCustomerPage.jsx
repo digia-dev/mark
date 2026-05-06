@@ -42,6 +42,7 @@ const NewCustomerPage = () => {
         {/* For now, I will create a Page-specific version of the form content to ensure better UI */}
         <CustomerForm 
           isOpen={true} 
+          isEmbedded={true}
           onClose={() => navigate(-1)} 
           onSubmit={handleSubmit}
           isLoading={isLoading}

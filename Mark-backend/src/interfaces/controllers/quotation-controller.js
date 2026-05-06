@@ -11,7 +11,8 @@ class QuotationController {
     updateQuotationStatusUseCase,
     duplicateQuotationUseCase,
     generatePdfUseCase,
-    convertToInvoiceUseCase
+    convertToInvoiceUseCase,
+    getQuotationStatsUseCase
   }) {
     this.createQuotationUseCase = createQuotationUseCase;
     this.getQuotationListUseCase = getQuotationListUseCase;
@@ -23,6 +24,7 @@ class QuotationController {
     this.duplicateQuotationUseCase = duplicateQuotationUseCase;
     this.generatePdfUseCase = generatePdfUseCase;
     this.convertToInvoiceUseCase = convertToInvoiceUseCase;
+    this.getQuotationStatsUseCase = getQuotationStatsUseCase;
   }
 
   async create(req, res) {
@@ -121,6 +123,15 @@ class QuotationController {
       res.status(201).json(successResponse(invoice));
     } catch (error) {
       res.status(400).json(errorResponse('CONVERT_TO_INVOICE_ERROR', error.message));
+    }
+  }
+
+  async getStats(req, res) {
+    try {
+      const stats = await this.getQuotationStatsUseCase.execute();
+      res.json(successResponse(stats));
+    } catch (error) {
+      res.status(400).json(errorResponse('GET_STATS_ERROR', error.message));
     }
   }
 }

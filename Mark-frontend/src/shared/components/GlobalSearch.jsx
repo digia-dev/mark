@@ -25,15 +25,13 @@ const GlobalSearch = ({ isOpen, onClose }) => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
-        if (isOpen) onClose();
-        else onClose(); // This is just to trigger the parent to open it
-        // Actually the parent should handle this, but we can do it here if we pass the open function
+        // This toggles the modal via parent — but here we just ensure Escape works
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose]);
+  }, []);
 
   // Focus input when modal opens
   useEffect(() => {

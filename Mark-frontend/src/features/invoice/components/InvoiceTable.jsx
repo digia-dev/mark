@@ -10,9 +10,21 @@ const statusConfig = {
   cancelled: { label: 'Cancelled', color: 'bg-gray-100 text-gray-500 border-gray-200', icon: FileText }
 };
 
-const InvoiceTable = ({ invoices, isLoading }) => {
+const InvoiceTable = ({ invoices, isLoading, onRecordPayment, onViewDetail, onDownloadPdf }) => {
   if (isLoading) {
     return <div className="h-64 bg-gray-50 rounded-3xl animate-pulse flex items-center justify-center text-gray-400 font-bold">Loading invoices...</div>;
+  }
+
+  if (!invoices || invoices.length === 0) {
+    return (
+      <div className="bg-white rounded-[32px] border border-gray-100 p-12 flex flex-col items-center justify-center text-center shadow-sm">
+        <div className="w-16 h-16 bg-gray-50 text-gray-300 rounded-2xl flex items-center justify-center mb-4 border border-gray-100">
+          <FileText size={32} />
+        </div>
+        <h3 className="text-lg font-black text-gray-900">Belum ada invoice</h3>
+        <p className="text-sm text-gray-400 font-bold mt-1">Buat invoice baru untuk mulai menagih pelanggan</p>
+      </div>
+    );
   }
 
   return (
@@ -76,17 +88,30 @@ const InvoiceTable = ({ invoices, isLoading }) => {
                     <MoreHorizontal size={18} />
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Portal>
-                    <DropdownMenu.Content className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 min-w-[180px] z-200">
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all">
+                    <DropdownMenu.Content className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 min-w-[180px] z-20">
+                      <DropdownMenu.Item 
+                        onClick={() => onViewDetail && onViewDetail(inv)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all"
+                      >
                         <FileText size={16} /> Lihat Invoice
                       </DropdownMenu.Item>
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all">
+                      <DropdownMenu.Item 
+                        onClick={() => onDownloadPdf && onDownloadPdf(inv)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-blue-50 hover:text-blue-900 rounded-xl cursor-pointer outline-none transition-all"
+                      >
                         <Download size={16} /> Download PDF
                       </DropdownMenu.Item>
-                      <div className="h-px bg-gray-50 my-1 mx-2" />
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-green-600 hover:bg-green-50 rounded-xl cursor-pointer outline-none transition-all">
-                        <CreditCard size={16} /> Input Pembayaran
-                      </DropdownMenu.Item>
+                      {inv.status !== 'paid' && (
+                        <>
+                          <div className="h-px bg-gray-50 my-1 mx-2" />
+                          <DropdownMenu.Item 
+                            onClick={() => onRecordPayment && onRecordPayment(inv)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-green-600 hover:bg-green-50 rounded-xl cursor-pointer outline-none transition-all"
+                          >
+                            <CreditCard size={16} /> Input Pembayaran
+                          </DropdownMenu.Item>
+                        </>
+                      )}
                     </DropdownMenu.Content>
                   </DropdownMenu.Portal>
                 </DropdownMenu.Root>

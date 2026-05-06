@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecentLeads = ({ leads, isLoading }) => {
+  const navigate = useNavigate();
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse h-full">
@@ -25,7 +28,11 @@ const RecentLeads = ({ leads, isLoading }) => {
 
       <div className="space-y-6 flex-1">
         {leads?.map((lead, i) => (
-          <div key={i} className="flex items-center gap-4 group/item cursor-pointer">
+          <div 
+            key={i} 
+            onClick={() => navigate(`/crm/leads?id=${lead.id}`)}
+            className="flex items-center gap-4 group/item cursor-pointer active:scale-95 transition-all"
+          >
             <div className="w-12 h-12 rounded-2xl bg-gray-900 text-white flex items-center justify-center font-black text-sm shadow-lg group-hover/item:scale-110 transition-all">
               {lead.name.charAt(0)}
             </div>
@@ -45,7 +52,10 @@ const RecentLeads = ({ leads, isLoading }) => {
         ))}
       </div>
 
-      <button className="mt-8 w-full py-3 bg-gray-50 text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-gray-900 hover:text-white transition-all">
+      <button 
+        onClick={() => navigate('/crm/leads')}
+        className="mt-8 w-full py-3 bg-gray-50 text-gray-900 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-gray-900 hover:text-white transition-all"
+      >
         Semua Leads →
       </button>
     </div>

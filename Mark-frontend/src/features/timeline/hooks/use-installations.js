@@ -27,3 +27,10 @@ export const useUpdateInstallationStatus = () => {
     }
   });
 };
+
+export const useInstallationStats = () => {
+  return useQuery({
+    queryKey: ['installations', 'stats'],
+    queryFn: () => installationService.getStats()
+  });
+};

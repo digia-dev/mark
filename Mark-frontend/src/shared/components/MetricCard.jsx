@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MetricCard = ({ icon, bg, title, value, trend, trendValue, subtext, isWarning, isLoading }) => {
+const MetricCard = ({ icon, bg, title, value, trend, trendValue, subtext, isWarning, isLoading, onClick }) => {
   if (isLoading) {
     return (
       <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm animate-pulse">
@@ -17,7 +17,10 @@ const MetricCard = ({ icon, bg, title, value, trend, trendValue, subtext, isWarn
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-start gap-4 transition-all hover:shadow-md group">
+    <div 
+      onClick={onClick}
+      className={`bg-white rounded-xl border border-gray-200 p-4 shadow-sm flex items-start gap-4 transition-all hover:shadow-md group ${onClick ? 'cursor-pointer active:scale-95' : ''}`}
+    >
       <div className={`p-3 rounded-xl ${bg} mt-1 shrink-0 transition-transform group-hover:scale-110`}>
         {icon}
       </div>

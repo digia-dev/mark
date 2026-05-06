@@ -19,8 +19,16 @@ import { useUsers } from '../features/user/hooks/use-users';
 const TroubleTicketPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
+  const [filters, setFilters] = useState({
+    search: '',
+    status: '',
+    priority: '',
+    category: '',
+    page: 1,
+    limit: 10
+  });
 
-  const { data: ticketsData, isLoading: isLoadingTickets } = useTickets({ limit: 100 });
+  const { data: ticketsData, isLoading: isLoadingTickets } = useTickets(filters);
   const { data: statsData } = useTicketStats();
   const { data: customersData } = useCustomers({ limit: 100 });
   const { data: usersData } = useUsers();
@@ -68,6 +76,44 @@ const TroubleTicketPage = () => {
           <Plus size={18} />
           Buat Tiket Baru
         </button>
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex flex-col md:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <input 
+            type="text"
+            placeholder="Cari nomor tiket atau customer..."
+            className="w-full pl-12 pr-4 py-4 bg-white border border-gray-100 rounded-[24px] text-sm font-bold shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+            value={filters.search}
+            onChange={(e) => setFilters({ ...filters, search: e.target.value, page: 1 })}
+          />
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <div className="flex gap-2">
+          <select 
+            className="px-6 py-4 bg-white border border-gray-100 rounded-[24px] text-sm font-bold shadow-sm focus:outline-none transition-all appearance-none min-w-[140px]"
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value, page: 1 })}
+          >
+            <option value="">Semua Status</option>
+            <option value="open">Open</option>
+            <option value="in-progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
+          </select>
+          <select 
+            className="px-6 py-4 bg-white border border-gray-100 rounded-[24px] text-sm font-bold shadow-sm focus:outline-none transition-all appearance-none min-w-[140px]"
+            value={filters.priority}
+            onChange={(e) => setFilters({ ...filters, priority: e.target.value, page: 1 })}
+          >
+            <option value="">Semua Prioritas</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
       </div>
 
       {/* Stats */}

@@ -1,7 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Calendar, CheckCircle, Clock, User } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const UpcomingTasks = ({ tasks = [], isLoading }) => {
+  const navigate = useNavigate();
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse h-full">
@@ -15,8 +19,10 @@ const UpcomingTasks = ({ tasks = [], isLoading }) => {
     );
   }
 
-  const displayTasks = tasks;
-
+  const handleComplete = (e, taskName) => {
+    e.stopPropagation();
+    toast.success(`Tugas "${taskName}" ditandai selesai`);
+  };
 
   return (
     <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm h-full group hover:border-blue-900/20 transition-all flex flex-col">
@@ -25,18 +31,28 @@ const UpcomingTasks = ({ tasks = [], isLoading }) => {
           <h3 className="font-black text-gray-900 text-lg tracking-tight">Upcoming Tasks</h3>
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Agenda & Follow-up Tim Sales</p>
         </div>
-        <button className="p-2 bg-gray-50 text-gray-400 rounded-xl hover:text-gray-900 transition-all border border-gray-100">
+        <button 
+          onClick={() => toast.info('Buka Kalender Agenda')}
+          className="p-2 bg-gray-50 text-gray-400 rounded-xl hover:text-gray-900 transition-all border border-gray-100"
+        >
            <Calendar size={18} />
         </button>
       </div>
 
       <div className="space-y-4 flex-1">
-        {displayTasks?.length > 0 ? (
-          displayTasks.map((item) => (
-            <div key={item.id} className="p-4 rounded-2xl bg-gray-50/50 border border-transparent hover:border-gray-100 hover:bg-white transition-all group/item flex items-start gap-4">
+        {tasks?.length > 0 ? (
+          tasks.map((item) => (
+            <div 
+              key={item.id} 
+              onClick={() => toast.info(`Detail tugas: ${item.task}`)}
+              className="p-4 rounded-2xl bg-gray-50/50 border border-transparent hover:border-gray-100 hover:bg-white transition-all group/item flex items-start gap-4 cursor-pointer active:scale-[0.98]"
+            >
               <div className="mt-1">
-                 <div className="w-5 h-5 rounded-md border-2 border-gray-200 group-hover/item:border-blue-900 flex items-center justify-center cursor-pointer transition-all">
-                    <CheckCircle size={12} className="text-blue-900 opacity-0 group-hover/item:opacity-0" />
+                 <div 
+                   onClick={(e) => handleComplete(e, item.task)}
+                   className="w-5 h-5 rounded-md border-2 border-gray-200 group-hover/item:border-blue-900 flex items-center justify-center cursor-pointer transition-all hover:bg-blue-50"
+                 >
+                    <CheckCircle size={12} className="text-blue-900 opacity-0 group-hover/item:opacity-20 hover:opacity-100" />
                  </div>
               </div>
               <div className="flex-1 min-w-0">
@@ -64,7 +80,10 @@ const UpcomingTasks = ({ tasks = [], isLoading }) => {
       </div>
 
 
-      <button className="mt-8 w-full py-3 border border-gray-100 text-gray-400 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-gray-50 hover:text-gray-900 transition-all">
+      <button 
+        onClick={() => toast.info('Navigasi ke halaman Agenda penuh')}
+        className="mt-8 w-full py-3 border border-gray-100 text-gray-400 text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-gray-50 hover:text-gray-900 transition-all"
+      >
         Semua Agenda →
       </button>
     </div>

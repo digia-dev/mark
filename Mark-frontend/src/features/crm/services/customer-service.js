@@ -19,6 +19,16 @@ const customerService = {
   updateCustomer: async (id, data) => {
     const response = await axios.put(`/customers/${id}`, data);
     return response.data;
+  },
+
+  getStats: async () => {
+    const response = await axios.get('/customers/stats');
+    return response.data;
+  },
+
+  deleteCustomer: async (id) => {
+    const response = await axios.delete(`/customers/${id}`);
+    return response.data;
   }
 };
 

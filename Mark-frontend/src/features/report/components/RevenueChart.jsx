@@ -1,11 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, 
   Tooltip, ResponsiveContainer, Legend, Line, LineChart 
 } from 'recharts';
 import { ChevronDown, MoreVertical } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const RevenueChart = ({ data = [], isLoading }) => {
+  const navigate = useNavigate();
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-[32px] border border-gray-100 p-8 shadow-sm animate-pulse">
@@ -23,10 +27,16 @@ const RevenueChart = ({ data = [], isLoading }) => {
           <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">Performa Pendapatan vs Target</p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="bg-gray-50 border border-gray-100 rounded-xl px-4 py-2 flex items-center gap-2 text-[10px] font-black text-gray-500 cursor-pointer hover:bg-white transition-all uppercase tracking-widest">
+          <div 
+            onClick={() => toast.info('Fitur Ubah Periode Grafik')}
+            className="bg-gray-50 border border-gray-100 rounded-xl px-4 py-2 flex items-center gap-2 text-[10px] font-black text-gray-500 cursor-pointer hover:bg-white transition-all uppercase tracking-widest shadow-sm active:scale-95"
+          >
             12 Bulan Terakhir <ChevronDown size={14}/>
           </div>
-          <button className="p-2 hover:bg-gray-50 rounded-xl text-gray-400 transition-all">
+          <button 
+            onClick={() => toast.info('Menu Opsi Grafik')}
+            className="p-2 hover:bg-gray-50 rounded-xl text-gray-400 transition-all border border-transparent hover:border-gray-100"
+          >
             <MoreVertical size={18}/>
           </button>
         </div>
@@ -99,7 +109,10 @@ const RevenueChart = ({ data = [], isLoading }) => {
             <span className="text-sm font-black text-blue-900">94.2%</span>
           </div>
         </div>
-        <button className="text-[10px] font-black text-blue-900 uppercase tracking-widest hover:underline">
+        <button 
+          onClick={() => navigate('/reports')}
+          className="text-[10px] font-black text-blue-900 uppercase tracking-widest hover:underline active:translate-x-1 transition-all"
+        >
           Detail Laporan Keuangan →
         </button>
       </div>

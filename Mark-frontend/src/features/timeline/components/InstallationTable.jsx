@@ -88,8 +88,23 @@ const InstallationTable = ({ installations, isLoading, onUpdateStatus }) => {
                       >
                         Selesai & Aktivasi
                       </DropdownMenu.Item>
+                      <DropdownMenu.Item 
+                        onClick={() => onUpdateStatus(inst.id, { status: 'tertunda' })}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-500 hover:bg-gray-50 rounded-xl cursor-pointer outline-none"
+                      >
+                        Tunda Pekerjaan
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item 
+                        onClick={() => onUpdateStatus(inst.id, { status: 'cancelled' })}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 rounded-xl cursor-pointer outline-none"
+                      >
+                        Batalkan Jadwal
+                      </DropdownMenu.Item>
                       <div className="h-px bg-gray-50 my-1 mx-2" />
-                      <DropdownMenu.Item className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 rounded-xl cursor-pointer outline-none">
+                      <DropdownMenu.Item 
+                        onClick={() => onViewDetail(inst)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-50 rounded-xl cursor-pointer outline-none"
+                      >
                         Lihat Detail
                       </DropdownMenu.Item>
                     </DropdownMenu.Content>

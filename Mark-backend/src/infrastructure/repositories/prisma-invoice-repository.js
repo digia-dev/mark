@@ -109,12 +109,15 @@ class PrismaInvoiceRepository {
   }
 
   async getStats() {
+    const now = new Date();
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
     const counts = await this.prisma.invoice.groupBy({
       by: ['status'],
       _count: { id: true }
     });
     
-    const totals = await this.prisma.invoice.aggregate({
+    const financial = await this.prisma.invoice.aggregate({
       _sum: {
         total: true,
         paid_amount: true,
@@ -122,16 +125,33 @@ class PrismaInvoiceRepository {
       }
     });
 
-    const totalInvoices = await this.prisma.invoice.count();
+    const overdueAmount = await this.prisma.invoice.aggregate({
+      where: {
+        status: { not: 'paid' },
+        due_date: { lt: now }
+      },
+      _sum: {
+        remaining: true
+      }
+    });
+
+    const paidThisMonth = await this.prisma.invoice.aggregate({
+      where: {
+        status: 'paid',
+        updated_at: { gte: firstDayOfMonth }
+      },
+      _sum: {
+        paid_amount: true
+      }
+    });
+
+    const statusMap = counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {});
 
     return {
-      total: totalInvoices,
-      by_status: counts.reduce((acc, c) => ({ ...acc, [c.status]: c._count.id }), {}),
-      financial: {
-        total_billed: Number(totals._sum.total || 0),
-        total_paid: Number(totals._sum.paid_amount || 0),
-        total_remaining: Number(totals._sum.remaining || 0)
-      }
+      total_outstanding: Number(financial._sum.remaining || 0),
+      unpaid_count: (statusMap['unpaid'] || 0) + (statusMap['partial'] || 0),
+      overdue_amount: Number(overdueAmount._sum.remaining || 0),
+      paid_this_month: Number(paidThisMonth._sum.paid_amount || 0)
     };
   }
 }

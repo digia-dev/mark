@@ -1,7 +1,11 @@
 const express = require('express');
+const multer = require('multer');
 
 function createCustomerRouter({ customerController, authMiddleware, activityLogger }) {
   const router = express.Router();
+
+  // Use memory storage to avoid writing files to disk
+  const upload = multer({ storage: multer.memoryStorage() });
 
   router.use(authMiddleware);
   // Inject activityLogger for use in controller
@@ -15,7 +19,8 @@ function createCustomerRouter({ customerController, authMiddleware, activityLogg
   
   // Specific routes
   router.get('/stats', (req, res, next) => customerController.getStats(req, res, next));
-  router.post('/import', (req, res, next) => customerController.importCustomers(req, res, next));
+  // Expect multipart/form-data with field name 'file'
+  router.post('/import', upload.single('file'), (req, res, next) => customerController.importCustomers(req, res, next));
   router.get('/export', (req, res, next) => customerController.exportCustomers(req, res, next));
   
   // Parameterized routes

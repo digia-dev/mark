@@ -4,12 +4,23 @@ import { MoreVertical, Wifi, Cpu, ChevronLeft, ChevronRight } from 'lucide-react
 const ProductTable = ({ 
   products, 
   meta, 
+  isLoading,
   onPageChange, 
   onDetail, 
   onEdit, 
   onDelete,
   onToggleStatus 
 }) => {
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm animate-pulse">
+        <div className="h-12 bg-gray-50 border-b border-gray-100" />
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div key={i} className="h-16 border-b border-gray-50 px-6" />
+        ))}
+      </div>
+    );
+  }
   const getStatusBadge = (status) => {
     switch (status) {
       case 'active':

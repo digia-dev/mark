@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { Plus, Search, Filter, Download, CreditCard, Clock, CheckCircle2, AlertTriangle } from 'lucide-react';
-import { useInvoices } from '../features/invoice/hooks/use-invoices';
+import { Plus, Search, Filter, Download, CreditCard, Clock, CheckCircle2, AlertTriangle, X } from 'lucide-react';
+import { useInvoices, useInvoiceStats, useCreateInvoice, useRecordPayment, useGenerateInvoicePdf } from '../features/invoice/hooks/use-invoices';
+import { useCustomers } from '../features/crm/hooks/use-customers';
+import { useProductList } from '../features/product/hooks/use-products';
+import { toast } from 'react-hot-toast';
 
 // Components
 import InvoiceTable from '../features/invoice/components/InvoiceTable';
+import InvoiceForm from '../features/invoice/components/InvoiceForm';
+import RecordPaymentModal from '../features/invoice/components/RecordPaymentModal';
+import InvoiceDetailPanel from '../features/invoice/components/InvoiceDetailPanel';
 
 const InvoicePage = () => {
   const [params, setParams] = useState({
@@ -13,13 +19,63 @@ const InvoicePage = () => {
     status: ''
   });
 
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+
   const { data, isLoading } = useInvoices(params);
+  const { data: statsData, isLoading: isStatsLoading } = useInvoiceStats();
+  const { data: customersData } = useCustomers({ limit: 100 });
+  const { data: productsData } = useProductList({ limit: 100 });
+  
+  const createMutation = useCreateInvoice();
+  const paymentMutation = useRecordPayment();
+  const pdfMutation = useGenerateInvoicePdf();
+
+  const handleCreate = async (formData) => {
+    try {
+      await createMutation.mutateAsync(formData);
+      setIsFormOpen(false);
+      toast.success('Invoice berhasil dibuat');
+    } catch (error) {
+      console.error('Failed to create invoice:', error);
+      toast.error('Gagal membuat invoice');
+    }
+  };
+
+  const handleSavePayment = async (paymentData) => {
+    try {
+      await paymentMutation.mutateAsync({ id: paymentData.invoice_id, data: paymentData });
+      setIsPaymentModalOpen(false);
+      setSelectedInvoice(null);
+      toast.success('Pembayaran berhasil direkam');
+    } catch (error) {
+      console.error('Failed to record payment:', error);
+      toast.error('Gagal merekam pembayaran');
+    }
+  };
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0
+    }).format(value || 0);
+  };
+
+  const invoiceStats = statsData?.data || {
+    total_outstanding: 0,
+    unpaid_count: 0,
+    overdue_amount: 0,
+    paid_this_month: 0
+  };
 
   const stats = [
-    { label: 'Total Piutang', value: 'Rp 850jt', color: 'text-gray-900', bg: 'bg-gray-50', icon: CreditCard },
-    { label: 'Belum Dibayar', value: 'Rp 120jt', color: 'text-red-600', bg: 'bg-red-50', icon: Clock },
-    { label: 'Overdue', value: 'Rp 45jt', color: 'text-white', bg: 'bg-red-600', icon: AlertTriangle },
-    { label: 'Lunas (Bulan Ini)', value: 'Rp 685jt', color: 'text-green-600', bg: 'bg-green-50', icon: CheckCircle2 },
+    { label: 'Total Piutang', value: formatCurrency(invoiceStats.total_outstanding), color: 'text-gray-900', bg: 'bg-gray-50', icon: CreditCard },
+    { label: 'Belum Dibayar', value: `${invoiceStats.unpaid_count} Invoice`, color: 'text-red-600', bg: 'bg-red-50', icon: Clock },
+    { label: 'Overdue', value: formatCurrency(invoiceStats.overdue_amount), color: 'text-white', bg: 'bg-red-600', icon: AlertTriangle },
+    { label: 'Lunas (Bulan Ini)', value: formatCurrency(invoiceStats.paid_this_month), color: 'text-green-600', bg: 'bg-green-50', icon: CheckCircle2 },
   ];
 
   return (
@@ -32,11 +88,17 @@ const InvoicePage = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 bg-white border border-gray-200 text-gray-600 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all shadow-sm">
+          <button 
+            onClick={() => toast.success('Mengekspor rekap keuangan...')}
+            className="flex items-center gap-2 bg-white border border-gray-200 text-gray-600 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-50 transition-all shadow-sm active:scale-95"
+          >
             <Download size={18} />
             Rekap Keuangan
           </button>
-          <button className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20">
+          <button 
+            onClick={() => setIsFormOpen(true)}
+            className="flex items-center gap-2 bg-blue-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/20 active:scale-95"
+          >
             <Plus size={18} />
             Buat Invoice Baru
           </button>
@@ -53,7 +115,7 @@ const InvoicePage = () => {
               </div>
             </div>
             <div className="flex flex-col">
-              <span className={`text-2xl font-black ${stat.color}`}>{stat.value}</span>
+              <span className={`text-2xl font-black truncate ${stat.color}`}>{isStatsLoading ? '...' : stat.value}</span>
               <span className={`text-[10px] font-black uppercase tracking-widest mt-1 ${stat.color === 'text-white' ? 'text-white/80' : 'text-gray-400'}`}>{stat.label}</span>
             </div>
           </div>
@@ -85,7 +147,10 @@ const InvoicePage = () => {
             <option value="partial">Partial</option>
             <option value="overdue">Overdue</option>
           </select>
-          <button className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all">
+          <button 
+            onClick={() => toast.info('Filter lanjutan segera hadir')}
+            className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all active:scale-95"
+          >
             <Filter size={20} />
           </button>
         </div>
@@ -95,7 +160,77 @@ const InvoicePage = () => {
       <InvoiceTable 
         invoices={data?.data || []} 
         isLoading={isLoading} 
+        onRecordPayment={(inv) => {
+          setSelectedInvoice(inv);
+          setIsPaymentModalOpen(true);
+        }}
+        onViewDetail={(inv) => {
+          setSelectedInvoice(inv);
+          setIsDetailOpen(true);
+        }}
+        onDownloadPdf={async (inv) => {
+          try {
+            toast.loading(`Menyiapkan PDF invoice ${inv.inv_number}...`, { id: 'pdf' });
+            const result = await pdfMutation.mutateAsync(inv.id);
+            toast.success(`PDF invoice ${inv.inv_number} siap`, { id: 'pdf' });
+            if (result.success && result.data.pdf_url) {
+              window.open(result.data.pdf_url, '_blank');
+            } else {
+              toast.error('Gagal mendapatkan URL PDF', { id: 'pdf' });
+            }
+          } catch (error) {
+            console.error('Failed to generate PDF:', error);
+            toast.error('Gagal mengunduh PDF', { id: 'pdf' });
+          }
+        }}
       />
+
+      {/* Invoice Form Modal */}
+      {isFormOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-4xl max-h-[90vh] overflow-y-auto relative animate-in zoom-in-95 duration-200">
+            <button 
+              onClick={() => setIsFormOpen(false)}
+              className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all z-10"
+            >
+              <X size={20} />
+            </button>
+            <InvoiceForm 
+              customers={customersData?.data || []}
+              products={productsData?.data || []}
+              onSubmit={handleCreate}
+              onCancel={() => setIsFormOpen(false)}
+              isSubmitting={createMutation.isLoading}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Record Payment Modal */}
+      <RecordPaymentModal 
+        isOpen={isPaymentModalOpen}
+        onClose={() => {
+          setIsPaymentModalOpen(false);
+          setSelectedInvoice(null);
+        }}
+        invoice={selectedInvoice}
+        onSave={handleSavePayment}
+      />
+
+      {/* Detail Panel */}
+      {isDetailOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-2xl h-full bg-white animate-in slide-in-from-right duration-300 shadow-2xl">
+            <InvoiceDetailPanel 
+              invoiceId={selectedInvoice?.id}
+              onClose={() => {
+                setIsDetailOpen(false);
+                setSelectedInvoice(null);
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

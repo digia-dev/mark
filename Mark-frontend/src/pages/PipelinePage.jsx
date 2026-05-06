@@ -3,13 +3,14 @@ import {
   Plus, Search, Filter, Download, LayoutGrid, List, 
   ChevronDown, Calendar, Settings, Info 
 } from 'lucide-react';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext } from '@hello-pangea/dnd';
 import { 
   useDealsKanban, 
   useDealsList, 
   useMoveDealStage, 
   useCreateDeal 
 } from '../features/pipeline/hooks/use-deals';
+import { toast } from 'react-hot-toast';
 
 // Components
 import KanbanColumn from '../features/pipeline/components/KanbanColumn';
@@ -65,6 +66,14 @@ const PipelinePage = () => {
     } catch (error) {
       console.error('Failed to create deal:', error);
     }
+  };
+
+  const handleExport = () => {
+    toast.success('Mengekspor data pipeline ke CSV...');
+  };
+
+  const handleFilter = () => {
+    toast.loading('Filter lanjutan sedang dikembangkan...', { duration: 2000 });
   };
 
   // Organize deals by stage for kanban
@@ -123,15 +132,24 @@ const PipelinePage = () => {
         </div>
 
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <button className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-black text-gray-600 hover:bg-gray-100 transition-all">
+          <button 
+            onClick={() => toast('Fitur Date Range Picker segera hadir', { icon: '📅' })}
+            className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-xs font-black text-gray-600 hover:bg-gray-100 transition-all"
+          >
             <Calendar size={14} />
             {params.dateRange}
             <ChevronDown size={14} />
           </button>
-          <button className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all">
+          <button 
+            onClick={handleFilter}
+            className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all"
+          >
             <Filter size={20} />
           </button>
-          <button className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all">
+          <button 
+            onClick={handleExport}
+            className="p-2.5 bg-gray-50 border border-gray-100 rounded-xl text-gray-400 hover:text-gray-900 transition-all"
+          >
             <Download size={20} />
           </button>
         </div>

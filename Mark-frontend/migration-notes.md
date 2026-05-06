@@ -1,0 +1,11 @@
+Planned migration:
+- Replace react-beautiful-dnd imports with @hello-pangea/dnd equivalents.
+- Tasks:
+  - update package.json dependencies
+  - run npm install (or use --legacy-peer-deps)
+  - update imports in files:
+    - src/pages/PipelinePage.jsx
+    - src/features/pipeline/components/KanbanCard.jsx
+    - src/features/pipeline/components/KanbanBoard.jsx
+    - src/features/pipeline/components/KanbanColumn.jsx
+  - run dev and test Kanban drag/drop

@@ -20,6 +20,16 @@ import ReportPage from './pages/ReportPage';
 import NotificationPage from './pages/NotificationPage';
 import ActivityLogPage from './pages/ActivityLogPage';
 import SettingsPage from './pages/SettingsPage';
+import ProfilePage from './pages/ProfilePage';
+import NewCustomerPage from './pages/NewCustomerPage';
+import NewLeadPage from './pages/NewLeadPage';
+import NewDealPage from './pages/NewDealPage';
+import NewQuotationPage from './pages/NewQuotationPage';
+import NewPresentationPage from './pages/NewPresentationPage';
+import NewTroubleTicketPage from './pages/NewTroubleTicketPage';
+import NewInvoicePage from './pages/NewInvoicePage';
+import NewProductPage from './pages/NewProductPage';
+import NewInstallationPage from './pages/NewInstallationPage';
 
 const Unauthorized = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -55,14 +65,30 @@ function App() {
         
         {/* CRM Module */}
         <Route path="crm/customers" element={<CustomerPage />} />
+        <Route path="crm/customers/new" element={<NewCustomerPage />} />
         <Route path="crm/leads" element={<LeadPage />} />
+        <Route path="crm/leads/new" element={<NewLeadPage />} />
+        
         <Route path="pipeline" element={<PipelinePage />} />
+        <Route path="pipeline/new" element={<NewDealPage />} />
+        
         <Route path="quotation" element={<QuotationPage />} />
+        <Route path="quotation/new" element={<NewQuotationPage />} />
+        
         <Route path="presentation" element={<PresentationPage />} />
+        <Route path="presentation/new" element={<NewPresentationPage />} />
+        
         <Route path="timeline" element={<TimelinePage />} />
+        <Route path="timeline/new" element={<NewInstallationPage />} />
+        
         <Route path="trouble-ticket" element={<TroubleTicketPage />} />
+        <Route path="trouble-ticket/new" element={<NewTroubleTicketPage />} />
+        
         <Route path="invoice" element={<InvoicePage />} />
+        <Route path="invoice/new" element={<NewInvoicePage />} />
+        
         <Route path="products" element={<ProductPage />} />
+        <Route path="products/new" element={<NewProductPage />} />
         <Route 
           path="reports/*" 
           element={
@@ -80,6 +106,11 @@ function App() {
             </RoleGuard>
           } 
         />
+        <Route 
+          path="profile" 
+          element={<ProfilePage />} 
+        />
+
         <Route 
           path="settings/*" 
           element={

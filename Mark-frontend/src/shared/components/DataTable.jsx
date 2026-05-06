@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, 
-  Search, Filter, Download, MoreVertical, SlidersHorizontal
+  Search, Filter, Download, MoreVertical, SlidersHorizontal, Check
 } from 'lucide-react';
 
 /**
@@ -18,9 +18,12 @@ const DataTable = ({
   onSearch,
   onFilterClick,
   onExportClick,
+  onColumnToggle,
   actions
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showColumnToggle, setShowColumnToggle] = useState(false);
+  const [visibleColumns, setVisibleColumns] = useState(columns.map((_, i) => i));
   
   const totalPages = Math.ceil(total / limit) || 1;
   const isFirstPage = page === 1;
@@ -68,8 +71,36 @@ const DataTable = ({
             </button>
           )}
           
-          <button className="p-2 text-gray-400 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors">
+          <button 
+            onClick={() => setShowColumnToggle(!showColumnToggle)}
+            className="p-2 text-gray-400 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:text-gray-900 transition-colors relative group"
+            aria-label="Toggle columns"
+            title="Pilih kolom yang ditampilkan"
+          >
             <SlidersHorizontal size={16} />
+            {showColumnToggle && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-2">
+                <div className="text-xs font-bold text-gray-500 uppercase px-2 py-1">Tampilkan Kolom</div>
+                {columns.map((col, idx) => (
+                  <button
+                    key={idx}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setVisibleColumns(prev => 
+                        prev.includes(idx) 
+                          ? prev.filter(i => i !== idx)
+                          : [...prev, idx]
+                      );
+                      if (onColumnToggle) onColumnToggle(idx);
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 rounded flex items-center gap-2 transition-colors"
+                  >
+                    {visibleColumns.includes(idx) && <Check size={14} className="text-blue-600" />}
+                    <span className={visibleColumns.includes(idx) ? 'font-medium' : ''}>{col.header}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </button>
         </div>
       </div>
@@ -82,11 +113,13 @@ const DataTable = ({
               <th className="w-10 p-4 border-b border-gray-100">
                 <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
               </th>
-              {columns.map((col, index) => (
-                <th key={index} className="p-4 border-b border-gray-100 text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                  {col.header}
-                </th>
-              ))}
+              {columns.map((col, index) => 
+                visibleColumns.includes(index) && (
+                  <th key={index} className="p-4 border-b border-gray-100 text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                    {col.header}
+                  </th>
+                )
+              )}
               {actions && (
                 <th className="p-4 border-b border-gray-100 text-right w-16"></th>
               )}
@@ -100,20 +133,29 @@ const DataTable = ({
                     <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
                   </td>
                   
-                  {columns.map((col, colIndex) => (
-                    <td key={colIndex} className="p-4 text-sm text-gray-700 whitespace-nowrap">
-                      {col.cell ? col.cell(row) : row[col.accessor]}
-                    </td>
-                  ))}
+                  {columns.map((col, colIndex) => 
+                    visibleColumns.includes(colIndex) && (
+                      <td key={colIndex} className="p-4 text-sm text-gray-700 whitespace-nowrap">
+                        {col.cell ? col.cell(row) : row[col.accessor]}
+                      </td>
+                    )
+                  )}
                   
                   {actions && (
                     <td className="p-4 text-right">
-                      <div className="relative inline-block text-left">
-                        <button className="p-1 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-white transition-colors">
-                          <MoreVertical size={16} />
-                        </button>
-                        {/* Dropdown would be rendered here in full implementation */}
-                      </div>
+                      {typeof actions === 'function' ? (
+                        actions(row)
+                      ) : (
+                        <div className="relative inline-block text-left group">
+                          <button 
+                            className="p-1 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-white transition-colors"
+                            aria-label="More actions"
+                            aria-haspopup="true"
+                          >
+                            <MoreVertical size={16} />
+                          </button>
+                        </div>
+                      )}
                     </td>
                   )}
                 </tr>

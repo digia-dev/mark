@@ -37,3 +37,19 @@ export const useUpdateCustomer = () => {
     }
   });
 };
+
+export const useCustomerStats = () => {
+  return useQuery({
+    queryKey: ['customers', 'stats'],
+    queryFn: () => customerService.getStats()
+  });
+};
+export const useDeleteCustomer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => customerService.deleteCustomer(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['customers']);
+    }
+  });
+};
